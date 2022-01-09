@@ -1,4 +1,7 @@
-# algorithms_skillsmart
+# Skillsmart school courses
+
+Algorithms:
+
 .net Algorithms from skillsmart school
 
 Part1:
@@ -24,4 +27,7 @@ Part2:
 - DFS in graph
 - BFS in graph
 - Triangles in graph
+
+Clean Code:
+- Clean code rules
 
