@@ -1,0 +1,39 @@
+﻿3.1
+
+FileData - FileStorageValue 
+//значение файла из хранилища
+
+ScanCopyImitationService - ScanCopySimulator
+//имитация скан копий
+
+CommandQueryProcessor - Mediator?, CommandQueryHandler
+//обработчик команд и запросов
+
+StatementStat - StatisticsByStatement
+//статистика по заявке
+
+RouteInfo - Route
+//маршрут
+
+3.2
+
+ConvertMoney - RublesToShortText 
+//метод рубли в текст
+
+HolidayFinder - Holiday
+//класс выходной день
+
+FineFinder - FineParser
+//парсер штрафов
+
+PassFinder - PassesInspector
+//класс проверщик пропусков
+
+ZipConverter - ZipArchive
+//класс зип архив
+
+DocTemplateConverter - DocTemplateParser
+//класс парсер шаблонов документов
+
+CyrPhraser - RussianCase
+//русский падеж

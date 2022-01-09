@@ -1,0 +1,55 @@
+﻿7.1
+
+hasCECategory - isCEExists
+//имеется ли CE категория у водителя
+
+mkadWeightExceeded - isWeightExceeded
+//грузоподъемность для МКАД превышена
+
+sended - isSendedToCrm
+//отправлена ли предзаявка на пропуск в crm
+
+enabled - isEnabled
+//включена ли отправка уведомлений на почту
+
+daily - isDailyEnabled
+//включен ли дневной пропуск в заявке
+
+7.2
+
+exists
+//существует ли товарный знак
+
+found
+//найдена ли заявка на пропуск
+
+done
+//закончена ли проверка на штрафы
+
+7.3
+
+i - exportedCellIndex, cellIndex
+//индекс ячейки для выгрузки в excel
+
+7.4
+
+input, output
+//предробработка файла
+
+show, hide
+//апи для показа скрытия пароля в react приложении
+
+head, tail
+//конец и начало очереди
+
+
+7.5
+
+value - stsIssueDate
+//год из стс, можно избавиться
+
+str - eventJson
+//строка json события при десериализации, можно избавиться
+
+cls - mktuClearedString
+//очищенная строка с классами МКТУ, можно избавиться

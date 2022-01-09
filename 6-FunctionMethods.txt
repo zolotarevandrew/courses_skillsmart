@@ -1,0 +1,38 @@
+﻿CheckType - IsTypeExists
+//проверить существует ли тип в хранилище типов событий EventTypeMap
+
+WithDb - ChangeDatabaseByType
+//сменить базу данных в контексте хранилища данных
+
+ChangeByHtml - FillFromHtml
+//заполнить данные из html
+
+ByClientStatuses - ConvertToClientStatuses
+//сконвертировать в статусы клиента
+
+GetPaymentUrl - GeneratePaymentUrl
+//сгенерировать url для оплаты
+
+EnabledTypes - EnableNotifications
+//подключенные типы уведомлений
+
+TrySetManual - ChangеStatusManually
+//изменить статус вручную
+
+RequestMerge - MergePdfFiles
+//смерджить pdf файлы
+
+Validate - CheckInvalidFields
+//проверить невалидные поля
+
+SearchName - LicenseWithName
+//лицензия с именем у водителя
+
+LoginModel - CreateViewModel
+//создать модель представления в странице логина
+
+GetYearFromDate - GetAnnual
+//получить годовые заявки их хранилища заявок
+
+
+

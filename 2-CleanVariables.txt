@@ -1,0 +1,65 @@
+﻿6.1
+dailyValue - transportationDailyBasis
+//количество перевозимых грузов на дневной основе
+
+working - employeeByGenderStatus
+//статус работника на основе пола
+
+idx - usingCountByStatement
+//количество используемых заявок
+
+amount - finesByPeriod
+//штрафы за период
+
+crc - paymentSignature
+//сигнатура подписи платежа
+
+6.2
+
+unitOfWork
+//переменная для работы с интерфейсов реализующем паттерн единица работы
+
+jobAttemptCount
+// переменная хранящая текущую попытку исполнения задачи
+
+fipsClientBuilder
+//построитель клиента для работы с интерфейсом фипс (федеральный институт промышленной собственности)
+
+baseDomainEventHandler
+//базовый обработчик доменного события (DDD)
+
+
+6.3
+
+preRequestUserName
+//имя пользователя из предварительной заявки
+
+leasingContractOwner
+//владелец договора на лизинг
+
+currentPassIssued
+//текущий пропуск вышел
+
+
+6.4
+
+IsDangerousTransportPurpose - IsDangerous (is_dangerous)
+//является ли вид перевозки перевозкой опасных грузов
+
+closingDocumentsChangedEvent - docsChangedEvent (docs_changed_event)
+//переменная хранящая событие об изменении закрывающих документов
+
+userConnectionMapLocker - connectionLock (connection_lock)
+//переменная для работы с блокировкой подключений пользователей
+
+UsedInYearStatementsCount - завести класс(запись) UsageInStatements и там поле InAnnualCount
+или annualStatementsUsage (annual_statements_usage)
+//использование в годовых заявках
+
+nightAnnualPreIssueDates - не создавать переменную или preIssueDates
+//предваритальные даты выхода ночного годового пропуска
+
+
+
+
+ 

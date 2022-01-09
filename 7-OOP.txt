@@ -1,0 +1,23 @@
+﻿3.1
+
+new Trademark(html) - Trademark.FromSourceHtml
+//создать товарный знак из html
+
+new Statement(dk, leasing, otherFiles) - Statement.FromDocuments(dk, leasing, otherFiles)
+//создать заявку на основе документов
+
+new Driver(serial, number) - Driver.FromSerialAndNumber
+//создать водителя по серии и номеру
+
+
+3.2
+
+IScanCopyImitator - ScanCopyImitator
+//имитатор скан копий
+
+INotificationSender - NotificationSender
+//отправитель уведомлений
+
+IAddressRepository - AddressRepository
+//репозиторий сущности адрес
+

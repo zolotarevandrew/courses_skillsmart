@@ -1,0 +1,41 @@
+﻿IsBCategoryMore3Years - IsBOverThreeYears
+//б категория старше трех лет
+
+IsBCategoryLess3Years - IsBLessThreeYears
+//б категория младше трех лет
+
+IsMkad - IsRestrictedInMkad
+//ограничение по весу в зоне мкад
+
+Sign1StorageId - ApplicantSignFileId
+// id файла для подписи заявителя
+
+Sign2StorageId - ContragentSignFileId
+// id файла для подписи контрагента
+
+cur - currentActivePass
+//текущий активный пропуск
+
+fileList - allUserFiles, userFiles
+//найденные файлы пользователя
+
+days - statementExpirationDays
+//количество дней до окончания заявки
+
+summary - extendedExceptionMessage
+//расширенный текст ошибки
+
+sum - finesByPeriodAmount
+//штрафы за период
+
+NumberValue - CarNumber
+//номер машины
+
+str - individualExtendedInfo
+//расширенная информация о физ лице
+
+
+
+
+
+

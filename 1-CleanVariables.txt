@@ -1,0 +1,35 @@
+﻿res - sumOfLinkedListsElements (sum_of_linked_lists_elements), sumOfElementsList (sum_of_elements_list) 
+// сумма элементов из связных списков
+
+result - elementFromTop (element_from_top)
+// элемент, получаемый из стэка при операции pop
+
+val - elementToAdd (element_to_add)
+// элемент для добавления в методе
+
+IsResult - IsEqualityExpression (is_equality_expression), isEqualitySymbol (is_equality_Symbol)
+// текущее выражение, является оператором равенства
+
+_source - _expressionSymbol (expression_symbol), _sourceSymbol (source_symbol), _fromSymbol (from_symbol)
+// строкое представление выражения +-/ 
+
+shiftCount - elementCountForShifting (element_count_for_shifting)
+// количество элементов для смещения
+
+hashIdx - elementIndexByHashing (element_index_by_hashing)
+//индекс элемента полученный с помощью хэширования
+
+minIdx - minElementIndex (min_element_index)
+//индекс минимального элемента
+
+all - allNodes (all_nodes)
+// все элементы(ноды) хранимые внутри класса
+
+OnlyRight - HasOnlyRightChild (has_only_right_child)
+//флаг имеет ли узел только правый дочерний узел
+
+idx - keyIndex (key_index)
+//индекс ключа
+
+max - heapMaxElement (heap_max_element)
+//максимальный элемент из кучи
