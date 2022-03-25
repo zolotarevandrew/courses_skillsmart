@@ -10,7 +10,6 @@ class Robot:
         self.logCommand = ''
         self.cleaningDevice = defaultCleaningDevice()
 
-
 class Command:
     def __init__(self):
         self.args = []
@@ -18,7 +17,7 @@ class Command:
         self.error = lambda : ''
         self.execute = None
 
-def parseCommand(input):
+def createCommand(input):
     command = Command()
     args = input.split(' ')
     if len(args) == 0:
@@ -50,14 +49,17 @@ def move(command: Command):
     if distance <= 0:
         command.error = lambda : 'invalid move distance should be number > 0'
         return command
+
+    def ceilTwoDecimals(value):
+        return math.ceil(value * 100)/100.0
     
     def execute(robot: Robot):
         robot.distance += distance
         x0 = robot.x
         y0 = robot.y
 
-        robot.x = robot.distance * math.cos(robot.angle) + y0
-        robot.y = robot.distance * math.sin(robot.angle) + x0
+        robot.x = ceilTwoDecimals(robot.distance * math.cos(math.radians(robot.angle)) + y0)
+        robot.y = ceilTwoDecimals(robot.distance * math.sin(math.radians(robot.angle)) + x0)
 
         robot.logCommand = 'POS ' + str(robot.x) + ',' + str(robot.y)
         return
@@ -138,10 +140,10 @@ def defaultCleaningDevice():
 
 if __name__ == '__main__':
     robot = Robot()
-    print('please enter robot commands move, turn, set, start, stop')
+    print('please enter robot commands: move, turn, set, start, stop')
     while(True):
         inputStr = input()
-        cmd = parseCommand(inputStr)
+        cmd = createCommand(inputStr)
         error = cmd.error()
         if len(error) > 0:
             print(error)
