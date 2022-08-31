@@ -13,3 +13,5 @@ let rec occFromIth = function
   | (s, n, c) when (n < 0) || (n >= String.length s) -> 0
   | (s, n, c) when isIthChar(s, n, c) -> 1 + occFromIth(s, n + 1, c)
   | (s, n, c) -> 0 + occFromIth(s, n + 1, c)
+
+let a = pow("123123", 1)
