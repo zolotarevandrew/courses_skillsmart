@@ -1,12 +1,17 @@
 // 20.3.1
 let vat n x  =
-    if x <= 0.0 || x > 100.0 then
-        n * 1.0
+    let nn: int = n
+    let xx: float = x
+    if xx <= 0 || xx > 100 then
+        float nn
     else
-        n + ((n / 100.0) * x)
+        float nn + ((float nn) / 100.0) * xx
 
 // 20.3.2
-let unvat n x = (float (x - n)/ n) * 100.0
+let unvat n x = 
+    let nn: int = n
+    let xx: float = x
+    (float (xx - float nn) / float nn) * 100.0
 
 // 20.3.3
 let rec min f = 
