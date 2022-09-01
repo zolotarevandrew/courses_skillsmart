@@ -2,7 +2,7 @@
 let vat n x =
     let nn: int = n
     let xx: float = x
-    if xx <= 0 || xx > 100 then
+    if xx <= 0.0 || xx > 100.0 then
         float nn
     else
         float nn + ((float nn) / 100.0) * xx
