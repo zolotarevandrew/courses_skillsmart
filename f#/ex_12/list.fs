@@ -18,4 +18,4 @@ let evenn n =
     | (iter, len, arr) when len >= n -> arr
     | (iter, len, arr) when iter % 2 = 0 -> iter :: _evenn(iter + 1, len + 1, arr)
     | (iter, len, arr)-> _evenn(iter + 1, len, arr)
-  _evenn(1, 0, [])
+  _evenn(0, 0, [])
