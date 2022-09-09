@@ -14,12 +14,12 @@ let rec del_even lst =
     _del lst
 
 // 39.3
-let rec multiplicity x xs= 
+let rec multiplicity x xs = 
     let rec _mul = function
       | [] -> 0
-      | head::tail -> if head = xs then 1 + _mul tail
+      | head::tail -> if head = x then 1 + _mul tail
                       else _mul tail
-    _mul x
+    _mul xs
 
 // 39.4
 let rec split x = 
@@ -42,3 +42,5 @@ let rec zip (xs1,xs2) =
      | [], [] -> []
      | x::xs, y::ys -> (x, y) :: _zip xs ys
   _zip xs1 xs2
+
+multiplicity 1 [1;1;1;1;2]
