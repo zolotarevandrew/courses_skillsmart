@@ -28,7 +28,9 @@ let rec intersect (xs1, xs2) =
     | [], [] -> []
     | [], _ -> []
     | _, [] -> []
-    | x::xtail,y::ytail -> if x = y then x::intersect(xtail,ytail) else intersect(xtail,y::ytail)
+    | x::xtail,y::ytail -> if x = y then x::intersect(xtail,ytail) 
+                                                       elif x > y then intersect(xs1,ytail)
+                                                       else intersect(xtail,xs2)
 
 // 40.2.4
 let rec plus (xs1, xs2) = 
@@ -42,7 +44,9 @@ let rec minus (xs1, xs2) =
     | [], [] -> []
     | [], _ -> []
     | x, [] -> x
-    | x::xtail,y::ytail -> if x = y then minus(xtail,ytail) else x::minus(xtail,y::ytail)
+    | x::xtail,y::ytail -> if x < y then x::minus(xtail,xs2) 
+                                                       elif x > y then minus(xs1,ytail)
+                                                       else minus(xtail,ytail)
 
 // 40.3.1
 let rec smallest lst = 
@@ -72,7 +76,3 @@ let rec sort x =
 let rec revrev = function
   | [] -> []
   | head::tail -> revrev(tail) @ ([List.rev head])
-
-let a = [1;2;2;3;4;5;7]
-let b = [1;2;2;4;5;6;7]
-intersect(a, b)
