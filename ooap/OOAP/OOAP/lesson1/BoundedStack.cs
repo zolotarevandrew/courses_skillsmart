@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OOAP.lesson1
 {
@@ -11,6 +12,9 @@ namespace OOAP.lesson1
         /// постусловие: создан новый стек c размером = maxElements
         public BoundedStack(uint maxElements)
         {
+            if (maxElements < 1)
+                throw new InvalidOperationException("max elements should be >= 1");
+            
             MaxElements = maxElements;
         }
         
