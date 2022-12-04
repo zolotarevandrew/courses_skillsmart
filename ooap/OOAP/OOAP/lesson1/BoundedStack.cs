@@ -19,7 +19,7 @@ namespace OOAP.lesson1
         }
         
         /// постусловие: создан новый стек c размером = DefaultMaxElements
-        protected BoundedStack()
+        public BoundedStack()
         {
             MaxElements = DefaultMaxElements;
         }
@@ -58,23 +58,23 @@ namespace OOAP.lesson1
     
     public enum BoundedStackPopStatus
     {
-        None = 0, // Pop не вызывался
-        Ok = 1, // Pop успешно удалил элемент из стэка
-        FailEmpty = 2, // Pop неудачна, стэк пустой
+        NotCalled = 0,
+        Ok = 1,
+        FailEmpty = 2,
     }
     
     public enum BoundedStackPushStatus
     {
-        None = 0, // Push не вызывался
-        Ok = 1, // Push успешно добавил элемент в стэк
-        FailSizeExceeded = 2, // Push неудачна, стэк заполнен
+        NotCalled = 0,
+        Ok = 1,
+        FailSizeExceeded = 2, 
     }
 
     public enum BoundedStackPeekStatus
     {
-        None = 0, // Peek не вызывался
-        Ok = 1, // Peek успешно удалил элемент из стэка
-        FailEmpty = 2, // Peek неудачна, стэк пустой
+        NotCalled = 0,
+        Ok = 1, 
+        FailEmpty = 2, 
     }
     
     public class BoundedStackImpl<T> : BoundedStack<T>
@@ -130,9 +130,9 @@ namespace OOAP.lesson1
         public override void Clear()
         {
             _store = new List<T>((int)MaxElements);
-            _peekStatus = BoundedStackPeekStatus.None;
-            _pushStatus = BoundedStackPushStatus.None;
-            _popStatus = BoundedStackPopStatus.None;
+            _peekStatus = BoundedStackPeekStatus.NotCalled;
+            _pushStatus = BoundedStackPushStatus.NotCalled;
+            _popStatus = BoundedStackPopStatus.NotCalled;
             _size = 0;
         }
 
