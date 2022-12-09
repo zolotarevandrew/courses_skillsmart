@@ -2,83 +2,11 @@
 
 namespace OOAP.lesson3
 {
-    public abstract class ParentList<T>
+    public class ParentList<T> 
     {
-
-        //конструктор
-        public ParentList()
-        {
-            
-        }
-        
-        //команды
-        
-        /// предусловие, есть текущий элемент
-        /// постусловие, текущий элемент указывает на начало списка
-        public abstract void Head();
-        
-        /// предусловие, есть текущий элемент
-        /// постусловие, текущий элемент указывает на конец списка
-        public abstract void Tail();
-        
-        /// предусловие, есть следующий элемент
-        /// постусловие, текущий элемент сдвинут на один вправо
-        public abstract void Right();
-        
-        /// предусловие, есть текущий элемент
-        /// постусловие, новый элемент добавлен после текущего (отработает даже если нет элементов)
-        public abstract void PutRight(T value);
-        
-        /// предусловие, есть текущий элемент
-        /// постусловие, новый элемент добавлен перед текущим
-        public abstract void PutLeft(T value);
-        
-        /// постусловие, новый элемент добавлен в конец списка
-        public abstract void AddInTail(T value);
-        
-        /// предусловие, есть текущий элемент
-        /// постусловие, текущий элемент заменен на value
-        public abstract void ReplaceCurrent(T value);
-        
-        /// предусловие, есть текущий элемент
-        /// постусловие, удален текущий элемент 
-        public abstract void RemoveCurrent();
-        
-        /// постусловие, в списке удалены все элементы со значением value 
-        public abstract void RemoveAll(T value);
-        
-        /// постусловие: удалятся все значения
-        public abstract void Clear();
-        
-        // постусловие: курсор установлен на следующий узел 
-        public abstract void Find(T value);
-
-        //запросы
-
-        public abstract T CurrentValue();
-        
-        public abstract bool IsInHead { get; }
-        public abstract bool IsInTail { get; }
-        public abstract bool IsInValue { get; }
-        
-        public abstract int Size { get; }
-        
-        public abstract int HeadStatus { get; }
-        public abstract int TailStatus { get; }
-        public abstract int RightStatus { get; }
-        public abstract int PutRightStatus { get; }
-        public abstract int PutLeftStatus { get; }
-        public abstract int RemoveCurrentStatus { get; }
-        public abstract int ReplaceStatus { get; }
-        public abstract int FindStatus { get; }
-        public abstract int CurrentStatus { get; }
-    }
-
-    public class ParentListImpl<T> : ParentList<T>
-    {
-        private DummyNode<T> _dummyHead;
-        private DummyNode<T> _dummyTail;
-        private Node<T> _current;
+        protected DummyNode<T> _dummyHead;
+        protected DummyNode<T> _dummyTail;
+        protected Node<T> _current;
 
         public const int NotCalled = 0;
         public const int Ok = 1;
@@ -98,12 +26,12 @@ namespace OOAP.lesson3
 
         private int _count;
 
-        public ParentListImpl()
+        public ParentList()
         {
             Clear();
         }
 
-        public override void Head()
+        public void Head()
         {
             if (!IsInValue)
             {
@@ -115,7 +43,7 @@ namespace OOAP.lesson3
             _current = _dummyHead;
         }
 
-        public override void Tail()
+        public void Tail()
         {
             if (!IsInValue)
             {
@@ -127,11 +55,11 @@ namespace OOAP.lesson3
             _current = _dummyTail;
         }
 
-        public override void Right()
+        public void Right()
         {
             if (!IsInValue)
             {
-                _rightStatus = NoRightValue;
+                _rightStatus = ListEmpty;
                 return;
             }
             
@@ -140,12 +68,12 @@ namespace OOAP.lesson3
                 _rightStatus = NoRightValue;
                 return;
             }
-
-            _rightStatus = Ok;
+            
             _current = _current.next;
+            _rightStatus = Ok;
         }
 
-        public override void PutRight(T value)
+        public void PutRight(T value)
         {
             if (!IsInValue)
             {
@@ -158,7 +86,7 @@ namespace OOAP.lesson3
             _putRightStatus = Ok;
         }
 
-        public override void PutLeft(T value)
+        public void PutLeft(T value)
         {
             if (!IsInValue)
             {
@@ -172,7 +100,7 @@ namespace OOAP.lesson3
             _putLeftStatus = Ok;
         }
 
-        public override void AddInTail(T value)
+        public void AddInTail(T value)
         {
             var _item = new Node<T>(value);
             var oldPrev = _dummyTail._prev;
@@ -184,7 +112,7 @@ namespace OOAP.lesson3
             _count++;
         }
 
-        public override void ReplaceCurrent(T value)
+        public void ReplaceCurrent(T value)
         {
             if (!IsInValue)
             {
@@ -196,7 +124,7 @@ namespace OOAP.lesson3
             _replaceStatus = Ok;
         }
 
-        public override void RemoveCurrent()
+        public void RemoveCurrent()
         {
             if (!IsInValue)
             {
@@ -208,7 +136,7 @@ namespace OOAP.lesson3
             _removeCurrentStatus = Ok;
         }
 
-        public override void RemoveAll(T value)
+        public void RemoveAll(T value)
         {
             foreach (var node in Iterate(_dummyHead))
             {
@@ -219,7 +147,7 @@ namespace OOAP.lesson3
             }
         }
 
-        public override void Clear()
+        public virtual void Clear()
         {
             _dummyHead = new();
             _dummyTail = new();
@@ -242,15 +170,19 @@ namespace OOAP.lesson3
             _currentStatus = NotCalled;
         }
 
-        public override void Find(T value)
+        public void Find(T value)
         {
             if (!IsInValue)
             {
                 _findStatus = ListEmpty;
                 return;
             }
+
+            var list = _current.next != null
+                ? Iterate(_current.next)
+                : new List<Node<T>>();
             
-            foreach (var node in Iterate(_current))
+            foreach (var node in list)
             {
                 if (node.value.Equals(value))
                 {
@@ -263,7 +195,7 @@ namespace OOAP.lesson3
             _findStatus = NotFound;
         }
 
-        public override T CurrentValue()
+        public T CurrentValue()
         {
             if (!IsInValue)
             {
@@ -276,20 +208,20 @@ namespace OOAP.lesson3
             return _current.value;
         }
         
-        public override bool IsInHead => _current == _dummyHead;
-        public override bool IsInTail => _current == _dummyHead;
-        public override bool IsInValue => _current != null;
-        public override int Size => _count;
+        public bool IsInHead => _current == _dummyHead;
+        public bool IsInTail => _current == _dummyHead;
+        public bool IsInValue => _current != null;
+        public int Size => _count;
         
-        public override int HeadStatus => _headStatus;
-        public override int TailStatus => _tailStatus;
-        public override int RightStatus => _rightStatus;
-        public override int PutRightStatus => _putRightStatus;
-        public override int PutLeftStatus => _putLeftStatus;
-        public override int RemoveCurrentStatus => _removeCurrentStatus;
-        public override int ReplaceStatus => _replaceStatus;
-        public override int FindStatus => _findStatus;
-        public override int CurrentStatus => _currentStatus;
+        public int HeadStatus => _headStatus;
+        public int TailStatus => _tailStatus;
+        public int RightStatus => _rightStatus;
+        public int PutRightStatus => _putRightStatus;
+        public int PutLeftStatus => _putLeftStatus;
+        public int RemoveCurrentStatus => _removeCurrentStatus;
+        public int ReplaceStatus => _replaceStatus;
+        public int FindStatus => _findStatus;
+        public int CurrentStatus => _currentStatus;
         
         
         void InsertAfter(Node<T> _nodeAfter, Node<T> _nodeToInsert)
@@ -360,6 +292,49 @@ namespace OOAP.lesson3
             {
             
             }
+        }
+    }
+    
+    public class LinkedList<T> : ParentList<T>
+    {
+        
+    }
+    
+    public class TwoWayList<T> : ParentList<T>
+    {
+        public const int NoLeftValue = 5;
+        
+        private int _leftStatus;
+
+        public TwoWayList() : base()
+        {
+        }
+        
+        public void Left()
+        {
+            if (!IsInValue)
+            {
+                _leftStatus = ListEmpty;
+                return;
+            }
+            
+            if (_current.prev == null)
+            {
+                _leftStatus = NoLeftValue;
+                return;
+            }
+
+            _current = _current._prev;
+
+            _leftStatus = Ok;
+        }
+
+        public int LeftStatus => _leftStatus;
+
+        public override void Clear()
+        {
+            base.Clear();
+            _leftStatus = NotCalled;
         }
     }
 }
