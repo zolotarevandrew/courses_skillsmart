@@ -1,4 +1,6 @@
-﻿namespace OOAP.lesson3
+﻿using System.Collections.Generic;
+
+namespace OOAP.lesson3
 {
     public abstract class ParentList<T>
     {
@@ -80,6 +82,9 @@
 
         public const int NotCalled = 0;
         public const int Ok = 1;
+        public const int ListEmpty = 2;
+        public const int NoRightValue = 3;
+        public const int NotFound = 4;
         
         private int _headStatus;
         private int _tailStatus;
@@ -102,49 +107,116 @@
         {
             if (!IsInValue)
             {
-                
+                _headStatus = ListEmpty;
+                return;
             }
+
+            _headStatus = Ok;
             _current = _dummyHead;
         }
 
         public override void Tail()
         {
-            throw new System.NotImplementedException();
+            if (!IsInValue)
+            {
+                _tailStatus = ListEmpty;
+                return;
+            }
+
+            _tailStatus = Ok;
+            _current = _dummyTail;
         }
 
         public override void Right()
         {
-            throw new System.NotImplementedException();
+            if (!IsInValue)
+            {
+                _rightStatus = NoRightValue;
+                return;
+            }
+            
+            if (_current.next == null)
+            {
+                _rightStatus = NoRightValue;
+                return;
+            }
+
+            _rightStatus = Ok;
+            _current = _current.next;
         }
 
         public override void PutRight(T value)
         {
-            throw new System.NotImplementedException();
+            if (!IsInValue)
+            {
+                _putRightStatus = ListEmpty;
+                return;
+            }
+
+            InsertAfter(_current, new Node<T>(value));
+
+            _putRightStatus = Ok;
         }
 
         public override void PutLeft(T value)
         {
-            throw new System.NotImplementedException();
+            if (!IsInValue)
+            {
+                _putLeftStatus = ListEmpty;
+                return;
+            }
+
+            var left = _current.prev ?? _dummyHead;
+            InsertAfter(left, new Node<T>(value));
+            
+            _putLeftStatus = Ok;
         }
 
         public override void AddInTail(T value)
         {
-            throw new System.NotImplementedException();
+            var _item = new Node<T>(value);
+            var oldPrev = _dummyTail._prev;
+            _dummyTail._prev = _item;
+            _item._prev = oldPrev;
+            _item._next = _dummyTail;
+            oldPrev._next = _item;
+
+            _count++;
         }
 
         public override void ReplaceCurrent(T value)
         {
-            throw new System.NotImplementedException();
+            if (!IsInValue)
+            {
+                _replaceStatus = ListEmpty;
+                return;
+            }
+
+            _current.value = value;
+            _replaceStatus = Ok;
         }
 
         public override void RemoveCurrent()
         {
-            throw new System.NotImplementedException();
+            if (!IsInValue)
+            {
+                _removeCurrentStatus = ListEmpty;
+                return;
+            }
+            
+            RemoveNode(_current);
+            _removeCurrentStatus = Ok;
         }
 
         public override void RemoveAll(T value)
         {
-            throw new System.NotImplementedException();
+            foreach (var node in Iterate(_dummyHead))
+            {
+                if (node.value.Equals(value))
+                {
+                    RemoveNode(node);
+                }
+            }
         }
 
         public override void Clear()
@@ -167,13 +239,28 @@
             _removeCurrentStatus = NotCalled;
             _replaceStatus = NotCalled;
             _findStatus = NotCalled;
-
             _currentStatus = NotCalled;
         }
 
         public override void Find(T value)
         {
-            throw new System.NotImplementedException();
+            if (!IsInValue)
+            {
+                _findStatus = ListEmpty;
+                return;
+            }
+            
+            foreach (var node in Iterate(_current))
+            {
+                if (node.value.Equals(value))
+                {
+                    _findStatus = Ok;
+                    _current = node;
+                    break;
+                }
+            }
+
+            _findStatus = NotFound;
         }
 
         public override T CurrentValue()
@@ -204,6 +291,36 @@
         public override int FindStatus => _findStatus;
         public override int CurrentStatus => _currentStatus;
         
+        
+        void InsertAfter(Node<T> _nodeAfter, Node<T> _nodeToInsert)
+        {
+            var after = _nodeAfter ?? _dummyHead;
+            var oldNext = after._next;
+            after._next = _nodeToInsert;
+            _nodeToInsert._next = oldNext;
+            oldNext._prev = _nodeToInsert;
+            _nodeToInsert._prev = after;
+
+            _count++;
+        }
+        
+        void RemoveNode(Node<T> node)
+        {
+            var nodePrev = node._prev;
+            var oldNext = node._next;
+            nodePrev._next = oldNext;
+            oldNext._prev = nodePrev;
+        }
+        
+        IEnumerable<Node<T>> Iterate(Node<T> start)
+        {
+            var node = start;
+            while (node != null)
+            {
+                yield return node;
+                node = node.next;
+            }
+        }
         
         protected class Node<TValue>
         {
