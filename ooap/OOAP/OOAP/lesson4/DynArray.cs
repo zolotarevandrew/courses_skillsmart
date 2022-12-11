@@ -27,6 +27,8 @@ namespace OOAP.lesson4
         //постусловие удален элемент по индексу
         public abstract void Remove(int index);
         
+        //запросы 
+        
         public abstract int Size { get; }
         
         //предусловие индекс существует
