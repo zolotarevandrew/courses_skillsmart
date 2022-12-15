@@ -18,10 +18,10 @@
             _dequeueTailStatus = NotCalled;
         }
         
-        //постусловие добавлен элемент в конец очереди
-        public void EnqueueTail(T item)
+        //постусловие добавлен элемент в начало очереди
+        public void EnqueueHead(T item)
         {
-            _store.AddLast(item);
+            _store.AddFirst(item);
         }
         
         //предусловие очередь не пуста
@@ -74,10 +74,10 @@
             _dequeueHeadStatus = NotCalled;
         }
         
-        //постусловие добавлен элемент в начало очереди
-        public void EnqueueHead(T item)
+        //постусловие добавлен элемент в конец очереди
+        public void EnqueueTail(T item)
         {
-            _store.AddFirst(item);
+            _store.AddLast(item);
         }
 
         //предусловие очередь не пуста
