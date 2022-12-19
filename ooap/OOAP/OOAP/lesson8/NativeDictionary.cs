@@ -8,7 +8,7 @@ namespace OOAP.lesson8
         public const int Ok = 1;
         public const int FailNotFound = 2;
         
-        //конструктор, допустим пока что заставим вводить размер..
+        //конструктор, допустим заставим вводить размер..
         public NativeDictionary(int size)
         {
             
@@ -23,7 +23,6 @@ namespace OOAP.lesson8
         //запросы
 
         //предусловие элемент найден
-        //предусловие элемент 
         public abstract T Get(string key);
         public abstract bool ContainsKey(string key);
         
