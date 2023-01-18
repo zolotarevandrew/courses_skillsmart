@@ -1,6 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-using OOAP2.lesson7;
+﻿using System.Threading.Tasks;
+using OOAP2.lesson8;
 
 namespace ConsoleApp1
 {
@@ -8,14 +7,7 @@ namespace ConsoleApp1
     {
         static async Task Main(string[] args)
         {
-            var slackNotifier = new SlackNotifier();
-
-            var telegramNotifier = new TelegramNotifier();
-
-            var rqHandler = new RequestHandler();
-
-            await rqHandler.Execute(slackNotifier, "new user added");
-            await rqHandler.Execute(telegramNotifier, "new user added");
+            await Lesson8Program.Main(args);
         }
     }
 }
