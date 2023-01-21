@@ -18,5 +18,9 @@ let rec nth (s : 'a cell) (n : int) : 'a =
        | (head, tail) -> loop (iter + 1) (tail.Force())
    loop 0 s
 
+let rec nat (n:int) : int cell = Cons (n, lazy(nat(n+1)))
 
+fsi.ShowDeclarationValues <- false
 
+let a = nth (nat 0) 1000000
+printfn "%d" a

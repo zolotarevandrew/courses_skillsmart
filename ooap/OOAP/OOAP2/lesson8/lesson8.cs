@@ -74,8 +74,10 @@ namespace OOAP2.lesson8
 
             //контрвариантность
             Action<LegalRep> prepareLegalRep = Funcs.PreparePerson;
+            prepareLegalRep(new LegalRep());
             Action<Person> preparePerson = Funcs.PreparePerson;
-            
+            preparePerson(new Person());
+
         }
     } 
 }
