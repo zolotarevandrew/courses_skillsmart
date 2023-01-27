@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using OOAP2.lesson12;
 using OOAP2.lesson8;
 using OOAP2.lesson9;
 
@@ -10,7 +11,7 @@ namespace ConsoleApp1
         {
 
             await Task.CompletedTask;
-            Lesson9Program.Main(args);
+            Lesson12Program.Main(args);
         }
     }
 }
