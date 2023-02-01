@@ -6,20 +6,7 @@ namespace OOAP2.lesson14
     public class General {}
 
     //IAdditionOperators<IInt,IInt,IInt> .net 7 new interface, it has static operator method, static abstract TResult operator +(TSelf left, TOther right);
-    public struct IInt : IAdditionOperators<IInt,IInt,IInt>
-    {
-        private readonly int _value;
-        public IInt(int value)
-        {
-            _value = value;
-        }
 
-        public static IInt operator +(IInt left, IInt right)
-        {
-            return new IInt(left._value + right._value);
-        }
-    }
-    
     public class Vector<T> : General, IAdditionOperators<Vector<T>,Vector<T>,Vector<T>> 
         where T : IAdditionOperators<T, T, T>
     {
@@ -49,17 +36,17 @@ namespace OOAP2.lesson14
     {
         public static void Main(string[] args)
         {
-            var g1 = new IInt(1);
-            var g2 = new IInt(2);
+            var g1 = 1;
+            var g2 = 2;
 
             //3
             var g3 = g1 + g2;
 
-            var vector1 = new Vector<IInt>(new List<IInt>
+            var vector1 = new Vector<int>(new List<int>
             {
                 g1, g2
             });
-            var vector2 = new Vector<IInt>(new List<IInt>
+            var vector2 = new Vector<int>(new List<int>
             {
                 g1, g2
             });
@@ -67,12 +54,12 @@ namespace OOAP2.lesson14
             //2, 4
             var vector3 = vector1 + vector2;
 
-            var vVector1 = new Vector<Vector<IInt>>(new List<Vector<IInt>>
+            var vVector1 = new Vector<Vector<int>>(new List<Vector<int>>
             {
                 vector1,
                 vector2
             });
-            var vVector2 = new Vector<Vector<IInt>>(new List<Vector<IInt>>
+            var vVector2 = new Vector<Vector<int>>(new List<Vector<int>>
             {
                 vector1,
                 vector2
