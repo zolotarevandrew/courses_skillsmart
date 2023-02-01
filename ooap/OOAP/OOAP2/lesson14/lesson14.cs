@@ -5,7 +5,7 @@ namespace OOAP2.lesson14
 {
     public class General {}
 
-    //IAdditionOperators<IInt,IInt,IInt> .net 7 new interface
+    //IAdditionOperators<IInt,IInt,IInt> .net 7 new interface, it has static operator method, static abstract TResult operator +(TSelf left, TOther right);
     public struct IInt : IAdditionOperators<IInt,IInt,IInt>
     {
         private readonly int _value;
