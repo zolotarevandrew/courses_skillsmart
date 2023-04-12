@@ -3,7 +3,10 @@
 
 public abstract class ResourceManager : Any
 {
-    public abstract Task Acquire(Resource resource);
-    public abstract Task Consume(Resource resource);
-    public abstract Task Transfer(Resource resource, ResourceManager otherManager);
+    public abstract Task<List<Resource>> GetAll();
+    //предусловие, достаточно ресурсов для потребления
+    //постусловие, количество запрошенных ресурсов уменьшено
+    public abstract Task ConsumeRequested(RequestedResourcePool pool);
+
+    public int ConsumePoolResult { get; protected set; }
 }

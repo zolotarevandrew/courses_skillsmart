@@ -1,6 +1,6 @@
 ﻿namespace KingdomStrategy.Domain.Buildings;
 
-public class Builder : Any
+public enum BuildingType
 {
-    
+    LumberMill = 1,
 }

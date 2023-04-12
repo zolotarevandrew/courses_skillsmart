@@ -2,12 +2,12 @@
 
 namespace KingdomStrategy.Domain.Resources;
 
-public class ResourceQuantity : Any, 
+public class ResourceQuantity : Any,
     IAdditionOperators<ResourceQuantity, ResourceQuantity,ResourceQuantity>,
     ISubtractionOperators<ResourceQuantity, ResourceQuantity, ResourceQuantity>
 {
-    public int Value { get; }
-    public ResourceQuantity(int value)
+    public uint Value { get; }
+    public ResourceQuantity(uint value)
     {
         Value = value;
     }
@@ -19,8 +19,6 @@ public class ResourceQuantity : Any,
 
     public static ResourceQuantity operator -(ResourceQuantity left, ResourceQuantity right)
     {
-        var substraction = left.Value - right.Value;
-        var res = substraction < 0 ? 0 : substraction;
-        return new ResourceQuantity(res);
+        return new ResourceQuantity(left.Value - right.Value);
     }
 }

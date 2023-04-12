@@ -6,7 +6,6 @@ public enum ResourceType
     Food = 2,
     Stone = 3,
     Wood = 4,
-    
 }
 
 public abstract class Resource : Any
