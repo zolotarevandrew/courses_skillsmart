@@ -21,36 +21,29 @@ public enum TroopType
 
 public abstract class Troop : Any
 {
-    protected Health Health;
-    protected AttackPower AttackPower;
-    protected DefensePower DefencePower;
-    protected TroopSize Size;
+    protected TroopState State;
+    
+    private ITroopDefendStrategy _defendStrategy;
+    private ITroopAttackStrategy _attackStrategy;
 
-    protected Troop(
-        Health health, 
-        AttackPower attackPower, 
-        DefensePower defencePower,
-        TroopSize size)
+    protected Troop(TroopState state)
     {
-        Health = health;
-        AttackPower = attackPower;
-        DefencePower = defencePower;
-        Size = size;
+        State = state;
     }
 
     //предусловие, стратегия защиты успешно применена
     //постусловие, защита увеличена
-    public async Task DefendByStrategy(ITroopDefendStrategy strategy)
+    public async Task DefendByStrategy(ITroopDefendStrategy defendStrategy)
     {
-        await strategy.Execute(this);
+        _defendStrategy = defendStrategy;
         DefendByStrategyResult = 1;
     }
 
     //предусловие, стратегия атаки успешно применена
     //постусловие, сила атаки увеличена
-    public async Task AttackByStrategy(ITroopAttackStrategy strategy)
+    public async Task AttackByStrategy(ITroopAttackStrategy attackStrategy)
     {
-        await strategy.Execute(this);
+        _attackStrategy = attackStrategy;
         AttackByStrategyResult = 1;
     }
 
@@ -58,9 +51,17 @@ public abstract class Troop : Any
     //постусловие, здоровье оппонента уменьшено
     public async Task Attack(Troop target)
     {
-        AttackResult = 1;
+        if (!CanAttack(target))
+        {
+            AttackResult = 1;
+            return;
+        }
+        
+        AttackResult = 0;
     }
-
+    
+    public abstract bool CanAttack(Troop target);
+    
     //предусловие, доступна возможность тренировки (возможно уже максимально тренированы)
     //постусловие, уровень тренированности (атака/защита/здоровья увеличены)
     public async Task Train()

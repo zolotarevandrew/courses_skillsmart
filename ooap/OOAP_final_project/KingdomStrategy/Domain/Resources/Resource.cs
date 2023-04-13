@@ -28,8 +28,10 @@ public abstract class Resource : Any
 
     public bool ConsumeQuantity(ResourceQuantity consumed)
     {
-        //todo return bool
+        if (!Quantity.GreaterOrEqual(consumed)) return false;
+        
         Quantity -= consumed;
         return true;
+
     }
 }

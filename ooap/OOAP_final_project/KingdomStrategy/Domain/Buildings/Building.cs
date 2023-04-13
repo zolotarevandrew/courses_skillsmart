@@ -9,6 +9,7 @@ public abstract class Building : Any
 {
     public BuildingType Type { get; private set; }
     private BuildingCapacity _capacity;
+    private IBuildingWorkProcessStrategy _workProcessStrategy;
 
     protected Building(
         BuildingType type, 
@@ -28,9 +29,11 @@ public abstract class Building : Any
             RunWorkProcessResult = 1;
             return;
         }
+
+        _workProcessStrategy = strategy;
+        await InternalRunWorkProcess();
         
         RunWorkProcessResult = 0;
-        await InternalRunWorkProcess();
     }
 
     //предусловие, возможно модифицировать здание (не превышен максимально доступный уровень)

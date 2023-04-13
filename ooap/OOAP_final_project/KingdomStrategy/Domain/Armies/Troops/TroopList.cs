@@ -10,9 +10,4 @@ public class TroopList : Any
     }
 
     public IEnumerable<Troop> GetAll() => _troops;
-
-    public void Add(Troop troop)
-    {
-        _troops.Add(troop);
-    }
 }

@@ -12,6 +12,11 @@ public class ResourceQuantity : Any,
         Value = value;
     }
 
+    public bool GreaterOrEqual(ResourceQuantity quantity)
+    {
+        return Value >= quantity.Value;
+    }
+
     public static ResourceQuantity operator +(ResourceQuantity left, ResourceQuantity right)
     {
         return new ResourceQuantity(left.Value + right.Value);

@@ -2,10 +2,10 @@
 
 public class RequestedResourcePool : Any
 {
-    private readonly Dictionary<ResourceType, ResourceQuantity> _typeByQuantity;
+    public List<Resource> Items { get; init; }
 
-    public RequestedResourcePool(Dictionary<ResourceType, ResourceQuantity> typeByQuantity)
+    public RequestedResourcePool(List<Resource> items)
     {
-        _typeByQuantity = typeByQuantity;
+        Items = items;
     }
 }

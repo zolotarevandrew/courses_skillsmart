@@ -4,7 +4,14 @@ using KingdomStrategy.Domain.Resources;
 
 namespace KingdomStrategy.Domain.Buildings.Constructors;
 
-
+public class BuildingConstructorList
+{
+    private List<BuildingConstructor> _constructors;
+    public BuildingConstructorList(List<BuildingConstructor> constructors)
+    {
+        _constructors = constructors;
+    }
+}
 public abstract class BuildingConstructor : Any
 {
 
@@ -17,13 +24,13 @@ public abstract class BuildingConstructor : Any
     {
         //todo нет здания в процессе постройки
         
-        if (!CanConstruct(request.Type))
+        if (!CanConstruct(request.Cost.Type))
         {
             ConstructResult = 1;
             return;
         }
         
-        await resourceManager.ConsumeRequested(request.Cost.Pool);
+        await resourceManager.ConsumePool(request.Cost.Pool);
         if (resourceManager.ConsumePoolResult != 1)
         {
             ConstructResult = 2;
@@ -45,7 +52,7 @@ public abstract class BuildingConstructor : Any
             return;
         }
         
-        await resourceManager.ConsumeRequested(request.Cost.Pool);
+        await resourceManager.ConsumePool(request.Cost.Pool);
         if (resourceManager.ConsumePoolResult != 1)
         {
             ModernizeResult = 2;
@@ -59,8 +66,8 @@ public abstract class BuildingConstructor : Any
     public abstract Task<BuildingConstructionCostList> GetAllConstructionsCosts();
     public abstract Task<BuildingModernizationCostList> GetAllModernizationsCost();
     
-    public abstract bool CanModernize(BuildingType buildingType);
-    public abstract bool CanConstruct(BuildingType buildingType);
+    protected abstract bool CanModernize(BuildingType buildingType);
+    protected abstract bool CanConstruct(BuildingType buildingType);
     
     public int ModernizeResult { get; protected set; }
     public int ConstructResult { get; protected set; }

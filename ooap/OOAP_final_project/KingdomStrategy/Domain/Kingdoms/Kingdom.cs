@@ -7,12 +7,23 @@ namespace KingdomStrategy.Domain.Kingdoms;
 
 public class Kingdom : Any
 {
-    public KingdomLeader Leader { get; }
-    
-    public Army Army { get; set; }
-    
-    public List<BuildingConstructor> BuildingConstructors { get; }
-    public List<Building> Buildings { get; }
-    
-    public ResourceManager ResourceManager { get; }
+    public string Name { get; init; }
+    public Kingdom(
+        string name,
+        Army army, 
+        BuildingList buildings, 
+        BuildingConstructorList constructors, 
+        ResourceManager resourceManager)
+    {
+        Name = name;
+        Army = army;
+        Buildings = buildings;
+        Constructors = constructors;
+        ResourceManager = resourceManager;
+    }
+
+    public Army Army { get; init; }
+    public BuildingList Buildings { get; init; }
+    public BuildingConstructorList Constructors { get; init; }
+    public ResourceManager ResourceManager { get; init; }
 }

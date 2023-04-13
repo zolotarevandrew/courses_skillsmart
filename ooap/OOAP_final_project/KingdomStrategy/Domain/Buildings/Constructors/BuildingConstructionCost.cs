@@ -5,25 +5,22 @@ namespace KingdomStrategy.Domain.Buildings.Constructors;
 
 public class BuildingConstructionCost : Any
 {
+    public BuildingType Type { get; init; }
     public RequestedResourcePool Pool { get; init; }
 
-    public BuildingConstructionCost(RequestedResourcePool pool)
+    public BuildingConstructionCost(BuildingType type, RequestedResourcePool pool)
     {
+        Type = type;
         Pool = pool;
     }
 }
 
 public class BuildingConstructionRequest : Any
 {
-    public BuildingConstructionRequest(
-        BuildingType type, 
-        BuildingModernizationCost cost)
+    public BuildingConstructionRequest(BuildingModernizationCost cost)
     {
-        Type = type;
         Cost = cost;
     }
-
-    public BuildingType Type { get; init; }
     public BuildingModernizationCost Cost { get; init; }
 }
 
