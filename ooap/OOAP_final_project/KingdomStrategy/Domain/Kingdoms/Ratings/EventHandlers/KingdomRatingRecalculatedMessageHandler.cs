@@ -1,5 +1,4 @@
-﻿using KingdomStrategy.Domain.Kingdoms.Events;
-using KingdomStrategy.Infrastructure;
+﻿using KingdomStrategy.Infrastructure;
 using KingdomStrategy.Infrastructure.Storage;
 
 namespace KingdomStrategy.Domain.Kingdoms.Ratings.EventHandlers;

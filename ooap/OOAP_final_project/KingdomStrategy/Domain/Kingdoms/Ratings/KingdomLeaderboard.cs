@@ -10,10 +10,11 @@ public class KingdomLeaderboard : Any
     {
         _storage = storage;
     }
+    
     public async Task<KingdomRating> GetByKingdom(KingdomRef kingdom)
     {
         var all = await GetAll();
-        return all.FirstOrDefault(c => c.Ref == kingdom);
+        return all.SingleOrDefault(c => c.Ref == kingdom);
     }
     
     public Task<List<KingdomRating>> GetAll()

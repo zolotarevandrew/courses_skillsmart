@@ -1,4 +1,5 @@
 ﻿using KingdomStrategy.Domain.Kingdoms.Events;
+using KingdomStrategy.Domain.Kingdoms.Ratings.EventHandlers;
 using KingdomStrategy.Infrastructure;
 
 namespace KingdomStrategy.Domain.Kingdoms.Ratings;
@@ -25,5 +26,10 @@ public class KingdomRatingManager : Any
             var rating = await rule.Calculate(kingdomEvent);
             newRating.Add(rating, _dateTimeProvider.UtcNow);
         }
+
+        await _publisher.Publish(new KingdomRatingRecalculatedEvent
+        {
+            Rating = newRating
+        });
     }
 }

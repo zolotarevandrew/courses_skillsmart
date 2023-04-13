@@ -1,6 +1,4 @@
-﻿using KingdomStrategy.Domain.Kingdoms.Ratings;
-
-namespace KingdomStrategy.Domain.Kingdoms.Events;
+﻿namespace KingdomStrategy.Domain.Kingdoms.Events;
 
 public abstract class KingdomEvent
 {

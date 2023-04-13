@@ -10,9 +10,6 @@ public abstract class KingdomRatingRule : Any
     }
 
     public string Name { get; init; }
-    
-    public async Task<KingdomRating> Calculate(KingdomEvent @event)
-    {
-        return null;
-    }
+
+    public abstract Task<KingdomRating> Calculate(KingdomEvent @event);
 }
