@@ -40,15 +40,13 @@ public abstract class Troop : Any
     public AttackResult AttackResult { get; private set; }
     public TrainResult TrainResult { get; private set; }
 
-    //предусловие, стратегия защиты успешно применена
-    //постусловие, защита увеличена
+    //постусловие, стратегия защиты успешно применена
     public async Task DefendByStrategy(ITroopDefendStrategy defendStrategy)
     {
         await defendStrategy.Execute(this);
     }
 
-    //предусловие, стратегия атаки успешно применена
-    //постусловие, сила атаки увеличена
+    //постусловие, стратегия атаки успешно применена
     public async Task AttackByStrategy(ITroopAttackStrategy attackStrategy)
     {
         await attackStrategy.Execute(this);

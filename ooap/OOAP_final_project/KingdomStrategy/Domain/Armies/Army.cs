@@ -5,58 +5,80 @@ namespace KingdomStrategy.Domain.Armies;
 public interface IArmyDefendStrategy
 {
     Task Execute(Army army);
-    int ExecuteResult { get; }
 }
 
 public interface IArmyAttackStrategy
 {
     Task Execute(Army army);
-    int ExecuteResult { get; }
     Func<Troop, TroopList, Troop> OpponentSelector { get; }
+}
+
+public enum AttackResult
+{
+    None = 0,
+    CantAttack = 1,
+    
+    Ok = 100,
 }
 
 public abstract class Army : Any
 {
     protected TroopList Troops;
-    
-    private IArmyAttackStrategy _attackStrategy;
-    private IArmyDefendStrategy _defendStrategy;
-    
+
+    private Func<Troop, TroopList, Troop> _opponentSelector;
+
     protected Army(TroopList troops)
     {
         Troops = troops;
+        _opponentSelector = static (troop, troopList) =>
+        {
+            var all = troopList.GetAll();
+            var byType = all.FirstOrDefault(c => c.Type == troop.Type);
+            return byType ?? all.FirstOrDefault();
+        };
+        AttackResult = AttackResult.None;
     }
     
-    //предусловие, стратегия защиты успешно применена
     //постусловие, для всех войск применена стратегия защиты
     public async Task DefendByStrategy(IArmyDefendStrategy defendStrategy)
     {
-        _defendStrategy = defendStrategy;
-        DefendByStrategyResult = 1;
+        await defendStrategy.Execute(this);
     }
     
-    //предусловие, стратегия атаки успешно применена
     //постусловие, для всех войск применена стратегия атаки
     public async Task AttackByStrategy(IArmyAttackStrategy attackStrategy)
     {
-        _attackStrategy = attackStrategy;
-        AttackByStrategyResult = 1;
+        await attackStrategy.Execute(this);
+        _opponentSelector = attackStrategy.OpponentSelector;
     }
     
     //предусловие, хотя бы одно войско может атаковать противника
     //постусловие, войска атакуют противника 
     public async Task Attack(Army army)
     {
+        var canAttack = Troops
+            .GetAll()
+            .Select(troop =>
+            {
+                var opponent = _opponentSelector(troop, army.Troops);
+                return troop.CanAttack(opponent);
+            })
+            .Any(c => c = true);
+
+        if (!canAttack)
+        {
+            AttackResult = AttackResult.CantAttack;
+            return;
+        }
+        
         foreach (var troop in Troops.GetAll())
         {
-            var opponent = _attackStrategy.OpponentSelector(troop, army.Troops);
+            var opponent = _opponentSelector(troop, army.Troops);
             await troop.Attack(opponent);
         }
 
-        AttackResult = 0;
+        AttackResult = AttackResult.Ok;
     }
 
-    public int AttackResult { get; protected set; }
-    public int DefendByStrategyResult { get; protected set; }
-    public int AttackByStrategyResult { get; protected set; }
+    public AttackResult AttackResult { get; protected set; }
 }
