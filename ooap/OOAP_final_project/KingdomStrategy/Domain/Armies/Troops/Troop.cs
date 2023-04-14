@@ -3,48 +3,55 @@
 public interface ITroopDefendStrategy
 {
     Task Execute(Troop troop);
-    int ExecuteResult { get; }
 }
 
 public interface ITroopAttackStrategy
 {
     Task Execute(Troop troop);
-    int ExecuteResult { get; }
 }
 
-public enum TroopType
+public enum AttackResult
 {
-    Archers = 1,
-    Infantry = 2,
-    Cavalry = 3,
+    None = 0,
+    Failed = 1,
+    
+    Ok = 100
+}
+
+public enum TrainResult
+{
+    None = 0,
+    LevelTooHigh = 1,
+    
+    Ok = 100
 }
 
 public abstract class Troop : Any
 {
     protected TroopState State;
-    
-    private ITroopDefendStrategy _defendStrategy;
-    private ITroopAttackStrategy _attackStrategy;
+    public TroopType Type { get; private set; }
 
-    protected Troop(TroopState state)
+    protected Troop(TroopType type, TroopState state)
     {
+        Type = type;
         State = state;
     }
+    
+    public AttackResult AttackResult { get; private set; }
+    public TrainResult TrainResult { get; private set; }
 
     //предусловие, стратегия защиты успешно применена
     //постусловие, защита увеличена
     public async Task DefendByStrategy(ITroopDefendStrategy defendStrategy)
     {
-        _defendStrategy = defendStrategy;
-        DefendByStrategyResult = 1;
+        await defendStrategy.Execute(this);
     }
 
     //предусловие, стратегия атаки успешно применена
     //постусловие, сила атаки увеличена
     public async Task AttackByStrategy(ITroopAttackStrategy attackStrategy)
     {
-        _attackStrategy = attackStrategy;
-        AttackByStrategyResult = 1;
+        await attackStrategy.Execute(this);
     }
 
     //предусловие, достаточно ресурсов для атаки (в том числе можно считать на основе данных атакующего типа и тп)
@@ -53,25 +60,34 @@ public abstract class Troop : Any
     {
         if (!CanAttack(target))
         {
-            AttackResult = 1;
+            AttackResult = AttackResult.Failed;
             return;
         }
-        
-        AttackResult = 0;
+
+        await InternalAttack(target);
+        AttackResult = AttackResult.Ok;
     }
-    
+
     public abstract bool CanAttack(Troop target);
     
-    //предусловие, доступна возможность тренировки (возможно уже максимально тренированы)
-    //постусловие, уровень тренированности (атака/защита/здоровья увеличены)
+    //предусловие, не достигнут максимальный уровень
+    //постусловие, уровень и характеристики увеличены
     public async Task Train()
     {
-        //TODO подумать над уровнями тренированности далее
-        TrainResult = 1;
+        if (State.Level == MaxLevel)
+        {
+            TrainResult = TrainResult.LevelTooHigh;
+            return;
+        }
+
+        State.Level.Up();
+        
+        await InternalTrain();
+        TrainResult = TrainResult.Ok;
     }
     
-    public int DefendByStrategyResult { get; protected set; }
-    public int AttackByStrategyResult { get; protected set; }
-    public int AttackResult { get; protected set; }
-    public int TrainResult { get; protected set; }
+    protected abstract Task InternalAttack(Troop target);
+    protected abstract Task InternalTrain();
+    
+    protected abstract Level MaxLevel { get; }
 }

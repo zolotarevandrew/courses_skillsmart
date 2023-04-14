@@ -24,11 +24,11 @@ public enum ModernizeResult
 public abstract class Building : Any
 {
     public BuildingType Type { get; private set; }
-    private BuildingLevel _level;
+    private Level _level;
 
     protected Building(
         BuildingType type,
-        BuildingLevel level)
+        Level level)
     {
         Type = type;
         _level = level;
@@ -72,6 +72,6 @@ public abstract class Building : Any
     protected abstract bool CanRunWorkProcess();
     protected abstract Task InternalRunWorkProcess();
     protected abstract Task InternalModernize();
-    protected abstract BuildingLevel MaxLevel { get; }
+    protected abstract Level MaxLevel { get; }
     
 }
