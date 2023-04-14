@@ -2,6 +2,8 @@
 
 namespace KingdomStrategy.Domain.Resources;
 
+
+
 public class ResourceQuantity : Any,
     IAdditionOperators<ResourceQuantity, ResourceQuantity,ResourceQuantity>,
     ISubtractionOperators<ResourceQuantity, ResourceQuantity, ResourceQuantity>

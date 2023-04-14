@@ -2,34 +2,27 @@
 
 namespace KingdomStrategy.Domain.Buildings.Constructors;
 
-
 public class BuildingConstructionCost : Any
 {
     public BuildingType Type { get; init; }
-    public RequestedResourcePool Pool { get; init; }
+    public ResourcePool Resources { get; init; }
 
-    public BuildingConstructionCost(BuildingType type, RequestedResourcePool pool)
+    public BuildingConstructionCost(BuildingType type, ResourcePool resources)
     {
         Type = type;
-        Pool = pool;
+        Resources = resources;
     }
 }
 
 public class BuildingConstructionRequest : Any
 {
-    public BuildingConstructionRequest(BuildingModernizationCost cost)
-    {
-        Cost = cost;
-    }
-    public BuildingModernizationCost Cost { get; init; }
-}
+    public BuildingType Type { get; }
+    public ResourceManager ResourceManager { get; }
 
-public class BuildingConstructionCostList : Any
-{
-    private List<BuildingConstructionCost> _costs;
-
-    public BuildingConstructionCostList(List<BuildingConstructionCost> costs)
+    public BuildingConstructionRequest(BuildingType type, ResourceManager resourceManager)
     {
-        _costs = costs;
+        Type = type;
+        ResourceManager = resourceManager;
     }
+    
 }

@@ -43,7 +43,7 @@ public abstract class Building : Any
         //todo
         ModernizeResult = 0;
     }
-
+    
     protected abstract bool CanRunWorkProcess();
     protected abstract Task InternalRunWorkProcess();
     

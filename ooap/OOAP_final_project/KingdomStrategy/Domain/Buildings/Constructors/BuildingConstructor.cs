@@ -1,74 +1,84 @@
-﻿
-
-using KingdomStrategy.Domain.Resources;
+﻿using KingdomStrategy.Domain.Resources;
 
 namespace KingdomStrategy.Domain.Buildings.Constructors;
 
-public class BuildingConstructorList
+public enum ModernizeResult
 {
-    private List<BuildingConstructor> _constructors;
-    public BuildingConstructorList(List<BuildingConstructor> constructors)
-    {
-        _constructors = constructors;
-    }
+    None = 0,
+    NotSupportedBuilding = 1,
+    NotEnoughResources = 2,
+    
+    Ok = 100,
+}
+
+public enum ConstructResult
+{
+    None = 0,
+    NotSupportedBuilding = 1,
+    NotEnoughResources = 2,
+    
+    Ok = 100
 }
 public abstract class BuildingConstructor : Any
 {
-
+    public ModernizeResult ModernizeResult { get; private set; }
+    public ConstructResult ConstructResult { get; private set; }
+    
     //предусловие, возможно создать такое здание
-    //предусловие, нет здания в процессе постройки
     //предусловие, достаточно ресурсов для создания
-    //постусловие, нужные ресурсы получены
     //постусловие, постройка здания начата
-    public async Task Construct(BuildingConstructionRequest request, ResourceManager resourceManager)
+    public async Task Construct(BuildingConstructionRequest request)
     {
-        //todo нет здания в процессе постройки
-        
-        if (!CanConstruct(request.Cost.Type))
+        var cost = GetConstructionCost(request.Type);
+        if (cost == null)
         {
-            ConstructResult = 1;
+            ConstructResult = ConstructResult.NotSupportedBuilding;
             return;
         }
         
-        await resourceManager.ConsumePool(request.Cost.Pool);
-        if (resourceManager.ConsumePoolResult != 1)
+        await request.ResourceManager.ConsumePool(cost.Resources);
+        if (request.ResourceManager.ConsumePoolResult == ConsumePoolResult.NotEnoughResources)
         {
-            ConstructResult = 2;
+            ConstructResult = ConstructResult.NotEnoughResources;
             return;
         }
         
-        ConstructResult = 0;
+        ConstructResult = ConstructResult.Ok;
     }
 
     //предусловие, возможно модернизировать такое здание
     //предусловие, достаточно ресурсов для модернизации
-    //постусловие, нужные ресурсы получены
     //постусловие, здание модернизировано
-    public async Task Modernize(BuildingModernizationRequest request, ResourceManager resourceManager)
+    public async Task Modernize(BuildingModernizationRequest request)
     {
-        if (!CanModernize(request.Building.Type))
+        var cost = GetModernizationCost(request.Building.Type);
+        if (cost == null)
         {
-            ModernizeResult = 1;
+            ModernizeResult = ModernizeResult.NotSupportedBuilding;
             return;
         }
         
-        await resourceManager.ConsumePool(request.Cost.Pool);
-        if (resourceManager.ConsumePoolResult != 1)
+        await request.ResourceManager.ConsumePool(cost.Resources);
+        if (request.ResourceManager.ConsumePoolResult == ConsumePoolResult.NotEnoughResources)
         {
-            ModernizeResult = 2;
+            ModernizeResult = ModernizeResult.NotEnoughResources;
             return;
         }
         
         await request.Building.Modernize();
-        ModernizeResult = 0;
+        ModernizeResult = ModernizeResult.Ok;
     }
     
-    public abstract Task<BuildingConstructionCostList> GetAllConstructionsCosts();
-    public abstract Task<BuildingModernizationCostList> GetAllModernizationsCost();
-    
-    protected abstract bool CanModernize(BuildingType buildingType);
-    protected abstract bool CanConstruct(BuildingType buildingType);
-    
-    public int ModernizeResult { get; protected set; }
-    public int ConstructResult { get; protected set; }
+    public abstract List<BuildingConstructionCost> GetAllConstructionsCosts();
+    public abstract List<BuildingModernizationCost> GetAllModernizationsCost();
+
+    private BuildingConstructionCost? GetConstructionCost(BuildingType buildingType)
+    {
+        throw new NotImplementedException();
+    }
+
+    private BuildingModernizationCost? GetModernizationCost(BuildingType buildingType)
+    {
+        throw new NotImplementedException();
+    }
 }

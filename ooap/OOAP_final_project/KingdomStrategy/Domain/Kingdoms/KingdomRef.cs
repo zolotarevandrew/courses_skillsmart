@@ -13,12 +13,12 @@ public class KingdomRef : IEqualityOperators<KingdomRef, KingdomRef, bool>
     public string Id { get; init; }
     public string Name { get; init; }
     
-    public static bool operator ==(KingdomRef? left, KingdomRef? right)
+    public static bool operator ==(KingdomRef left, KingdomRef right)
     {
         return left.Id == right.Id;
     }
 
-    public static bool operator !=(KingdomRef? left, KingdomRef? right)
+    public static bool operator !=(KingdomRef left, KingdomRef right)
     {
         return left.Id != right.Id;
     }

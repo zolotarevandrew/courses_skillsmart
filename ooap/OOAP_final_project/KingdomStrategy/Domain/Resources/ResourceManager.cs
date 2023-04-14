@@ -1,59 +1,85 @@
 ﻿namespace KingdomStrategy.Domain.Resources;
 
+public enum ConsumePoolResult
+{
+    None = 0,
+    NotEnoughResources = 1,
+    
+    Ok = 100,
+}
+
+public enum ConsumeResult
+{
+    None = 0,
+    NotEnoughQuantity = 1,
+    Ok = 2,
+}
 
 public abstract class ResourceManager : Any
 {
-    protected List<Resource> Resources;
-    protected ResourceManager(List<Resource> resources)
+    private readonly Dictionary<ResourceType, Resource> _resourceByType;
+
+    protected ResourceManager(IEnumerable<Resource> items)
     {
-        Resources = resources;
+        _resourceByType = items
+            .ToDictionary(c => c.Type, c => c);
+
+        ConsumeResult = ConsumeResult.None;
+        ConsumePoolResult = ConsumePoolResult.None;
     }
+
+    public ConsumePoolResult ConsumePoolResult { get; private set; }
+    public ConsumeResult ConsumeResult { get; private set; }
     
     //предусловие, достаточно ресурсов для потребления
-    //постусловие, количество запрошенных ресурсов уменьшено
-    public async Task ConsumePool(RequestedResourcePool pool)
+    //постусловие, ресурсы поглощены
+    public async Task ConsumePool(ResourcePool requested)
     {
-        foreach (var resource in pool.Items)
+        if (!CanConsume(requested))
         {
-            await Consume(resource);
-            
-            if (ConsumeResult == 0) continue;
-            
-            ConsumePoolResult = 1;
+            ConsumePoolResult = ConsumePoolResult.NotEnoughResources;
+            return;
+        }
+        
+        ConsumePoolResult = ConsumePoolResult.Ok;
+        throw new NotImplementedException();
+    }
+
+    //постусловие, объем ресурса увеличен 
+    public async Task Put(Resource resource)
+    {
+        throw new NotImplementedException();
+    }
+
+    //предусловие, достаточно ресурса для потребления
+    //постусловие, ресурс поглощен
+    public async Task Consume(Resource requested)
+    {
+        if (!CanConsume(requested))
+        {
+            ConsumeResult = ConsumeResult.NotEnoughQuantity;
             return;
         }
 
-        ConsumePoolResult = 0;
+        ConsumeResult = ConsumeResult.Ok;
+        throw new NotImplementedException();
     }
 
-    public async Task Pick(Resource resource)
-    {
-        var foundResource = FindByType(resource.Type);
-        foundResource.AddQuantity(resource.Quantity);
-
-        PickResult = 0;
-    }
-    
-    public async Task Consume(Resource resource)
-    {
-        var foundResource = FindByType(resource.Type);
-        var consumed = foundResource.ConsumeQuantity(resource.Quantity);
-
-        ConsumeResult = consumed ? 0 : 1;
-    }
-
-    public async Task<List<Resource>> GetAll()
-    {
-        return Resources;
-    }
-    
     private Resource FindByType(ResourceType resourceType)
     {
-        var foundResource = Resources.SingleOrDefault(c => c.Type == resourceType);
+        var foundResource = _resourceByType[resourceType];
         return foundResource;
     }
-
-    public int ConsumePoolResult { get; protected set; }
-    public int ConsumeResult { get; protected set; }
-    public int PickResult { get; protected set; }
+    
+    private bool CanConsume(ResourcePool requested)
+    {
+        throw new NotImplementedException();
+    }
+    
+    private bool CanConsume(Resource requested)
+    {
+        throw new NotImplementedException();
+    }
+    
+    
 }

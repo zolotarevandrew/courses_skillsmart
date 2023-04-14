@@ -26,12 +26,19 @@ public abstract class Resource : Any
         Quantity += quantity;
     }
 
+    public bool CanConsume(ResourceQuantity consumed)
+    {
+        return Quantity.GreaterOrEqual(consumed);
+    }
+
     public bool ConsumeQuantity(ResourceQuantity consumed)
     {
-        if (!Quantity.GreaterOrEqual(consumed)) return false;
+        if (!CanConsume(consumed))
+        {
+            return false;
+        }
         
         Quantity -= consumed;
         return true;
-
     }
 }
