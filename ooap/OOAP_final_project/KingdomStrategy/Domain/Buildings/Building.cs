@@ -5,48 +5,73 @@ public interface IBuildingWorkProcessStrategy
     Task Execute(Building building);
     int ExecuteResult { get; }
 }
+
+public enum RunWorkProcessResult
+{
+    None = 0,
+    Busy = 1,
+    
+    Ok = 100,
+}
+
+public enum ModernizeResult
+{
+    None = 0,
+    LevelTooHigh = 1,
+    
+    Ok = 100
+}
 public abstract class Building : Any
 {
     public BuildingType Type { get; private set; }
-    private BuildingCapacity _capacity;
-    private IBuildingWorkProcessStrategy _workProcessStrategy;
+    private BuildingLevel _level;
 
     protected Building(
-        BuildingType type, 
-        BuildingCapacity capacity)
+        BuildingType type,
+        BuildingLevel level)
     {
         Type = type;
-        _capacity = capacity;
+        _level = level;
+
+        RunWorkProcessResult = RunWorkProcessResult.None;
+        ModernizeResult = ModernizeResult.None;
     }
+    
+    public ModernizeResult ModernizeResult { get; private set; }
+    public RunWorkProcessResult RunWorkProcessResult { get; private set; }
 
     //предусловие, возможно запустить рабочий процесс
-    //постусловие, стратегия рабочего процесса успешно применена
     //постусловие, рабочий процесс запущен
-    public async Task RunWorkProcess(IBuildingWorkProcessStrategy strategy)
+    public async Task RunWorkProcess()
     {
         if (!CanRunWorkProcess())
         {
-            RunWorkProcessResult = 1;
+            RunWorkProcessResult = RunWorkProcessResult.Busy;
             return;
         }
-
-        _workProcessStrategy = strategy;
-        await InternalRunWorkProcess();
         
-        RunWorkProcessResult = 0;
+        await InternalRunWorkProcess();
+        RunWorkProcessResult = RunWorkProcessResult.Ok;
     }
 
-    //предусловие, возможно модифицировать здание (не превышен максимально доступный уровень)
-    //постусловие, здание модифицировано емкость/вместимость увеличена
+    //предусловие, не превышен максимально доступный уровень
+    //постусловие, здание модифицировано характеристики улучшены
     public async Task Modernize()
     {
-        //todo
-        ModernizeResult = 0;
+        if (_level == MaxLevel)
+        {
+            ModernizeResult = ModernizeResult.LevelTooHigh;
+            return;
+        }
+        
+        _level.Up();
+        await InternalModernize();
+        ModernizeResult = ModernizeResult.Ok;
     }
     
     protected abstract bool CanRunWorkProcess();
     protected abstract Task InternalRunWorkProcess();
+    protected abstract Task InternalModernize();
+    protected abstract BuildingLevel MaxLevel { get; }
     
-    public int ModernizeResult { get; private set; }
-    public int RunWorkProcessResult { get; private set; }
 }

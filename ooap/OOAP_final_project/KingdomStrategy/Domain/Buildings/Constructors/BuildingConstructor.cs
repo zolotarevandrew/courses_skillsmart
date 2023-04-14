@@ -7,6 +7,7 @@ public enum ModernizeResult
     None = 0,
     NotSupportedBuilding = 1,
     NotEnoughResources = 2,
+    Failed = 3,
     
     Ok = 100,
 }
@@ -19,14 +20,28 @@ public enum ConstructResult
     
     Ok = 100
 }
+
+public enum GetConstructedResult
+{
+    None = 0,
+    NotReady = 1,
+    Ok = 100
+}
 public abstract class BuildingConstructor : Any
 {
     public ModernizeResult ModernizeResult { get; private set; }
     public ConstructResult ConstructResult { get; private set; }
+    public GetConstructedResult GetConstructedResult { get; private set; }
+
+    protected BuildingConstructor()
+    {
+        ModernizeResult = ModernizeResult.None;
+        ConstructResult = ConstructResult.None;
+    }
     
     //предусловие, возможно создать такое здание
     //предусловие, достаточно ресурсов для создания
-    //постусловие, постройка здания начата
+    //постусловие, здание построено
     public async Task Construct(BuildingConstructionRequest request)
     {
         var cost = GetConstructionCost(request.Type);
@@ -42,6 +57,8 @@ public abstract class BuildingConstructor : Any
             ConstructResult = ConstructResult.NotEnoughResources;
             return;
         }
+
+        await Construct(request.Type);
         
         ConstructResult = ConstructResult.Ok;
     }
@@ -59,18 +76,30 @@ public abstract class BuildingConstructor : Any
         }
         
         await request.ResourceManager.ConsumePool(cost.Resources);
-        if (request.ResourceManager.ConsumePoolResult == ConsumePoolResult.NotEnoughResources)
+        if (request.ResourceManager.ConsumePoolResult != ConsumePoolResult.Ok)
         {
             ModernizeResult = ModernizeResult.NotEnoughResources;
             return;
         }
         
         await request.Building.Modernize();
+        
+        if (request.Building.ModernizeResult != Buildings.ModernizeResult.Ok)
+        {
+            ModernizeResult = ModernizeResult.Failed;
+            return;
+        }
         ModernizeResult = ModernizeResult.Ok;
     }
     
     public abstract List<BuildingConstructionCost> GetAllConstructionsCosts();
     public abstract List<BuildingModernizationCost> GetAllModernizationsCost();
+    
+    //предусловие, здание было построено
+    public abstract Building GetConstructed();
+    
+    //постусловие здание построено
+    protected abstract Task Construct(BuildingType type);
 
     private BuildingConstructionCost? GetConstructionCost(BuildingType buildingType)
     {
