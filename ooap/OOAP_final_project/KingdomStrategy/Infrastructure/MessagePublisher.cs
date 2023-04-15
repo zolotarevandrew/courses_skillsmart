@@ -5,15 +5,15 @@ public interface IMessageHandler<TMessage>
     Task Handle(TMessage message, CancellationToken cancellationToken = default);
 }
 
-public interface IPublisher
+public interface IMediator
 {
     Task Publish<TMessage>(TMessage message);
 }
-public class MessagePublisher : IPublisher
+public class MessageMediator : IMediator
 {
     private readonly IServiceProvider _provider;
 
-    public MessagePublisher(IServiceProvider provider)
+    public MessageMediator(IServiceProvider provider)
     {
         _provider = provider;
     }

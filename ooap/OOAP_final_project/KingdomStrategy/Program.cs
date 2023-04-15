@@ -1,6 +1,7 @@
 using KingdomStrategy;
 using KingdomStrategy.Domain.Kingdoms.Ratings;
 using KingdomStrategy.Infrastructure;
+using KingdomStrategy.Infrastructure.Kingdoms;
 using KingdomStrategy.Infrastructure.Storage;
 using KingdomStrategy.Infrastructure.Storage.Mappings;
 using MongoDB.Driver;
@@ -10,13 +11,14 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
         services.AddHostedService<Worker>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-        services.AddSingleton<IPublisher, MessagePublisher>();
+        services.AddSingleton<IMediator, MessageMediator>();
         
         services.AddSingleton<KingdomRatingStorage>();
-        services.AddSingleton<KingdomStorage>();
-        
+
         services.AddSingleton<KingdomLeaderboard>();
         services.AddSingleton<KingdomRatingManager>();
+        services.AddSingleton<KingdomMediatorFactory>();
+        services.AddSingleton<KingdomStorageFactory>();
         
         CollectionMappings.Init();
         var mappings = new List<FluentMapping>
@@ -41,6 +43,12 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.Scan(scan => scan
             .FromExecutingAssembly()
             .AddClasses(classes => classes.AssignableTo(typeof(IMessageHandler<>)))
+            .AsImplementedInterfaces()
+            .WithTransientLifetime());
+        
+        services.Scan(scan => scan
+            .FromExecutingAssembly()
+            .AddClasses(classes => classes.AssignableTo(typeof(KingdomBaseStorage<>)))
             .AsImplementedInterfaces()
             .WithTransientLifetime());
         

@@ -8,14 +8,14 @@ public class KingdomRatingManager : Any
 {
     private readonly List<KingdomRatingRule> _rules;
     private readonly IDateTimeProvider _dateTimeProvider;
-    private readonly IPublisher _publisher;
+    private readonly IMediator _mediator;
     public KingdomRatingManager(
         IDateTimeProvider dateTimeProvider, 
-        IPublisher publisher)
+        IMediator mediator)
     {
         //TODO _rules = rules;
         _dateTimeProvider = dateTimeProvider;
-        _publisher = publisher;
+        _mediator = mediator;
     }
 
     public async Task Recalculate(KingdomEvent kingdomEvent)
@@ -26,7 +26,7 @@ public class KingdomRatingManager : Any
             newRating.Add(rating, _dateTimeProvider.UtcNow);
         }
 
-        await _publisher.Publish(new KingdomRatingRecalculatedEvent
+        await _mediator.Publish(new KingdomRatingRecalculatedEvent
         {
             Rating = newRating
         });
