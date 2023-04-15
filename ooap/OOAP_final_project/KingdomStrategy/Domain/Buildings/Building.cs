@@ -24,14 +24,14 @@ public enum ModernizeResult
 public abstract class Building : Any
 {
     public BuildingType Type { get; private set; }
-    private Level _level;
+    public Level Level { get; private set; }
 
     protected Building(
         BuildingType type,
         Level level)
     {
         Type = type;
-        _level = level;
+        Level = level;
 
         RunWorkProcessResult = RunWorkProcessResult.None;
         ModernizeResult = ModernizeResult.None;
@@ -58,13 +58,13 @@ public abstract class Building : Any
     //постусловие, здание модифицировано характеристики улучшены
     public async Task Modernize()
     {
-        if (_level == MaxLevel)
+        if (Level == MaxLevel)
         {
             ModernizeResult = ModernizeResult.LevelTooHigh;
             return;
         }
         
-        _level.Up();
+        Level.Up();
         await InternalModernize();
         ModernizeResult = ModernizeResult.Ok;
     }

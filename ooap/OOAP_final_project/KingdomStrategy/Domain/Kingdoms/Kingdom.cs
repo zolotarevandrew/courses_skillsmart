@@ -1,29 +1,29 @@
-﻿using System.Resources;
-using KingdomStrategy.Domain.Armies;
+﻿using KingdomStrategy.Domain.Armies;
 using KingdomStrategy.Domain.Buildings;
 using KingdomStrategy.Domain.Buildings.Constructors;
+using KingdomStrategy.Domain.Resources;
 
 namespace KingdomStrategy.Domain.Kingdoms;
 
 public class Kingdom : Any
 {
-    public string Name { get; init; }
     public Kingdom(
-        string name,
+        KingdomRef @ref, 
         Army army, 
-        BuildingList buildings, 
-        BuildingConstructorList constructors, 
-        ResourceManager resourceManager)
+        ResourceManager resourceManager, 
+        BuildingConstructor buildingConstructor, 
+        List<Building> buildings)
     {
-        Name = name;
+        Ref = @ref;
         Army = army;
-        Buildings = buildings;
-        Constructors = constructors;
         ResourceManager = resourceManager;
+        BuildingConstructor = buildingConstructor;
+        Buildings = buildings;
     }
 
+    public KingdomRef Ref { get; init; }
     public Army Army { get; init; }
-    public BuildingList Buildings { get; init; }
-    public BuildingConstructorList Constructors { get; init; }
+    public BuildingConstructor BuildingConstructor { get; init; }
+    public List<Building> Buildings { get; init; }
     public ResourceManager ResourceManager { get; init; }
 }

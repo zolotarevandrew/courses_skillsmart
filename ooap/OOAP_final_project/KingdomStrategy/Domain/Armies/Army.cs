@@ -23,7 +23,7 @@ public enum AttackResult
 
 public abstract class Army : Any
 {
-    protected TroopList Troops;
+    public TroopList Troops { get; }
 
     private Func<Troop, TroopList, Troop> _opponentSelector;
 
