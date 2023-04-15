@@ -1,20 +1,20 @@
+using KingdomStrategy.Domain.Kingdoms;
+using KingdomStrategy.Infrastructure.Storage;
+
 namespace KingdomStrategy;
 
 public class Worker : BackgroundService
 {
-    private readonly ILogger<Worker> _logger;
+    private readonly KingdomStorage _storage;
 
-    public Worker(ILogger<Worker> logger)
+    public Worker(KingdomStorage storage)
     {
-        _logger = logger;
+        _storage = storage;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            await Task.Delay(1000, stoppingToken);
-        }
+        await _storage.GetByRef(new KingdomRef("123", "Test"));
+        await Task.Delay(1000000, stoppingToken);
     }
 }

@@ -10,11 +10,10 @@ public class KingdomRatingManager : Any
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IPublisher _publisher;
     public KingdomRatingManager(
-        List<KingdomRatingRule> rules, 
         IDateTimeProvider dateTimeProvider, 
         IPublisher publisher)
     {
-        _rules = rules;
+        //TODO _rules = rules;
         _dateTimeProvider = dateTimeProvider;
         _publisher = publisher;
     }

@@ -35,6 +35,9 @@ public abstract class Troop : Any
     {
         Type = type;
         State = state;
+
+        TrainResult = TrainResult.None;
+        AttackResult = AttackResult.None;
     }
     
     public AttackResult AttackResult { get; private set; }
