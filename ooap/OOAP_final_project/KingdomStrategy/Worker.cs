@@ -27,6 +27,8 @@ public class Worker : BackgroundService
             new Stone(new ResourceQuantity(3)),
             new Wood(new ResourceQuantity(5))
         });
+
+        var resourceManager = new KingdomResourceManager(storage, state);
         
         await storage.Save(state);
 

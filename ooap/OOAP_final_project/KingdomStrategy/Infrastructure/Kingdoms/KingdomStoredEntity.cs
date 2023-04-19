@@ -16,8 +16,10 @@ public abstract class ByKingdomState
     }
 }
 
-public class ByKingdomState<TValue> : ByKingdomState
+public class ByKingdomState<TValue> : ByKingdomState 
+    where TValue: State
 {
+    
     public ByKingdomState(KingdomRef @ref, TValue value) : base(@ref)
     {
         Value = value;
@@ -49,7 +51,7 @@ public class KingdomBaseStorage<TEntity> : StateStore<TEntity>
     public KingdomBaseStorage(KingdomRef @ref, IMongoDatabase database)
     {
         _ref = @ref;
-        var mapping = CollectionMappings.Get<TEntity>();
+        var mapping = CollectionMappings.Get<ByKingdomState<TEntity>>();
         _collection = database.GetCollection<ByKingdomState<TEntity>>(mapping.CollectionName);
     }
 

@@ -1,10 +1,12 @@
 using KingdomStrategy;
 using KingdomStrategy.Domain.Kingdoms.Implementations;
 using KingdomStrategy.Domain.Kingdoms.Ratings;
+using KingdomStrategy.Domain.Resources;
 using KingdomStrategy.Infrastructure;
 using KingdomStrategy.Infrastructure.Kingdoms;
 using KingdomStrategy.Infrastructure.Storage;
 using KingdomStrategy.Infrastructure.Storage.Mappings;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
 IHost host = Host.CreateDefaultBuilder(args)
@@ -24,8 +26,8 @@ IHost host = Host.CreateDefaultBuilder(args)
         CollectionMappings.Init();
         var mappings = new List<FluentMapping>
         {
-            new ByKingdomStateMapping(),
-            new ResourceManagerStateMapping()
+            new ResourceManagerStateMapping(),
+            new ByKingdomResourceManagerStateMapping()
         };
         foreach (var mapping in mappings)
         {

@@ -1,11 +1,12 @@
 ﻿using KingdomStrategy.Domain.Resources;
+using KingdomStrategy.Infrastructure.Kingdoms;
 using MongoDB.Bson.Serialization;
 
 namespace KingdomStrategy.Infrastructure.Storage.Mappings;
 
 public class ResourceManagerStateMapping : FluentMapping<ResourceManagerState>
 {
-    public ResourceManagerStateMapping() : base("kingdom_resources")
+    public ResourceManagerStateMapping() : base("")
     {
     }
 
@@ -14,7 +15,14 @@ public class ResourceManagerStateMapping : FluentMapping<ResourceManagerState>
         return cm =>
         {
             cm.MapField("_resources").SetElementName("resources");
-            cm.AutoMap();
         };
     }
+}
+
+public class ByKingdomResourceManagerStateMapping : ByKingdomStateMapping<ResourceManagerState>
+{
+    public ByKingdomResourceManagerStateMapping() : base("kingdom_resources")
+    {
+    }
+    
 }

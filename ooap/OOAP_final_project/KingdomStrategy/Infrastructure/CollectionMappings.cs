@@ -19,7 +19,8 @@ public abstract class FluentMapping<TEntity> : FluentMapping
     protected abstract Action<BsonClassMap<TEntity>> Map();
     public override void Register()
     {
-        BsonClassMap.RegisterClassMap(Map());
+        var map = Map();
+        BsonClassMap.RegisterClassMap(map);
     }
 
     void ToCollection(string name)

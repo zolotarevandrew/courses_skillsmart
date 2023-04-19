@@ -1,26 +1,23 @@
 ﻿using KingdomStrategy.Infrastructure.Kingdoms;
-using MongoDB.Bson;
+using KingdomStrategy.Infrastructure.Storage.Interfaces;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.IdGenerators;
-using MongoDB.Bson.Serialization.Serializers;
 
 namespace KingdomStrategy.Infrastructure.Storage.Mappings;
 
 
-public class ByKingdomStateMapping : FluentMapping<ByKingdomState>
+public abstract class ByKingdomStateMapping<TValue> : FluentMapping<ByKingdomState<TValue>> 
+    where TValue : State
 {
-    protected override Action<BsonClassMap<ByKingdomState>> Map()
+    protected override Action<BsonClassMap<ByKingdomState<TValue>>> Map()
     {
         return cm =>
         {
-            cm.MapIdProperty(c => c.Id)
-                .SetElementName("id")
-                .SetIdGenerator(StringObjectIdGenerator.Instance)
-                .SetSerializer(new StringSerializer(BsonType.String));
+            cm.AutoMap();
+            cm.MapProperty("Value");
         };
     }
 
-    public ByKingdomStateMapping() : base("")
+    protected ByKingdomStateMapping(string collectionName) : base(collectionName)
     {
     }
 }

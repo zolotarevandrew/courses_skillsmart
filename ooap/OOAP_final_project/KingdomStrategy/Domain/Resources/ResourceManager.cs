@@ -26,15 +26,19 @@ public class ResourceManagerState : State
     public ResourceManagerState(IEnumerable<Resource> resources)
     {
         _resources = resources;
-        _resourceByType = resources.ToDictionary(c => c.Type, c => c);
+    }
+
+    Dictionary<ResourceType, Resource> ByType()
+    {
+        return _resourceByType ??= _resources.ToDictionary(c => c.Type, c => c);
     }
 
     public Resource Get(ResourceType type)
     {
-        return _resourceByType[type];
+        return ByType()[type];
     }
 
-    public IEnumerable<ResourceType> Available => _resourceByType.Keys;
+    public IEnumerable<ResourceType> Available => ByType().Keys;
 }
 
 public abstract class ResourceManager : StateStorable<ResourceManagerState>
