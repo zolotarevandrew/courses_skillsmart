@@ -1,68 +1,72 @@
 ﻿using KingdomStrategy.Domain.Kingdoms;
+using KingdomStrategy.Infrastructure.Storage.Interfaces;
 using MongoDB.Driver;
 
 namespace KingdomStrategy.Infrastructure.Kingdoms;
 
-public abstract class KingdomStoredEntity
+public abstract class ByKingdomState
 {
     public string Id { get; init; }
     public string Name { get; init; }
 
-    protected KingdomStoredEntity(KingdomRef @ref)
+    protected ByKingdomState(KingdomRef @ref)
     {
         Id = @ref.Id;
         Name = @ref.Name;
     }
 }
 
-public class KingdomStoredEntity<TValue> : KingdomStoredEntity
+public class ByKingdomState<TValue> : ByKingdomState
 {
-    public KingdomStoredEntity(KingdomRef @ref, TValue value) : base(@ref)
+    public ByKingdomState(KingdomRef @ref, TValue value) : base(@ref)
     {
         Value = value;
     }
+    
     public TValue Value { get; init; }
 }
 
-public abstract class KingdomBaseStorage<TEntity> where TEntity : KingdomStoredEntity
+public class KingdomBaseStorageFactory
 {
-    private readonly IMongoCollection<KingdomStoredEntity<TEntity>> _collection;
-    protected KingdomBaseStorage(IMongoDatabase database)
-    {
-        var mapping = CollectionMappings.Get<TEntity>();
-        _collection = database.GetCollection<KingdomStoredEntity<TEntity>>(mapping.CollectionName);
-    }
+    private readonly IMongoDatabase _database;
 
-    public async Task<TEntity?> GetByRef(KingdomRef @ref, CancellationToken cancellationToken = default)
+    public KingdomBaseStorageFactory(IMongoDatabase database)
     {
-        var cursor = await _collection.FindAsync(c => c.Id == @ref.Id, cancellationToken: cancellationToken);
-        var kingdomEntity = await cursor.FirstOrDefaultAsync(cancellationToken: cancellationToken);
-        return kingdomEntity?.Value;
+        _database = database;
     }
-    
-    public async Task ApplyChanges(KingdomRef @ref, TEntity value, CancellationToken cancellationToken = default)
+    public KingdomBaseStorage<TEntity> Get<TEntity>(KingdomRef @ref) 
+        where TEntity : State
     {
-        var entity = new KingdomStoredEntity<TEntity>(@ref, value);
-        await _collection.ReplaceOneAsync(c => c.Id == @ref.Id, entity, new ReplaceOptions
-        {
-            IsUpsert = true
-        }, cancellationToken);
+        return new KingdomBaseStorage<TEntity>(@ref, _database);
     }
 }
 
-public class KingdomStorageFactory
+public class KingdomBaseStorage<TEntity> : StateStore<TEntity>
+    where TEntity : State
 {
-    private readonly IServiceProvider _serviceProvider;
-
-    public KingdomStorageFactory(IServiceProvider serviceProvider)
+    private readonly KingdomRef _ref;
+    private readonly IMongoCollection<ByKingdomState<TEntity>> _collection;
+    public KingdomBaseStorage(KingdomRef @ref, IMongoDatabase database)
     {
-        _serviceProvider = serviceProvider;
+        _ref = @ref;
+        var mapping = CollectionMappings.Get<TEntity>();
+        _collection = database.GetCollection<ByKingdomState<TEntity>>(mapping.CollectionName);
     }
 
-    public KingdomBaseStorage<TEntity> Get<TEntity>(KingdomRef @kingdomRef) 
-        where TEntity : KingdomStoredEntity
+    public async Task<TEntity?> Get()
     {
-        return _serviceProvider.GetRequiredService<KingdomBaseStorage<TEntity>>();
+        var cursor = await _collection.FindAsync(c => c.Id == _ref.Id);
+        var kingdomEntity = await cursor.FirstOrDefaultAsync();
+        return kingdomEntity?.Value;
+    }
+    
+    public override async Task Save(TEntity state)
+    {
+        var byKingdomState = new ByKingdomState<TEntity>(_ref, state);
+        await _collection.ReplaceOneAsync(c => c.Id == _ref.Id, byKingdomState, new ReplaceOptions
+        {
+            IsUpsert = true
+        });
     }
 }
 

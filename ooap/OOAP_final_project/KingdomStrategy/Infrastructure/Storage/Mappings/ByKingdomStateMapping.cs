@@ -7,9 +7,9 @@ using MongoDB.Bson.Serialization.Serializers;
 namespace KingdomStrategy.Infrastructure.Storage.Mappings;
 
 
-public class KingdomEntityMapping : FluentMapping<KingdomStoredEntity>
+public class ByKingdomStateMapping : FluentMapping<ByKingdomState>
 {
-    protected override Action<BsonClassMap<KingdomStoredEntity>> Map()
+    protected override Action<BsonClassMap<ByKingdomState>> Map()
     {
         return cm =>
         {
@@ -20,7 +20,7 @@ public class KingdomEntityMapping : FluentMapping<KingdomStoredEntity>
         };
     }
 
-    public KingdomEntityMapping() : base("")
+    public ByKingdomStateMapping() : base("")
     {
     }
 }

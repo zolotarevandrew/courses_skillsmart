@@ -1,4 +1,5 @@
 using KingdomStrategy;
+using KingdomStrategy.Domain.Kingdoms.Implementations;
 using KingdomStrategy.Domain.Kingdoms.Ratings;
 using KingdomStrategy.Infrastructure;
 using KingdomStrategy.Infrastructure.Kingdoms;
@@ -18,12 +19,13 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddSingleton<KingdomLeaderboard>();
         services.AddSingleton<KingdomRatingManager>();
         services.AddSingleton<KingdomMediatorFactory>();
-        services.AddSingleton<KingdomStorageFactory>();
+        services.AddSingleton<KingdomBaseStorageFactory>();
         
         CollectionMappings.Init();
         var mappings = new List<FluentMapping>
         {
-            new KingdomEntityMapping()
+            new ByKingdomStateMapping(),
+            new ResourceManagerStateMapping()
         };
         foreach (var mapping in mappings)
         {

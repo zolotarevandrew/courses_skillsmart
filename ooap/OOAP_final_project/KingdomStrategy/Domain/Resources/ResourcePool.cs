@@ -8,4 +8,9 @@ public class ResourcePool : Any
         _resourceByType = items
             .ToDictionary(c => c.Type, c => c);
     }
+
+    public Resource Get(ResourceType type)
+    {
+        return _resourceByType[type];
+    }
 }

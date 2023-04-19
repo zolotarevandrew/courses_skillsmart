@@ -1,4 +1,6 @@
-﻿namespace KingdomStrategy.Domain.Resources;
+﻿using KingdomStrategy.Infrastructure.Storage.Interfaces;
+
+namespace KingdomStrategy.Domain.Resources;
 
 public enum ConsumePoolResult
 {
@@ -15,15 +17,31 @@ public enum ConsumeResult
     Ok = 2,
 }
 
-public abstract class ResourceManager : Any
+public class ResourceManagerState : State
 {
-    private readonly Dictionary<ResourceType, Resource> _resourceByType;
+    private Dictionary<ResourceType, Resource> _resourceByType;
+    
+    private IEnumerable<Resource> _resources;
 
-    protected ResourceManager(IEnumerable<Resource> items)
+    public ResourceManagerState(IEnumerable<Resource> resources)
     {
-        _resourceByType = items
-            .ToDictionary(c => c.Type, c => c);
+        _resources = resources;
+        _resourceByType = resources.ToDictionary(c => c.Type, c => c);
+    }
 
+    public Resource Get(ResourceType type)
+    {
+        return _resourceByType[type];
+    }
+
+    public IEnumerable<ResourceType> Available => _resourceByType.Keys;
+}
+
+public abstract class ResourceManager : StateStorable<ResourceManagerState>
+{
+
+    protected ResourceManager(ResourceManagerState state) : base(state) 
+    {
         ConsumeResult = ConsumeResult.None;
         ConsumePoolResult = ConsumePoolResult.None;
     }
@@ -40,15 +58,24 @@ public abstract class ResourceManager : Any
             ConsumePoolResult = ConsumePoolResult.NotEnoughResources;
             return;
         }
+
+        foreach (var key in State.Available)
+        {
+            await Consume(requested.Get(key));
+        }
+
+        await SaveState();
         
         ConsumePoolResult = ConsumePoolResult.Ok;
-        throw new NotImplementedException();
     }
 
     //постусловие, объем ресурса увеличен 
     public async Task Put(Resource resource)
     {
-        throw new NotImplementedException();
+        var foundResource = State.Get(resource.Type);
+        foundResource.AddQuantity(resource.Quantity);
+        
+        await SaveState();
     }
 
     //предусловие, достаточно ресурса для потребления
@@ -61,25 +88,28 @@ public abstract class ResourceManager : Any
             return;
         }
 
+        var resource = State.Get(requested.Type);
+        resource.ConsumeQuantity(requested.Quantity);
         ConsumeResult = ConsumeResult.Ok;
-        throw new NotImplementedException();
+        
+        await SaveState();
     }
 
-    private Resource FindByType(ResourceType resourceType)
-    {
-        var foundResource = _resourceByType[resourceType];
-        return foundResource;
-    }
-    
     private bool CanConsume(ResourcePool requested)
     {
-        throw new NotImplementedException();
+        foreach (var type in State.Available)
+        {
+            var resource = requested.Get(type);
+            if (!CanConsume(resource)) return false;
+        }
+
+        return true;
     }
     
     private bool CanConsume(Resource requested)
     {
-        throw new NotImplementedException();
+        var consumed = State.Get(requested.Type);
+        return consumed.CanConsume(requested.Quantity);
     }
-    
-    
+
 }
