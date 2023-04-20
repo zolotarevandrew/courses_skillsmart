@@ -29,8 +29,11 @@ public class Worker : BackgroundService
         });
 
         var resourceManager = new KingdomResourceManager(storage, state);
-        
-        await storage.Save(state);
+        await resourceManager.ConsumePool(new ResourcePool(new List<Resource>
+        {
+            new Food(new ResourceQuantity(1)),
+            new Gold(new ResourceQuantity(1))
+        }));
 
         var restoredState = await storage.Get();
 

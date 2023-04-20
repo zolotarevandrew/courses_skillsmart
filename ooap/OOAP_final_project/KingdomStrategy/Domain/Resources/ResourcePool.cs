@@ -9,8 +9,8 @@ public class ResourcePool : Any
             .ToDictionary(c => c.Type, c => c);
     }
 
-    public Resource Get(ResourceType type)
+    public Resource? Get(ResourceType type)
     {
-        return _resourceByType[type];
+        return _resourceByType.TryGetValue(type, out var value) ? value : null;
     }
 }

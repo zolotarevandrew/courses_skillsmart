@@ -65,7 +65,10 @@ public abstract class ResourceManager : StateStorable<ResourceManagerState>
 
         foreach (var key in State.Available)
         {
-            await Consume(requested.Get(key));
+            var found = requested.Get(key);
+            if (found == null) continue;
+            
+            await Consume(found);
         }
 
         await SaveState();
@@ -104,6 +107,8 @@ public abstract class ResourceManager : StateStorable<ResourceManagerState>
         foreach (var type in State.Available)
         {
             var resource = requested.Get(type);
+            if (resource == null) continue;
+            
             if (!CanConsume(resource)) return false;
         }
 
