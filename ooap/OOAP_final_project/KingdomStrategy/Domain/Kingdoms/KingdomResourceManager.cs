@@ -1,6 +1,7 @@
-﻿using KingdomStrategy.Infrastructure.Storage.Interfaces;
+﻿using KingdomStrategy.Domain.Resources;
+using KingdomStrategy.Infrastructure.Storage.Interfaces;
 
-namespace KingdomStrategy.Domain.Resources.Implementations;
+namespace KingdomStrategy.Domain.Kingdoms;
 
 public class KingdomResourceManager : ResourceManager
 {

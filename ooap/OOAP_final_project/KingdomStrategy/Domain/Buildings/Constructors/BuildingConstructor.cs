@@ -103,11 +103,11 @@ public abstract class BuildingConstructor : Any
 
     private BuildingConstructionCost? GetConstructionCost(BuildingType buildingType)
     {
-        throw new NotImplementedException();
+        return GetAllConstructionsCosts().FirstOrDefault(c => c.Type == buildingType);
     }
 
     private BuildingModernizationCost? GetModernizationCost(BuildingType buildingType)
     {
-        throw new NotImplementedException();
+        return GetAllModernizationsCost().FirstOrDefault(c => c.Type == buildingType);
     }
 }

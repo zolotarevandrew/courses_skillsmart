@@ -9,8 +9,9 @@ public class BuildingModernizationCost : Any
     public ResourcePool Resources { get; init; }
 
     public BuildingModernizationCost(
-        ResourcePool resources, 
-        BuildingType type)
+        BuildingType type,
+        ResourcePool resources 
+        )
     {
         Resources = resources;
         Type = type;
