@@ -17,7 +17,7 @@ public enum ConsumeResult
     Ok = 2,
 }
 
-public class ResourceManagerState : State
+public record ResourceManagerState : State
 {
     private Dictionary<ResourceType, Resource> _resourceByType;
     

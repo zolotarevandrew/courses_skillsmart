@@ -5,7 +5,10 @@ public abstract class StateStore<TState> where TState: State
     public abstract Task Save(TState state);
 }
 
-public abstract class State {}
+public record State
+{
+    public string Id { get; protected set; }
+}
 
 public abstract class StateStorable<TState> : Any where TState: State
 {
@@ -16,11 +19,11 @@ public abstract class StateStorable<TState> : Any where TState: State
         State = state;
     }
 
-    public async Task SaveState()
+    protected async Task SaveState()
     {
         var store = GetStore();
         await store.Save(State);
     }
 
-    public abstract StateStore<TState> GetStore();
+    protected abstract StateStore<TState> GetStore();
 }

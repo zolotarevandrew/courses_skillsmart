@@ -1,4 +1,6 @@
-﻿namespace KingdomStrategy.Domain.Buildings;
+﻿using KingdomStrategy.Infrastructure.Storage.Interfaces;
+
+namespace KingdomStrategy.Domain.Buildings;
 
 public interface IBuildingWorkProcessStrategy
 {
@@ -21,17 +23,35 @@ public enum ModernizeResult
     
     Ok = 100
 }
-public abstract class Building : Any
+
+public record BuildingState : State
+{
+    public BuildingState(Level level)
+    {
+        Level = level;
+    }
+
+    public Level Level { get; private set; }
+}
+
+public interface Building
+{
+    BuildingType Type { get; }
+    ModernizeResult ModernizeResult { get; }
+    RunWorkProcessResult RunWorkProcessResult { get; }
+
+    Task RunWorkProcess();
+    Task Modernize();
+}
+
+public abstract class Building<TState> : StateStorable<TState>, Building 
+    where TState : BuildingState
 {
     public BuildingType Type { get; private set; }
-    public Level Level { get; private set; }
 
-    protected Building(
-        BuildingType type,
-        Level level)
+    protected Building(BuildingType type, TState state) : base(state)
     {
         Type = type;
-        Level = level;
 
         RunWorkProcessResult = RunWorkProcessResult.None;
         ModernizeResult = ModernizeResult.None;
@@ -51,6 +71,7 @@ public abstract class Building : Any
         }
         
         await InternalRunWorkProcess();
+        await SaveState();
         RunWorkProcessResult = RunWorkProcessResult.Ok;
     }
 
@@ -58,14 +79,15 @@ public abstract class Building : Any
     //постусловие, здание модифицировано характеристики улучшены
     public async Task Modernize()
     {
-        if (Level == MaxLevel)
+        if (State.Level == MaxLevel)
         {
             ModernizeResult = ModernizeResult.LevelTooHigh;
             return;
         }
         
-        Level.Up();
+        State.Level.Up();
         await InternalModernize();
+        await SaveState();
         ModernizeResult = ModernizeResult.Ok;
     }
     

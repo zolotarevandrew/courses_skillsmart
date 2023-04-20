@@ -1,5 +1,4 @@
 using KingdomStrategy;
-using KingdomStrategy.Domain.Kingdoms.Implementations;
 using KingdomStrategy.Domain.Kingdoms.Ratings;
 using KingdomStrategy.Domain.Resources;
 using KingdomStrategy.Infrastructure;
@@ -26,8 +25,11 @@ IHost host = Host.CreateDefaultBuilder(args)
         CollectionMappings.Init();
         var mappings = new List<FluentMapping>
         {
+            new StateMapping(),
             new ResourceManagerStateMapping(),
-            new ByKingdomResourceManagerStateMapping()
+            new LumberMillStateMapping(),
+            new GoldMineStateMapping(),
+            new ByKingdomStateMapping(),
         };
         foreach (var mapping in mappings)
         {

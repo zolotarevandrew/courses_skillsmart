@@ -1,7 +1,6 @@
-﻿using KingdomStrategy.Domain.Resources;
-using KingdomStrategy.Infrastructure.Storage.Interfaces;
+﻿using KingdomStrategy.Infrastructure.Storage.Interfaces;
 
-namespace KingdomStrategy.Domain.Kingdoms.Implementations;
+namespace KingdomStrategy.Domain.Resources.Implementations;
 
 public class KingdomResourceManager : ResourceManager
 {
@@ -12,7 +11,7 @@ public class KingdomResourceManager : ResourceManager
         _store = store;
     }
 
-    public override StateStore<ResourceManagerState> GetStore()
+    protected override StateStore<ResourceManagerState> GetStore()
     {
         return _store;
     }
