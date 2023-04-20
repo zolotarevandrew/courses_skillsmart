@@ -10,10 +10,11 @@ public class KingdomRatingManager : Any
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IMediator _mediator;
     public KingdomRatingManager(
+        List<KingdomRatingRule> rules,
         IDateTimeProvider dateTimeProvider, 
         IMediator mediator)
     {
-        //TODO _rules = rules;
+        _rules = rules;
         _dateTimeProvider = dateTimeProvider;
         _mediator = mediator;
     }
@@ -23,7 +24,7 @@ public class KingdomRatingManager : Any
         var newRating = new KingdomRating(kingdomEvent.Kingdom, 0, _dateTimeProvider.UtcNow);
         foreach (var rule in _rules) {
             var rating = await rule.Calculate(kingdomEvent);
-            newRating.Add(rating, _dateTimeProvider.UtcNow);
+            newRating = newRating.Add(rating, _dateTimeProvider.UtcNow);
         }
 
         await _mediator.Publish(new KingdomRatingRecalculatedEvent

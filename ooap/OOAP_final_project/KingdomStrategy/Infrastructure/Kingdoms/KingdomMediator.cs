@@ -32,7 +32,7 @@ public class KingdomMediatorFactory
 
         public Task Publish<TMessage>(TMessage message)
         {
-            var kingdomEvent = new KingdomEvent<TMessage>
+            var kingdomEvent = new KingdomEvent
             {
                 Kingdom = _kingdomRef,
                 Payload = message

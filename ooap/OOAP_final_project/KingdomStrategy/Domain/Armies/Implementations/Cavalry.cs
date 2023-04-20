@@ -1,4 +1,5 @@
 ﻿using KingdomStrategy.Domain.Armies.Troops;
+using KingdomStrategy.Infrastructure;
 using KingdomStrategy.Infrastructure.Storage.Interfaces;
 
 namespace KingdomStrategy.Domain.Armies.Implementations;
@@ -7,7 +8,7 @@ public class Cavalry : Troop
 {
     private readonly StateStore<TroopState> _store;
 
-    public Cavalry(StateStore<TroopState> store, TroopState state) : base(TroopType.Cavalry, state)
+    public Cavalry(IMediator mediator, StateStore<TroopState> store, TroopState state) : base(mediator, TroopType.Cavalry, state)
     {
         _store = store;
     }

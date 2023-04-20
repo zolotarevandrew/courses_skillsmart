@@ -1,5 +1,7 @@
 using KingdomStrategy;
+using KingdomStrategy.Domain.Kingdoms.Events;
 using KingdomStrategy.Domain.Kingdoms.Ratings;
+using KingdomStrategy.Domain.Kingdoms.Ratings.EventHandlers;
 using KingdomStrategy.Domain.Resources;
 using KingdomStrategy.Infrastructure;
 using KingdomStrategy.Infrastructure.Kingdoms;
@@ -14,11 +16,18 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddHostedService<Worker>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IMediator, MessageMediator>();
-        
+
         services.AddSingleton<KingdomRatingStorage>();
 
         services.AddSingleton<KingdomLeaderboard>();
-        services.AddSingleton<KingdomRatingManager>();
+        
+        services.AddSingleton<TroopRatingRule>();
+        services.AddSingleton<KingdomRatingManager>(s => new KingdomRatingManager(
+            new List<KingdomRatingRule>
+            {
+                s.GetRequiredService<TroopRatingRule>()
+            }, s.GetRequiredService<IDateTimeProvider>(), s.GetRequiredService<IMediator>()
+        ));
         services.AddSingleton<KingdomMediatorFactory>();
         services.AddSingleton<KingdomBaseStorageFactory>();
         
@@ -46,19 +55,20 @@ IHost host = Host.CreateDefaultBuilder(args)
             var dbName = MongoUrl.Create(connectionString).DatabaseName;
             return client.GetDatabase(dbName);
         });
+
+        services.AddSingleton<IMessageHandler<KingdomEvent>, KingdomEventMessageHandler>();
+        services.AddSingleton<IMessageHandler<KingdomRatingRecalculatedEvent>, KingdomRatingRecalculatedMessageHandler>();
         
         services.Scan(scan => scan
             .FromExecutingAssembly()
-            .AddClasses(classes => classes.AssignableTo(typeof(IMessageHandler<>)))
+            .AddClasses(classes =>
+            {
+                var res = classes.AssignableTo(typeof(IMessageHandler<>));
+                return;
+            })
             .AsImplementedInterfaces()
             .WithTransientLifetime());
-        
-        services.Scan(scan => scan
-            .FromExecutingAssembly()
-            .AddClasses(classes => classes.AssignableTo(typeof(KingdomBaseStorage<>)))
-            .AsImplementedInterfaces()
-            .WithTransientLifetime());
-        
+
     })
     .Build();
 

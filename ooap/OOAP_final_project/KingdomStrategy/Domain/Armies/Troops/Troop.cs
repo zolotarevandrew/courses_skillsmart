@@ -1,4 +1,5 @@
-﻿using KingdomStrategy.Infrastructure.Storage.Interfaces;
+﻿using KingdomStrategy.Infrastructure;
+using KingdomStrategy.Infrastructure.Storage.Interfaces;
 
 namespace KingdomStrategy.Domain.Armies.Troops;
 
@@ -30,10 +31,12 @@ public enum TrainResult
 
 public abstract class Troop : StateStorable<TroopState>
 {
+    private readonly IMediator _mediator;
     public TroopType Type { get; private set; }
 
-    protected Troop(TroopType type, TroopState state) : base(state)
+    protected Troop(IMediator mediator, TroopType type, TroopState state) : base(state)
     {
+        _mediator = mediator;
         Type = type;
         State = state;
 
@@ -70,6 +73,8 @@ public abstract class Troop : StateStorable<TroopState>
         await SaveState();
         await target.SaveState();
         AttackResult = AttackResult.Ok;
+
+        await _mediator.Publish(new TroopAttackedOpponentEvent());
     }
 
     public abstract bool CanAttack(Troop target);
@@ -89,6 +94,8 @@ public abstract class Troop : StateStorable<TroopState>
         await InternalTrain();
         await SaveState();
         TrainResult = TrainResult.Ok;
+        
+        await _mediator.Publish(new TroopTrainedEvent());
     }
     
     protected abstract Task InternalAttack(Troop target, TroopState targetState);
