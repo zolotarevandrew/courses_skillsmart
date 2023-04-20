@@ -1,4 +1,6 @@
-﻿namespace KingdomStrategy.Domain.Armies.Troops;
+﻿using KingdomStrategy.Infrastructure.Storage.Interfaces;
+
+namespace KingdomStrategy.Domain.Armies.Troops;
 
 public interface ITroopDefendStrategy
 {
@@ -26,12 +28,11 @@ public enum TrainResult
     Ok = 100
 }
 
-public abstract class Troop : Any
+public abstract class Troop : StateStorable<TroopState>
 {
-    protected TroopState State;
     public TroopType Type { get; private set; }
 
-    protected Troop(TroopType type, TroopState state)
+    protected Troop(TroopType type, TroopState state) : base(state)
     {
         Type = type;
         State = state;
@@ -65,7 +66,9 @@ public abstract class Troop : Any
             return;
         }
 
-        await InternalAttack(target);
+        await InternalAttack(target, target.State);
+        await SaveState();
+        await target.SaveState();
         AttackResult = AttackResult.Ok;
     }
 
@@ -84,10 +87,11 @@ public abstract class Troop : Any
         State.Level.Up();
         
         await InternalTrain();
+        await SaveState();
         TrainResult = TrainResult.Ok;
     }
     
-    protected abstract Task InternalAttack(Troop target);
+    protected abstract Task InternalAttack(Troop target, TroopState targetState);
     protected abstract Task InternalTrain();
     
     protected abstract Level MaxLevel { get; }

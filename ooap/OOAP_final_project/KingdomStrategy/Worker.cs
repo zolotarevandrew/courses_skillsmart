@@ -1,10 +1,7 @@
 using KingdomStrategy.Domain;
-using KingdomStrategy.Domain.Buildings;
-using KingdomStrategy.Domain.Buildings.Constructors;
-using KingdomStrategy.Domain.Buildings.Implementations;
+using KingdomStrategy.Domain.Armies.Implementations;
+using KingdomStrategy.Domain.Armies.Troops;
 using KingdomStrategy.Domain.Kingdoms;
-using KingdomStrategy.Domain.Resources;
-using KingdomStrategy.Domain.Resources.Implementations;
 using KingdomStrategy.Infrastructure.Kingdoms;
 
 namespace KingdomStrategy;
@@ -20,23 +17,23 @@ public class Worker : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var kingdomRef = new KingdomRef("1", "2");
-        var constructor = new KingdomBuildingConstructor(kingdomRef, _factory);
+        var store = _factory.Get<TroopState>(kingdomRef);
+
+        var state = new TroopState(new Health(500), new TroopSize(20), new AttackPower(20), new DefensePower(10),
+            new Level(1), TroopType.Archers);
+        var state2 = new TroopState(new Health(500), new TroopSize(20), new AttackPower(20), new DefensePower(10),
+            new Level(1), TroopType.Cavalry);
         
-        var storage = _factory.Get<ResourceManagerState>(kingdomRef);
-        var state = new ResourceManagerState(new List<Resource>
+        var archers = new Archers(store, state);
+        var cavalry = new Cavalry(store, state2);
+
+        await cavalry.Attack(archers);
+
+        var army = new KingdomArmy(new TroopList(new List<Troop>
         {
-            new Food(new ResourceQuantity(100)),
-            new Gold(new ResourceQuantity(300)),
-            new Stone(new ResourceQuantity(300)),
-            new Wood(new ResourceQuantity(500))
-        });
+            archers,
+            cavalry
+        }));
 
-        var resourceManager = new KingdomResourceManager(storage, state);
-        await storage.Save(state);
-
-        await constructor.Construct(new BuildingConstructionRequest(BuildingType.GoldMine, resourceManager));
-        await constructor.Construct(new BuildingConstructionRequest(BuildingType.LumberMill, resourceManager));
-
-        await Task.CompletedTask;
     }
 }

@@ -28,6 +28,6 @@ public class Health : Any
     
     public Health Increase(Health value)
     {
-        return new Health(Value - value.Value);
+        return new Health(Value + value.Value);
     }
 }

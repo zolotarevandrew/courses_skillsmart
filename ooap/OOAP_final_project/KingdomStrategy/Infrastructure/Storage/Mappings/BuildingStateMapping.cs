@@ -26,9 +26,9 @@ public class StateMapping : FluentMapping<State>
     }
 }
 
-public class LumberMillStateMapping : FluentMapping<LumberMillState>
+public class BuildingStateMapping : FluentMapping<LumberMillState>
 {
-    public LumberMillStateMapping() : base("lumber_mills")
+    public BuildingStateMapping() : base("lumber_mills")
     {
     }
 

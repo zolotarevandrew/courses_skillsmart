@@ -27,9 +27,10 @@ IHost host = Host.CreateDefaultBuilder(args)
         {
             new StateMapping(),
             new ResourceManagerStateMapping(),
-            new LumberMillStateMapping(),
+            new BuildingStateMapping(),
             new GoldMineStateMapping(),
             new ByKingdomStateMapping(),
+            new TroopStateMapping(),
         };
         foreach (var mapping in mappings)
         {

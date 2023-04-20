@@ -1,24 +1,28 @@
-﻿namespace KingdomStrategy.Domain.Armies.Troops;
+﻿using KingdomStrategy.Infrastructure.Storage.Interfaces;
 
-public class TroopState
+namespace KingdomStrategy.Domain.Armies.Troops;
+
+public record TroopState : State
 {
     public TroopState(
         Health health, 
         TroopSize size, 
         AttackPower attackPower, 
         DefensePower defencePower, 
-        Level level)
+        Level level, TroopType type)
     {
         Health = health;
         Size = size;
         AttackPower = attackPower;
         DefencePower = defencePower;
         Level = level;
+        Type = type;
     }
 
-    public Health Health { get; init; }
-    public AttackPower AttackPower { get; init; }
-    public DefensePower DefencePower { get; init; }
-    public TroopSize Size { get; init; }
-    public Level Level { get; init; }
+    public TroopType Type { get; set; }
+    public Health Health { get; set; }
+    public AttackPower AttackPower { get; set; }
+    public DefensePower DefencePower { get; set; }
+    public TroopSize Size { get; set; }
+    public Level Level { get; set; }
 }

@@ -16,6 +16,6 @@ public class DefensePower : Any
 
     public DefensePower Increase(DefensePower value)
     {
-        return new DefensePower(Value - value.Value);
+        return new DefensePower(Value + value.Value);
     }
 }

@@ -16,6 +16,6 @@ public class AttackPower : Any
 
     public AttackPower Increase(AttackPower value)
     {
-        return new AttackPower(Value - value.Value);
+        return new AttackPower(Value + value.Value);
     }
 }
