@@ -1,4 +1,5 @@
 using KingdomStrategy;
+using KingdomStrategy.Domain.Kingdoms;
 using KingdomStrategy.Domain.Kingdoms.Events;
 using KingdomStrategy.Domain.Kingdoms.Ratings;
 using KingdomStrategy.Domain.Kingdoms.Ratings.EventHandlers;
@@ -20,6 +21,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddSingleton<KingdomRatingStorage>();
 
         services.AddSingleton<KingdomLeaderboard>();
+        services.AddSingleton<KingdomStorage>();
         
         services.AddSingleton<TroopRatingRule>();
         services.AddSingleton<KingdomRatingManager>(s => new KingdomRatingManager(
@@ -30,6 +32,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         ));
         services.AddSingleton<KingdomMediatorFactory>();
         services.AddSingleton<KingdomBaseStorageFactory>();
+        services.AddSingleton<KingdomSeed>();
         
         CollectionMappings.Init();
         var mappings = new List<FluentMapping>
@@ -40,6 +43,7 @@ IHost host = Host.CreateDefaultBuilder(args)
             new GoldMineStateMapping(),
             new ByKingdomStateMapping(),
             new TroopStateMapping(),
+            new KingdomMapping()
         };
         foreach (var mapping in mappings)
         {
