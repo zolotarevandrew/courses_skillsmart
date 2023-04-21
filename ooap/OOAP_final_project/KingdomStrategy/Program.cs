@@ -50,13 +50,9 @@ while (true)
         Console.WriteLine("Invalid command.");
         continue;
     }
-            
-    Console.WriteLine($"Running {matchingUseCase.Name}...");
     
     var arguments = splitted.Length > 1 ? splitted[1..] : new string[] { };
     await matchingUseCase.Run(arguments);
-    
-    Console.WriteLine("Done.");
 }
 
 

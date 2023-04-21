@@ -50,6 +50,10 @@ public static class Services
         CollectionMappings.Init();
         var mappings = new List<FluentMapping>
         {
+            new GoldMapping(),
+            new FoodMapping(),
+            new StoneMapping(),
+            new WoodMapping(),
             new StateMapping(),
             new ResourceManagerStateMapping(),
             new BuildingStateMapping(),

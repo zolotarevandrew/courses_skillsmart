@@ -16,6 +16,12 @@ public class ShowAllBuildings : ByKingdomUseCase
 
     protected override async Task RunCase(Kingdom kingdom)
     {
+        if (kingdom.Buildings.Count == 0)
+        {
+            LogWriter.Write($"No buildings yet");
+            return;
+        }
+        
         foreach (var building in kingdom.Buildings)
         {
             LogWriter.Write($"{building.Type.ToString()} level - {building.Level.Value}");
