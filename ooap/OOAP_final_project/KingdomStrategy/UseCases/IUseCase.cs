@@ -59,10 +59,12 @@ public abstract class ByKingdomUseCase : ConsoleUseCase
             LogWriter.Write("Kingdom was not found");
             return;
         }
-        await RunCase(kingdom);
+
+        var other = args.Length > 1 ? args[1..] : new string[] { }; 
+        await RunCase(kingdom, other);
     }
     
-    protected abstract Task RunCase(Kingdom kingdom);
+    protected abstract Task RunCase(Kingdom kingdom, params string[] args);
 }
 
 public abstract class KingdomUseCase

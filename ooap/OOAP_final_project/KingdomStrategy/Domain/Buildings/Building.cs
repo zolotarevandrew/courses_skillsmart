@@ -37,7 +37,7 @@ public record BuildingState : State
 public interface Building
 {
     BuildingType Type { get; }
-    Level Level { get; }
+    BuildingState GetState();
     ModernizeResult ModernizeResult { get; }
     RunWorkProcessResult RunWorkProcessResult { get; }
 
@@ -58,7 +58,10 @@ public abstract class Building<TState> : StateStorable<TState>, Building
         ModernizeResult = ModernizeResult.None;
     }
 
-    public Level Level => State.Level;
+    public BuildingState GetState()
+    {
+        return State;
+    }
     
     public ModernizeResult ModernizeResult { get; private set; }
     public RunWorkProcessResult RunWorkProcessResult { get; private set; }

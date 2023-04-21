@@ -14,7 +14,7 @@ public class ShowAllBuildings : ByKingdomUseCase
     public override int Command => 2;
     public override string Help => "Getting all buildings info by kingdom id, pass id after, example = 2 \"6442ab3a525f04222ff135d2\"";
 
-    protected override async Task RunCase(Kingdom kingdom)
+    protected override async Task RunCase(Kingdom kingdom, params string[] args)
     {
         if (kingdom.Buildings.Count == 0)
         {
@@ -24,7 +24,8 @@ public class ShowAllBuildings : ByKingdomUseCase
         
         foreach (var building in kingdom.Buildings)
         {
-            LogWriter.Write($"{building.Type.ToString()} level - {building.Level.Value}");
+            var state = building.GetState();
+            LogWriter.Write($"{building.Type.ToString()} level - {state.Level.Value}, id - {state.Id}");
         }
     }
 

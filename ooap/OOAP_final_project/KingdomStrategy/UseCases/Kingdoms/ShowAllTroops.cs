@@ -13,7 +13,7 @@ public class ShowAllTroops : ByKingdomUseCase
     public override int Command => 4;
     public override string Help => "Getting all troop info by kingdom id, pass id after, example = 4 \"6442ab3a525f04222ff135d2\"";
 
-    protected override async Task RunCase(Kingdom kingdom)
+    protected override async Task RunCase(Kingdom kingdom, params string[] args)
     {
         var troops = kingdom.Army.Troops.GetAll().ToList();
         if (troops.Count == 0)

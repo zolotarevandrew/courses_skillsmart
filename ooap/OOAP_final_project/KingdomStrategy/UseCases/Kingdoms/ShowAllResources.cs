@@ -13,7 +13,7 @@ public class ShowAllResources : ByKingdomUseCase
     public override int Command => 3;
     public override string Help => "Getting all resources info by kingdom id, pass id after, example = 3 \"6442ab3a525f04222ff135d2\"";
 
-    protected override async Task RunCase(Kingdom kingdom)
+    protected override async Task RunCase(Kingdom kingdom, params string[] args)
     {
         var resources = kingdom.ResourceManager.Get().ToList();
         if (resources.Count == 0)

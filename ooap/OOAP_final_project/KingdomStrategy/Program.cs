@@ -19,21 +19,22 @@ while (true)
             
     // Read user input
     Console.Write("> ");
-    var input = Console.ReadLine()?.ToLowerInvariant();
+    var input = Console.ReadLine();
     var splitted = input.Split(" ");
     if (input == null || splitted.Length == 0)
     {
         Console.WriteLine("Invalid command.");
         continue;
     }
-            
-    if (input == "exit" || input == "quit")
+
+    var lower = input.ToLowerInvariant();
+    if (lower == "exit" || lower == "quit")
     {
         Console.WriteLine("Goodbye!");
         return;
     }
     
-    if (input == "h" || input == "help")
+    if (lower == "h" || lower == "help")
     {
         foreach (var useCase in useCases)
         {
