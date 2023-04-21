@@ -43,6 +43,11 @@ public abstract class Troop : StateStorable<TroopState>
         TrainResult = TrainResult.None;
         AttackResult = AttackResult.None;
     }
+
+    public TroopState GetState()
+    {
+        return State;
+    }
     
     public AttackResult AttackResult { get; private set; }
     public TrainResult TrainResult { get; private set; }

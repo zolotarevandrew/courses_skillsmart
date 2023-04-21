@@ -26,7 +26,6 @@ public static class Services
     public static IServiceProvider Get()
     {
         var services = new ServiceCollection();
-        services.AddHostedService<Worker>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IMediator, MessageMediator>();
 

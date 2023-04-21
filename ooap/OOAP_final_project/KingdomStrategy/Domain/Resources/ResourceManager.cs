@@ -52,6 +52,11 @@ public abstract class ResourceManager : StateStorable<ResourceManagerState>
 
     public ConsumePoolResult ConsumePoolResult { get; private set; }
     public ConsumeResult ConsumeResult { get; private set; }
+
+    public IEnumerable<Resource> Get()
+    {
+        return State.Available.Select(key => State.Get(key));
+    }
     
     //предусловие, достаточно ресурсов для потребления
     //постусловие, ресурсы поглощены
