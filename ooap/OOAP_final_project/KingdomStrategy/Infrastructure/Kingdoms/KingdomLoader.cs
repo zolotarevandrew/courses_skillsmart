@@ -42,7 +42,7 @@ public class KingdomLoader
         var resourceManager = await GetResourceManager(@ref, relatedStates);
         var buildingConstructor = new KingdomBuildingConstructor(@ref, _kingdomBaseStorageFactory);
         var army = await GetArmy(@ref, relatedStates);
-        var buildings = await GetBuildings();
+        var buildings = await GetBuildings(@ref, relatedStates);
         var kingdom = new Kingdom(kingdomState, army, resourceManager, buildingConstructor, buildings);
 
         return kingdom;

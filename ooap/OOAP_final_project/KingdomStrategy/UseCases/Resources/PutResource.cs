@@ -1,6 +1,4 @@
 ﻿using KingdomStrategy.Domain.Kingdoms;
-using KingdomStrategy.Domain.Resources;
-using Xunit;
 
 namespace KingdomStrategy.UseCases.Resources;
 

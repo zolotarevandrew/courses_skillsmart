@@ -1,6 +1,5 @@
 ﻿using KingdomStrategy.Domain.Kingdoms;
 using KingdomStrategy.Domain.Resources;
-using Xunit;
 
 namespace KingdomStrategy.UseCases.Resources;
 
@@ -12,6 +11,5 @@ public class ConsumePoolResources : KingdomUseCase
         {
 
         }));
-        Assert.Equal(kingdom.ResourceManager.ConsumePoolResult, ConsumePoolResult.Ok);
     }
 }
