@@ -8,6 +8,7 @@ using KingdomStrategy.Domain.Kingdoms.Ratings;
 using KingdomStrategy.Domain.Resources;
 using KingdomStrategy.Domain.Resources.Implementations;
 using KingdomStrategy.Infrastructure.Storage;
+using KingdomStrategy.UseCases;
 
 namespace KingdomStrategy.Infrastructure.Kingdoms;
 
@@ -16,18 +17,24 @@ public class KingdomSeed
     private readonly KingdomStorage _kingdomStorage;
     private readonly KingdomBaseStorageFactory _kingdomBaseStorageFactory;
     private readonly KingdomRatingStorage _ratingStorage;
-    public KingdomSeed(KingdomStorage kingdomStorage, KingdomBaseStorageFactory kingdomBaseStorageFactory, KingdomRatingStorage ratingStorage)
+    private readonly ILogWriter _logWriter;
+    public KingdomSeed(KingdomStorage kingdomStorage, KingdomBaseStorageFactory kingdomBaseStorageFactory, KingdomRatingStorage ratingStorage, ILogWriter logWriter)
     {
         _kingdomStorage = kingdomStorage;
         _kingdomBaseStorageFactory = kingdomBaseStorageFactory;
         _ratingStorage = ratingStorage;
+        _logWriter = logWriter;
     }
 
     public async Task Seed()
     {
+        _logWriter.Write("Seeding data...");
+        
         await CreateKingdomByNam("Hoappa - 1");
         await CreateKingdomByNam("Borroca - 2");
         await CreateKingdomByNam("Trefecta - 3");
+        
+        _logWriter.Write("Seeding data finished.");
     }
 
     private async Task CreateKingdomByNam(string name)

@@ -5,6 +5,7 @@ using KingdomStrategy.Infrastructure;
 using KingdomStrategy.Infrastructure.Kingdoms;
 using KingdomStrategy.Infrastructure.Storage;
 using KingdomStrategy.Infrastructure.Storage.Mappings;
+using KingdomStrategy.UseCases;
 using MongoDB.Driver;
 
 namespace KingdomStrategy;
@@ -77,16 +78,26 @@ public static class Services
         services.AddSingleton<IMessageHandler<KingdomEvent>, KingdomEventMessageHandler>();
         services
             .AddSingleton<IMessageHandler<KingdomRatingRecalculatedEvent>, KingdomRatingRecalculatedMessageHandler>();
+        services.AddSingleton<ILogWriter, LogWriter>();
 
         services.Scan(scan => scan
-            .FromExecutingAssembly()
+            .FromCallingAssembly()
             .AddClasses(classes =>
             {
-                var res = classes.AssignableTo(typeof(IMessageHandler<>));
-                return;
+                classes.AssignableTo(typeof(IMessageHandler<>));
             })
             .AsImplementedInterfaces()
             .WithTransientLifetime());
+        
+        services.Scan(scan => scan
+            .FromCallingAssembly()
+            .AddClasses(classes =>
+            {
+                var res = classes.AssignableTo(typeof(IUseCase));
+                return;
+            })
+            .AsImplementedInterfaces()
+            .WithSingletonLifetime());
 
         return services.BuildServiceProvider();
     }
