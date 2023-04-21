@@ -1,4 +1,5 @@
 ﻿using KingdomStrategy.Domain.Kingdoms;
+using KingdomStrategy.Infrastructure.Storage;
 using KingdomStrategy.Infrastructure.Storage.Interfaces;
 using MongoDB.Driver;
 
@@ -23,15 +24,17 @@ public record ByKingdomState
 public class KingdomBaseStorageFactory
 {
     private readonly IMongoDatabase _database;
+    private readonly KingdomStorage _kingdomStorage;
 
-    public KingdomBaseStorageFactory(IMongoDatabase database)
+    public KingdomBaseStorageFactory(IMongoDatabase database, KingdomStorage kingdomStorage)
     {
         _database = database;
+        _kingdomStorage = kingdomStorage;
     }
     public KingdomBaseStorage<TEntity> Get<TEntity>(KingdomRef @ref) 
         where TEntity : State
     {
-        return new KingdomBaseStorage<TEntity>(@ref, _database);
+        return new KingdomBaseStorage<TEntity>(@ref, _database, _kingdomStorage);
     }
 }
 
@@ -40,15 +43,13 @@ public class KingdomBaseStorage<TEntity> : StateStore<TEntity>
 {
     private readonly KingdomRef _ref;
     private readonly IMongoCollection<TEntity> _collection;
-    private readonly IMongoCollection<ByKingdomState> _kingdomStateCollection;
-    public KingdomBaseStorage(KingdomRef @ref, IMongoDatabase database)
+    private readonly KingdomStorage _kingdomStorage;
+    public KingdomBaseStorage(KingdomRef @ref, IMongoDatabase database, KingdomStorage kingdomStorage)
     {
         _ref = @ref;
+        _kingdomStorage = kingdomStorage;
         var mapping = CollectionMappings.Get<TEntity>();
         _collection = database.GetCollection<TEntity>(mapping.CollectionName);
-        
-        var kingdomMapping = CollectionMappings.Get<ByKingdomState>();
-        _kingdomStateCollection = database.GetCollection<ByKingdomState>(kingdomMapping.CollectionName);
     }
 
     public override async Task Save(TEntity state)
@@ -66,10 +67,19 @@ public class KingdomBaseStorage<TEntity> : StateStore<TEntity>
         }
 
         var byKingdomState = new ByKingdomState(_ref, state.Id, typeof(TEntity).Name);
-        await _kingdomStateCollection.ReplaceOneAsync(c => c.StateId == byKingdomState.StateId, byKingdomState, new ReplaceOptions
-        {
-            IsUpsert = true
-        });
+        await _kingdomStorage.AddRelatedState(byKingdomState);
+    }
+
+    public async Task<List<TEntity>> Load(List<string> ids)
+    {
+        var cursor = await _collection.FindAsync( Builders<TEntity>.Filter.In("_id", ids));
+        return await cursor.ToListAsync();
+    }
+    
+    public async Task<TEntity> Load(string id)
+    {
+        var cursor = await _collection.FindAsync( c => c.Id == id);
+        return await cursor.FirstOrDefaultAsync();
     }
 }
 

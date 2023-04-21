@@ -33,6 +33,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddSingleton<KingdomMediatorFactory>();
         services.AddSingleton<KingdomBaseStorageFactory>();
         services.AddSingleton<KingdomSeed>();
+        services.AddSingleton<KingdomLoader>();
         
         CollectionMappings.Init();
         var mappings = new List<FluentMapping>
