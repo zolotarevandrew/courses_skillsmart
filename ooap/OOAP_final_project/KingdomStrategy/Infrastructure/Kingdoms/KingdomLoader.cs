@@ -32,15 +32,17 @@ public class KingdomLoader
             .ToList();
     }
 
-    public async Task<Kingdom?> GetByRef(KingdomRef @ref)
+    public async Task<Kingdom?> GetByRef(KingdomRef oldRef)
     {
-        var kingdomState = await _kingdomStorage.GetByRef(@ref);
+        var kingdomState = await _kingdomStorage.GetByRef(oldRef);
         if (kingdomState == null) return null;
 
+        var @ref = kingdomState.Ref;
         var relatedStates = await _kingdomStorage.GetRelatedState(@ref);
         
         var resourceManager = await GetResourceManager(@ref, relatedStates);
-        var buildingConstructor = new KingdomBuildingConstructor(@ref, _kingdomBaseStorageFactory);
+        var mediator = _kingdomMediatorFactory.Get(@ref);
+        var buildingConstructor = new KingdomBuildingConstructor(@ref, _kingdomBaseStorageFactory, mediator);
         var army = await GetArmy(@ref, relatedStates);
         var buildings = await GetBuildings(@ref, relatedStates);
         var kingdom = new Kingdom(kingdomState, army, resourceManager, buildingConstructor, buildings);

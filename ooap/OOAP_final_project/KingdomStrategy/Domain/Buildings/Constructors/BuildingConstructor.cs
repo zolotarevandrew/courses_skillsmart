@@ -1,4 +1,5 @@
 ﻿using KingdomStrategy.Domain.Resources;
+using KingdomStrategy.Infrastructure;
 
 namespace KingdomStrategy.Domain.Buildings.Constructors;
 
@@ -29,12 +30,14 @@ public enum GetConstructedResult
 }
 public abstract class BuildingConstructor : Any
 {
+    private readonly IMediator _mediator;
     public ModernizeResult ModernizeResult { get; private set; }
     public ConstructResult ConstructResult { get; private set; }
     public GetConstructedResult GetConstructedResult { get; private set; }
 
-    protected BuildingConstructor()
+    protected BuildingConstructor(IMediator mediator)
     {
+        _mediator = mediator;
         ModernizeResult = ModernizeResult.None;
         ConstructResult = ConstructResult.None;
     }
@@ -59,6 +62,7 @@ public abstract class BuildingConstructor : Any
         }
 
         await Construct(request.Type);
+        await _mediator.Publish(new BuildingConstructedEvent());
         
         ConstructResult = ConstructResult.Ok;
     }
@@ -90,6 +94,7 @@ public abstract class BuildingConstructor : Any
             return;
         }
         ModernizeResult = ModernizeResult.Ok;
+        await _mediator.Publish(new BuildingModernizedEvent());
     }
     
     public abstract List<BuildingConstructionCost> GetAllConstructionsCosts();

@@ -35,11 +35,14 @@ public static class Services
         services.AddSingleton<KingdomStorage>();
 
         services.AddSingleton<TroopRatingRule>();
+        services.AddSingleton<BuildingRule>();
         services.AddSingleton<KingdomRatingManager>(s => new KingdomRatingManager(
             new List<KingdomRatingRule>
             {
-                s.GetRequiredService<TroopRatingRule>()
-            }, s.GetRequiredService<IDateTimeProvider>(), s.GetRequiredService<IMediator>()
+                s.GetRequiredService<TroopRatingRule>(),
+                s.GetRequiredService<BuildingRule>(),
+            }, s.GetRequiredService<IDateTimeProvider>(), s.GetRequiredService<IMediator>(),
+            s.GetRequiredService<KingdomRatingStorage>()
         ));
         services.AddSingleton<KingdomMediatorFactory>();
         services.AddSingleton<KingdomBaseStorageFactory>();

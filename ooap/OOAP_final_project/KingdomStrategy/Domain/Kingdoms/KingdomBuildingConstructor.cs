@@ -3,6 +3,7 @@ using KingdomStrategy.Domain.Buildings.Constructors;
 using KingdomStrategy.Domain.Buildings.Implementations;
 using KingdomStrategy.Domain.Resources;
 using KingdomStrategy.Domain.Resources.Implementations;
+using KingdomStrategy.Infrastructure;
 using KingdomStrategy.Infrastructure.Kingdoms;
 
 namespace KingdomStrategy.Domain.Kingdoms;
@@ -14,7 +15,7 @@ public class KingdomBuildingConstructor : BuildingConstructor
     
     private Building _constructed;
 
-    public KingdomBuildingConstructor(KingdomRef kingdomRef, KingdomBaseStorageFactory baseStorageFactory)
+    public KingdomBuildingConstructor(KingdomRef kingdomRef, KingdomBaseStorageFactory baseStorageFactory, IMediator mediator) : base(mediator)
     {
         _kingdomRef = kingdomRef;
         _baseStorageFactory = baseStorageFactory;

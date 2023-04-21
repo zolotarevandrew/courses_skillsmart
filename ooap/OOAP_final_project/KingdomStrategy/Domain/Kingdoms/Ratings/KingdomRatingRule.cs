@@ -1,4 +1,5 @@
 ﻿using KingdomStrategy.Domain.Armies.Troops;
+using KingdomStrategy.Domain.Buildings.Constructors;
 using KingdomStrategy.Domain.Kingdoms.Events;
 using KingdomStrategy.Infrastructure;
 
@@ -27,9 +28,29 @@ public class TroopRatingRule : KingdomRatingRule
 
     public override async Task<KingdomRating> Calculate(KingdomEvent @event)
     {
-        if (@event.Payload is TroopAttackedOpponentEvent payload)
+        if (@event.Payload is TroopAttackedOpponentEvent or TroopAttackedOpponentEvent)
         {
             return new KingdomRating(@event.Kingdom, 10, _dateTimeProvider.UtcNow); 
+        }
+
+        return new KingdomRating(@event.Kingdom, 0, _dateTimeProvider.UtcNow);
+    }
+}
+
+public class BuildingRule : KingdomRatingRule
+{
+    private readonly IDateTimeProvider _dateTimeProvider;
+
+    public BuildingRule(IDateTimeProvider dateTimeProvider) : base("buildingrule")
+    {
+        _dateTimeProvider = dateTimeProvider;
+    }
+
+    public override async Task<KingdomRating> Calculate(KingdomEvent @event)
+    {
+        if (@event.Payload is BuildingConstructedEvent or BuildingModernizedEvent)
+        {
+            return new KingdomRating(@event.Kingdom, 20, _dateTimeProvider.UtcNow); 
         }
 
         return new KingdomRating(@event.Kingdom, 0, _dateTimeProvider.UtcNow);

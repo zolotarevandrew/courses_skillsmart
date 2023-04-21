@@ -45,7 +45,7 @@ public abstract class ConsoleUseCase : IUseCase
 
 public abstract class ByKingdomUseCase : ConsoleUseCase
 {
-    private readonly KingdomLoader _loader;
+    protected readonly KingdomLoader _loader;
     public ByKingdomUseCase(KingdomLoader loader, ILogWriter logWriter) : base(logWriter)
     {
         _loader = loader;

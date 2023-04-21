@@ -1,4 +1,5 @@
-﻿using KingdomStrategy.Domain.Kingdoms.Ratings;
+﻿using KingdomStrategy.Domain.Kingdoms;
+using KingdomStrategy.Domain.Kingdoms.Ratings;
 using MongoDB.Driver;
 
 namespace KingdomStrategy.Infrastructure.Storage;
@@ -19,6 +20,12 @@ public class KingdomRatingStorage
             IsUpsert = true
         }, cancellationToken: token);
     }
+    
+    public async Task<KingdomRating?> GetByRef(KingdomRef kingdomRef)
+    {
+        var cursor = await _collection.FindAsync( f => f.Ref.Id == kingdomRef.Id);
+        return cursor.FirstOrDefault();
+    } 
     
     public async Task<List<KingdomRating>> GetAll(CancellationToken token = default)
     {
