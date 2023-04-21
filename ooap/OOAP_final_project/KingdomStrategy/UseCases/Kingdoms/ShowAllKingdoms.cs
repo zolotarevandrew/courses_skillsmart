@@ -12,6 +12,7 @@ public class ShowAllKingdoms : ConsoleUseCase
 
     public override string Name => "All kingdoms";
     public override int Command => 1;
+    public override string Help => "Getting all kingdoms";
     protected override async Task InternalRun(string[] args)
     {
         var all = await _kingdomStorage.GetAll();

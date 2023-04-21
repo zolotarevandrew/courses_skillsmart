@@ -30,9 +30,9 @@ public class KingdomSeed
     {
         _logWriter.Write("Seeding data...");
         
-        await CreateKingdomByNam("Hoappa - 1");
-        await CreateKingdomByNam("Borroca - 2");
-        await CreateKingdomByNam("Trefecta - 3");
+        await CreateKingdomByNam("Hoappa");
+        await CreateKingdomByNam("Borroca");
+        await CreateKingdomByNam("Trefecta");
         
         _logWriter.Write("Seeding data finished.");
     }

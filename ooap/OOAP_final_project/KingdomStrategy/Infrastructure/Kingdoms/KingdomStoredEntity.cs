@@ -72,7 +72,7 @@ public class KingdomBaseStorage<TEntity> : StateStore<TEntity>
 
     public async Task<List<TEntity>> Load(List<string> ids)
     {
-        var cursor = await _collection.FindAsync( Builders<TEntity>.Filter.In("_id", ids));
+        var cursor = await _collection.FindAsync(Builders<TEntity>.Filter.In("_id", ids));
         return await cursor.ToListAsync();
     }
     

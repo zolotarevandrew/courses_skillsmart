@@ -7,6 +7,7 @@ public interface IUseCase
 {
     string Name { get; }
     int Command { get; }
+    string Help { get; }
     Task Run(string[] args);
 }
 
@@ -33,6 +34,7 @@ public abstract class ConsoleUseCase : IUseCase
     }
     public abstract string Name { get; }
     public abstract int Command { get; }
+    public abstract string Help { get; }
     public async Task Run(string[] args)
     {
         await InternalRun(args);

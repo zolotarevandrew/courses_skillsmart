@@ -14,16 +14,14 @@ Console.WriteLine("Hello to Kingdom Strategy Game. Choose an option:");
 
 while (true)
 {
-    foreach (var useCase in useCases)
-    {
-        Console.WriteLine(useCase.Command + " - " + useCase.Name);
-    }
+    Console.WriteLine("Type 'h' or 'help' to get help.");
     Console.WriteLine("Type 'exit' or 'quit' to exit.");
             
     // Read user input
     Console.Write("> ");
     var input = Console.ReadLine()?.ToLowerInvariant();
-    if (input == null)
+    var splitted = input.Split(" ");
+    if (input == null || splitted.Length == 0)
     {
         Console.WriteLine("Invalid command.");
         continue;
@@ -34,15 +32,19 @@ while (true)
         Console.WriteLine("Goodbye!");
         return;
     }
-            
-    if (!int.TryParse(input, out int command))
+    
+    if (input == "h" || input == "help")
     {
-        Console.WriteLine("Invalid command.");
+        foreach (var useCase in useCases)
+        {
+            Console.WriteLine(useCase.Command + " - " + useCase.Help);
+        }
         continue;
     }
-            
+
     // Find matching use case and run it
-    var matchingUseCase = useCases.FirstOrDefault(u => u.Command == command);
+    var cmd = splitted[0];
+    var matchingUseCase = useCases.FirstOrDefault(u => u.Command.ToString() == cmd);
     if (matchingUseCase == null)
     {
         Console.WriteLine("Invalid command.");
@@ -50,7 +52,10 @@ while (true)
     }
             
     Console.WriteLine($"Running {matchingUseCase.Name}...");
-    await matchingUseCase.Run(input.Split(" "));
+    
+    var arguments = splitted.Length > 1 ? splitted[1..] : new string[] { };
+    await matchingUseCase.Run(arguments);
+    
     Console.WriteLine("Done.");
 }
 
