@@ -44,11 +44,14 @@ public class TypeOfActivityDictionary
 
     public IEnumerable<TypeOfActivityItem> Search(ActivitySearchQuery query)
     {
-        return string.IsNullOrEmpty(query.Value)
-            ? Enumerable.Empty<TypeOfActivityItem>()
-            : _items
-                .Where(x => x.SearchRow.IndexOf(query.Value, StringComparison.Ordinal) > -1)
-                .OrderBy(x => x.Order);
+        if (string.IsNullOrEmpty(query.Value))
+        {
+            return Enumerable.Empty<TypeOfActivityItem>();
+        }
+
+        return _items
+            .Where(x => x.SearchRow.IndexOf(query.Value, StringComparison.Ordinal) > -1)
+            .OrderBy(x => x.Order);
     }
 
     static List<TypeOfActivityItem> LoadDict()
