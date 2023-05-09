@@ -1,6 +1,8 @@
-﻿using h_work.lesson1.example1;
+﻿using h_work.lesson1.example3;
 
-var str1 = "A01111 growing of cereal";
-var str2 = "A growing of cereal";
-var res = new TypeOfActivityDictionary();
-var items = res.Search(new ActivitySearchQuery(str1));
+var r = new RiskLevelRefCalculator(new List<DictionaryItem>(), new List<RiskLevelItem>());
+var riskSource = RiskSourceFactory.FromSource(new RiskSource
+{
+    Value = "1"
+});
+r.Calc(riskSource);
