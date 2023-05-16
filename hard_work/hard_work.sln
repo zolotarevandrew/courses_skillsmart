@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "h_work", "h_work\h_work.csproj", "{499B8118-E780-48EC-AB17-1A5AC8E758FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzTestingTemplate", "FuzzTestingTemplate\FuzzTestingTemplate.csproj", "{B23F6AB1-043F-4837-987B-3FAAB8B4E906}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{499B8118-E780-48EC-AB17-1A5AC8E758FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{499B8118-E780-48EC-AB17-1A5AC8E758FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{499B8118-E780-48EC-AB17-1A5AC8E758FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B23F6AB1-043F-4837-987B-3FAAB8B4E906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B23F6AB1-043F-4837-987B-3FAAB8B4E906}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B23F6AB1-043F-4837-987B-3FAAB8B4E906}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B23F6AB1-043F-4837-987B-3FAAB8B4E906}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

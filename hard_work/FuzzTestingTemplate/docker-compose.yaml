@@ -1,0 +1,6 @@
+version: '3'
+services:
+  testfunc:
+    build: .
+    environment:
+      - TARGET_FUNCTION=TestFunc
