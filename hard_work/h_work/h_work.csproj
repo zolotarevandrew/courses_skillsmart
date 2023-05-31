@@ -8,13 +8,21 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="dnlib" Version="3.3.1" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="Stateless" Version="5.13.0" />
     </ItemGroup>
 
     <ItemGroup>
       <None Update="lesson1\example1\ActivityCodes.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="lesson5\example1\" />
+      <Folder Include="lesson5\example2\" />
     </ItemGroup>
 
 </Project>

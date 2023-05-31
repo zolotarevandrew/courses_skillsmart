@@ -1,4 +1,6 @@
-﻿namespace h_work.lesson3.before;
+﻿using h_work.lesson5.example3;
+
+namespace h_work.lesson3.before;
 
 public class PersonVerificationDuplicate
 {
@@ -65,6 +67,13 @@ public class PersonVerificationCheckDuplicateService : IPersonVerificationCheckD
 public interface IIdCheckOuterService
 {
     Task<SimilarApplicantSearchResponse> SimilarApplicants(SimilarApplicantSearchRequest request);
+    Task<Response> ImitateVerification(ImitateVerificationRequestContract sumSubContract);
+    Task<Response> MarkCompleted(ApplyPersonVerificationRequest request);
+}
+
+public class Response
+{
+    public string Error { get; set; }
 }
 
 public class SimilarApplicantSearchRequest
