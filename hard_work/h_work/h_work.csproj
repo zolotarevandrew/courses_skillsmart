@@ -26,6 +26,7 @@
     <ItemGroup>
       <Folder Include="lesson5\example1\" />
       <Folder Include="lesson5\example2\" />
+      <Folder Include="lesson7\After\Members\" />
     </ItemGroup>
 
 </Project>
