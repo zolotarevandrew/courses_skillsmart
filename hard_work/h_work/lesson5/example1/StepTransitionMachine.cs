@@ -1,4 +1,8 @@
-﻿namespace h_work.lesson5.example1
+﻿
+
+using h_work.lesson9.example6;
+
+namespace h_work.lesson5.example1
 {
     public delegate InternalStateMachine StepTransitionMachineDelegate(StepTransitionContext context);
     
@@ -129,6 +133,7 @@
 
     public class StepTransitionContext
     {
+        public EBankOnboardingStep Step { get; set; }
     }
 
     public interface IStepTransitionTriggerFactory
