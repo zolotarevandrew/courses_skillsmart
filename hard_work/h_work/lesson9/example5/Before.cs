@@ -94,6 +94,8 @@ namespace h_work.lesson9.example5
     {
         Task<string> StoreFile(Guid entityId, Guid fileId, string documentType, string filePath);
         Task<string> StoreFile(Guid entityId, Guid fileId, string documentType, Stream stream, string mimeType);
+        Task<object> GetFileInfoByFullPath(string s);
+        Task<object> GetFileInfo(string filePath);
     }
 
     public interface IDocumentsStorageService
