@@ -40,7 +40,7 @@ public class ConnectLegalRepresentativeService
     public async Task Execute()
     {
         ITestBankOnboardingContext context = null;
-        var legalMatch = await _onboardingMetadata.GetKey<OnboardingLegalRepresentativesMatch>(context, BankOnboardingDataKeys.Finom.LegalRepresentativesMatch);
+        var legalMatch = await _onboardingMetadata.GetKey<OnboardingLegalRepresentativesMatch>(context, "LegalRepresentativesMatch");
 
         if (!legalMatch.HasExactMatch)
             throw new OnboardingInconsistentStateException(context, "had no exact match");
