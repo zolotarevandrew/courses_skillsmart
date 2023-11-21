@@ -1,0 +1,21 @@
+До - класс сбора данных по налоговым номерам.
+Переходить можно из любого состояние в любое, потенциально может привести к проблемам.
+
+После.
+Флоу переходов между состояниями следующий
+Created -> Completed.
+Created -> DeadlineExceeded.
+Created -> MovedToBlock;
+
+DeadlineExceeded -> MovedToBlock;
+DeadlineExceeded-> MovedForCheck;
+MovedForCheck -> ReRequested;
+MovedForCheck -> Completed;
+
+ReRequested -> DeadlineExceeded;
+
+Уложить в голове такое достаточно сложно, попробовал реализовать через statemachine-у, чтобы наглядно было видно какие-есть переходы.
+рядом лежит картинка (экспортнул в graphviz - можно посмотреть флоу переходов)
+
+Ситуацию сильно не упрощает, но позволяет видеть все возможные переходы, не сходя с ума.
+

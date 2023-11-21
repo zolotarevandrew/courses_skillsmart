@@ -4,7 +4,7 @@
 
 namespace h_work.lesson18.part2.example3;
 
-public class SalesPricing
+public class SalesPricing1
 {
     public static double GetDiscountedPriceForPass(double originalPrice)
     {
