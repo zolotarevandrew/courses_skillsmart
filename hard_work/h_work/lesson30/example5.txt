@@ -1,0 +1,14 @@
+void AddDataSource(ECddParameter cddParameter, Guid? entityParameterId = null)
+{
+    context.DataSourcesToStore.Add(BuildCompanyDataSource(company.Id, now, cddParameter, initiator, entityParameterId));
+}
+
+void AddLog(ECddParameter cddParameter, object value, Guid? entityParameterId = null)
+{
+    var log = BuildLogMessage(company.Id, now, value, cddParameter, initiator, entityParameterId);
+    context.ValueChangedLogsToStore.Add(log);
+}
+
+При добавлении параметров в досье клиента, периодически нужно рядом записывать логи об изменениях,
+конечно же в каждом новом месте, есть что-то похожее на эти вложенные "функции".
+Просто так не решить, нужно переделывать архитектуру сохранения параметров.

@@ -1,0 +1,42 @@
+﻿var missingInfo = new MissingInformationOld
+{
+    IsBusinessAddressMissing = !new AddressExistence(businessInfo.BusinessAddress).Value,
+    IsCompanyInfoMissing = _companyInfoMissingService.IsCompanyInfoMissing(businessInfo, context),
+    IsRegistryExtractMissing = !hasRegistryExtract
+};
+
+var missingInfo = new FreelancerMissingInformation
+{
+    IsAddressMissing = !bizAddressExistence.Value || !tempPersonalAddressExistence.Value
+};
+
+var missingInfo = new TeamMemberMissingInformation
+{
+    IsPersonalDetailsMissing = !hasPersonalDetails
+};
+
+В 3 разных местах была схожая логика по определению недостающей информации, естественно они все семантически значимы и автономны,
+но здесь явно напрашивалась абстракция для работы с недостающей информацией (поиск и предоставление), что далее и было сделано.
+
+
+public class MissingInfoByDataPoint
+{
+    public bool IsMissing { get; init; }
+    public EBusinessMissingDataPoint DataPoint { get; init; }
+}
+
+public enum EBusinessMissingDataPoint
+{
+    None = 0,
+    Details = 1,
+    Addresses = 2,
+    RegistrationDocument = 3,
+    LegalRepresentatives = 4,
+    PersonalDetails = 5
+}
+
+public interface IBusinessMissingInformationService
+{
+    Task<MissingInfoByDataPoint> Get(IBankOnboardingContext context, EBusinessMissingDataPoint dataPoint);
+    Task Provide(IBankOnboardingContext context, EBusinessMissingDataPoint dataPoint);
+}

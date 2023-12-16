@@ -1,0 +1,9 @@
+if (_config.SyncFullNameByCountry.ContainsKey(dossier.CountryCode))
+{
+    if (!string.IsNullOrEmpty(metadata.FirstName)) extendedVerification.Person.FirstName = metadata.FirstName.UpperFirstLettersOnly();
+    if (!string.IsNullOrEmpty(metadata.LastName)) extendedVerification.Person.LastName = metadata.LastName.UpperFirstLettersOnly();
+}
+
+При получении данных с верификации, в ряде стране есть необходимость перезаписывать имя и фамилию персоны с данных из документа,
+потому что они изначально могут приходить перепутанно и с ошибками из бизнес реестра.
+

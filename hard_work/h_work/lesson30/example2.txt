@@ -1,0 +1,73 @@
+public Task<Guid?> Get(IBankOnboardingContext context)
+{
+    return _metadata.GetKey<Guid?>(context, BankOnboardingDataKeys.Finom.RegistrationIssuer);
+}
+
+public Task Set(IBankOnboardingContext context, Guid? registrationIssuer)
+{
+    return _metadata.SetKey(context, BankOnboardingDataKeys.Finom.RegistrationIssuer, registrationIssuer);
+}
+
+Часто есть возможность хранить дополнительную информацию в метаданных онбординга,
+Но разрослось количество ключей, по всему проекту, семантика ключей зачастую всегда понятна
+- параметры компании
+- параметры онбординга
+они сейчас не отделены
+
+стоит явно выделить абстракцию для работы с параметрами компании
+ 
+public interface ICompanyParameters 
+{
+    Task<CompanyParameterGroup> Get(Guid companyId, params ECompanyParameter[] parameters);
+    Task Set(CompanyParameter parameter); 
+}
+
+public class CompanyParameterGroup 
+{
+ 
+}
+
+public class CompanyParameter
+{
+    public ECompanyParameter Type { get; private set; }
+    public JObject Value { get; private set; }
+}
+
+public abstract class CompanyParameter<T>
+{
+    protected CompanyParameter(Guid companyId, ECompanyParameter parameter, T value)
+    {
+        CompanyId = companyId;
+        Type = parameter;
+        Value = JObject.FromObject(value);
+    }
+    public Guid CompanyId { get; }
+    public ECompanyParameter Type { get; }
+    public JObject Value { get; }
+}
+
+public class RegistrationIssuer : CompanyParameter<Guid>
+{
+    public RegistrationIssuer(Guid companyId, Guid value) : base(companyId, ECompanyParameter.RegistrationIssuer, value)
+    {
+    }
+    
+    //прикидка
+    public static bool TryGet(CompanyParameterGroup group, out RegistrationIssuer issuer)
+    {
+        issuer = null;
+        if (group == null)
+            return false;
+        if (group.TryGetValue(ECompanyParameter.RegistrationIssuer, out var value))
+        {
+            issuer = new RegistrationIssuer(group.CompanyId, value);
+            return true;
+        }
+        return false;
+    }
+}
+
+public enum ECompanyParameter 
+{
+    RegistrationIssuer = 1,
+} 
