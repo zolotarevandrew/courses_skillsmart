@@ -1,0 +1,22 @@
+Сессия дополнительных вопросов - ей управляет сервис повыше.
+
+(интерфейс конечно дико перегружен - не я писал, 
+переделал в рамках задания на IFinomAdditionalQuestionsSessionV2, 
+остальное можно унести в методы расширения AdditionalQuestionsSessionState или написать по месту использования)
+
+Свойства корректности
+- Сессию можно начать только 1 раз;
+- Сессию можно завершить только при наличии всех отвеченных вопросов;
+- Добавить вопросы можно только в активную сессию;
+
+Тесты:
+- Start_SessionAlreadyStarted_ShouldThrow - невозможно заново начать проходить уже начатую сессию;
+- Start_SessionNotStarted_ShouldBeStarted - сессия не начата, должен изменится статус сессии на Started;
+
+- Finish_SessionAlreadyFinished_ShouldThrow - невозможно закончить уже законченную сессию;
+- Finish_SomeQuestionsNotAnswered_ShouldThrow - невозможно завершить сессию при наличии не отвеченных вопросов;
+- Finish_AllQuestionsAnswered_ShouldBeFinished - если все вопросы отвечены, сессию можно завершить;
+
+- AddQuestions_SessionNotStarted_ShouldThrow - невозможно добавить вопросы в неактивную сессию. 
+- AddQuestions_SessionStarted_ShouldAdd - возможно добавить вопросы в активную сессию.
+

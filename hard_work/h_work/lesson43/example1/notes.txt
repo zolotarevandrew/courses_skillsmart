@@ -1,0 +1,19 @@
+Группа верификаций.
+Свойства корректности (по сути они 1 в 1 отображают продуктовые требования в данном случае)
+- для Selectable списка, верификацию должен пройти регистратор и еще минимум одна персона.
+- для Strict списка, верификацию должен пройти регистратор и все остальные персоны.
+
+
+Необходимые Тесты:
+IsCompleted_SelectableListRegistatorCompletedAndOneLrNot_ShouldBeNone - selectable список, регистратор завершил верификацию а одна персона нет
+IsCompleted_SelectableListRegistatorCompletedAndOneLrCompleted_ShouldBeCompleted - selectable список, регистратор завершил верификацию, и вторая персона тоже.
+
+IsCompleted_StrictListRegistratorOnlyCompleted_ShouldBeNone - strict список, только регистратор завершил верификацию
+IsCompleted_StrictListRegistratorСompletedAndOnePersonNot_ShouldBeNone - strict список, регистратор завершил верификацию, а одна персон нет.
+IsCompleted_StrictListRegistatorCompletedAndAllOtherCompleted_ShouldBeCompleted - strict список, регистратор завершил верификацию, и все остальные персоны тоже.
+
+Дополнительно:
+- переделал бы тут статусную модель (InProgress, LinksShared, Fraud, Failed, Completed)
+убрав бы лишние булеан флаги - дико режет глаза с новыми знаниями.
+
+P.S ужасно смотреть на свой код двухлетней давности :) 
