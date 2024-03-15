@@ -1,15 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoFixture;
-using IdCheck.SumSub.MessageHandlers.Documents;
-using IdCheck.SumSub.Storage;
-using NSubstitute;
-using TestTools;
-using Xunit;
-
-namespace IdCheck.UnitTests.SumSub.MessageHandlers.Documents;
-
-public class DeactivatePersonSumSubDocumentsMessageHandlerTests : BaseUnitTest
+﻿public class DeactivatePersonSumSubDocumentsMessageHandlerTests
 {
     private readonly DeactivatePersonSumSubDocumentsMessageHandler _handler;
     private readonly ISumSubDocumentImageStore _documentImageStore;

@@ -1,4 +1,4 @@
-﻿public class IPCheckResultAnalyzerTests : BaseUnitTest
+﻿public class IPCheckResultAnalyzerTests
 {
     private readonly IFeatureToggleHelper _featureHelper;
     private readonly IPCheckResultAnalyzer _analyzer;

@@ -1,25 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using BankOnboarding.BusinessLogic.Services.VersionRouters;
-using BankOnboarding.BusinessLogic.Services.VersionRouters.Specific;
-using BankOnboarding.Interfaces.Onboarding;
-using BankOnboarding.PreOnboarding.BusinessLogic.Domain.Params;
-using BankOnboarding.PreOnboarding.BusinessLogic.Domain.Params.GermanPrefferedOffer;
-using BankOnboarding.PreOnboarding.BusinessLogic.Domain.Params.SelectedBank;
-using BankOnboarding.PreOnboarding.BusinessLogic.Services;
-using FluentAssertions;
-using Newtonsoft.Json.Linq;
-using NSubstitute;
-using Serverless.Contracts.Bank.Contracts;
-using Serverless.Contracts.Dictionaries;
-using Serverless.Contracts.Enums;
-using TestTools;
-using Xunit;
-
-namespace BankOnboarding.Tests.BusinessLogic.Services.VersionRouters;
-
-public class GermanVersionRouterTests : BaseUnitTest
+﻿
+public class GermanVersionRouterTests
 {
     [Fact]
     public async Task Route_NoBankSelectedAndPrefferedOffer_ShouldBeSourceVersion()

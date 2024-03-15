@@ -1,25 +1,11 @@
-﻿using CustomerDossier.BusinessLogic.CompanyDossier.Storage.Contracts;
-using CustomerDossier.BusinessLogic.ComplexClients.Services;
-using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestTools;
-using Xunit;
-using AutoFixture;
-using Newtonsoft.Json.Linq;
-
-namespace CustomerDossier.Tests.BusinessLogic.ComplexClients.ComplexityService;
-
-public class ComplexLegalFormComplexityServiceTests : BaseUnitTest
+﻿
+public class ComplexLegalFormComplexityServiceTests
 {
     private readonly ComplexLegalFormComplexityService _service;
     private readonly ICompanyDossierStorageService _dossier;
     private readonly ComplexLegalFormConfig _config;
 
-    private const string ComplexLegalForm = "739c311d-8653-4448-bed2-d0ae908b42bb";
+    private const string ComplexLegalForm = "1";
 
     public ComplexLegalFormComplexityServiceTests()
     {
