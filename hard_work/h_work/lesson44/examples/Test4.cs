@@ -1,4 +1,5 @@
-﻿public class DeactivatePersonSumSubDocumentsMessageHandlerTests
+﻿/*
+public class DeactivatePersonSumSubDocumentsMessageHandlerTests
 {
     private readonly DeactivatePersonSumSubDocumentsMessageHandler _handler;
     private readonly ISumSubDocumentImageStore _documentImageStore;
@@ -22,3 +23,4 @@
             .ChangePersonImagesActivation(Arg.Is<Guid>(g => g == message.PersonId), Arg.Is<bool>(b => b == false));
     }
 }
+*/

@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "h_work", "h_work\h_work.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzTestingTemplate", "FuzzTestingTemplate\FuzzTestingTemplate.csproj", "{B23F6AB1-043F-4837-987B-3FAAB8B4E906}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hard_work_console", "hard_work_console\hard_work_console.csproj", "{4A95AED8-0189-4871-8F45-3BF9321A8684}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +18,5 @@ Global
 		{B23F6AB1-043F-4837-987B-3FAAB8B4E906}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B23F6AB1-043F-4837-987B-3FAAB8B4E906}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B23F6AB1-043F-4837-987B-3FAAB8B4E906}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4A95AED8-0189-4871-8F45-3BF9321A8684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A95AED8-0189-4871-8F45-3BF9321A8684}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A95AED8-0189-4871-8F45-3BF9321A8684}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A95AED8-0189-4871-8F45-3BF9321A8684}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -3,7 +3,8 @@
 //Before
 public interface IBankOnboardingContext
 {
-
+    Guid CompanyId { get; set; }
+    Guid UserId { get; set; }
 }
 
 public record TaxIdentificationReminderStatus();

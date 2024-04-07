@@ -1,5 +1,6 @@
 ﻿
 
+/*
 public class AdditionalQuestionsAobBannerServiceTests
 {
     private readonly IAdditionalQuestionsAobBannerService _sut;
@@ -80,7 +81,5 @@ public class AdditionalQuestionsAobBannerServiceTests
                 && x.Key == companyId.ToString()
                 && x.Data != null));
     }
-
-
-
 }
+*/
