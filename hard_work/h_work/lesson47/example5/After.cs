@@ -85,7 +85,7 @@ public interface IDocumentCompanyRelation
 {
     //тут сервис провайдер надо заменить на специфичный IDocumentCompanyRelationServiceProvider, не стал усложнять описание
     Task<List<RelatedCompany>> Get(IServiceProvider provider);
-} 
+
 
 /*
 
