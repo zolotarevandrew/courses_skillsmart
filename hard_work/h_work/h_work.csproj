@@ -19,6 +19,7 @@
       <PackageReference Include="NSubstitute" Version="5.0.0" />
       <PackageReference Include="Stateless" Version="5.13.0" />
       <PackageReference Include="xunit" Version="2.5.0-pre.22" />
+      <PackageReference Include="Z.Linq.Async" Version="1.0.3" />
     </ItemGroup>
 
     <ItemGroup>
