@@ -1,18 +1,27 @@
-﻿using h_work.lesson33;
+﻿
+//we just dont need it..
+static IEnumerable<int> FibsSum(IEnumerable<int> fibs)
+{
+    int fsum = 0;
+    foreach (var fib in fibs)
+    {
+        fsum += fib;
+        yield return fsum;
+    }
+}
 
-var id = Guid.NewGuid();
-var user1 = new User
+static IEnumerable<int> GetFibs(int num)
 {
-    Id = id,
-    FirstName = "first",
-    LastName = "last"
-};
-var user2 = new User
+    int a = 0, b = 1;
+    for (int i = 0; i < num; i++)
+    {
+        yield return a;
+        //swap with tuples deconstruction
+        (a, b) = (b, a + b);
+    }
+}
+
+foreach (var num in GetFibs(20))
 {
-    Id = id,
-    FirstName = "first",
-    LastName = "last"
-};
-var hashCode = user1.GetHashCode();
-var hashCode2 = user2.GetHashCode();
-var a = hashCode2;
+    Console.WriteLine(num);
+}
