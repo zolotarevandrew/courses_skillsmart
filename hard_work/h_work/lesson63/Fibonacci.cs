@@ -2,8 +2,6 @@
 
 public static class Fibonacci
 {
-    
-
     static IEnumerable<int> GetFibs(int num)
     {
         int a = 0, b = 1;
