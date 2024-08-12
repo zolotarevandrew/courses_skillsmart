@@ -32,7 +32,7 @@ public class AdditionalQuestionSession
 
         if (_pendingQueue.Any())
         {
-            throw new Exception($"There is pending question");
+            throw new Exception($"There is pending questions");
         }
 
         Status = AdditionalQuestionsSessionStatus.Finished;

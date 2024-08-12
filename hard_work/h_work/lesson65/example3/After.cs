@@ -5,13 +5,20 @@
 
 public record AdditionalQuestionSessionV2
 {
+    private List<AdditionalQuestion> _pendingQueue = new();
+    
     public AdditionalQuestionsSessionStatus Status { get; private set; }
     
-    public (AdditionalQuestionSessionV2, string) Finish()
+    public (AdditionalQuestionSessionV2?, string) Finish()
     {
         if (Status != AdditionalQuestionsSessionStatus.Started)
         {
-            return (this, $"Unexpected session status. Can't finish session in status {Status}");
+            return (null, $"Unexpected session status. Can't finish session in status {Status}");
+        }
+        
+        if (_pendingQueue.Any())
+        {
+            return (null, $"There is pending questions");
         }
 
         return (new AdditionalQuestionSessionV2 {Status = AdditionalQuestionsSessionStatus.Finished}, string.Empty);
