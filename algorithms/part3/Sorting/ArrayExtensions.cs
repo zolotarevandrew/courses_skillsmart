@@ -13,4 +13,12 @@ public static class ArrayExtensions
     {
         (array[toIdx], array[fromIdx]) = (array[fromIdx], array[toIdx]);
     }
+    
+    public static int SafeGetByIndex(this Memory<int> array, int idx)
+    {
+        return idx >= 0 && idx <= array.Length - 1 
+            ? array.Span[idx] 
+            //yeap hacky
+            : default;
+    }
 }
