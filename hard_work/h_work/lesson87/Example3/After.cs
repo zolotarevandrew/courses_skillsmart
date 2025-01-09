@@ -1,7 +1,7 @@
 ﻿namespace h_work.lesson87.Example3;
 
 /*
-public record MobilePhone(string Code, string Phone)
+public record MobilePhone
 {
     public string Full => FullNumber(Code, Phone);
 
