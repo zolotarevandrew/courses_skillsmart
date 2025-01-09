@@ -1,7 +1,7 @@
 ﻿namespace h_work.lesson81;
 
 /*
-public class Example2
+public class Before
 {
     private async Task<IReadOnlyCollection<CddExportCddParameter>> BuildPersons()
     {
