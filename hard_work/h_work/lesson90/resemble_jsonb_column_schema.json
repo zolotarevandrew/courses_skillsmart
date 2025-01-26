@@ -1,0 +1,72 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Результат сравнения изображений",
+  "type": "object",
+  "properties": {
+    "isSameDimensions": {
+      "type": "boolean",
+      "description": "Имеют ли изображения одинаковые размеры"
+    },
+    "dimensionDifference": {
+      "type": "object",
+      "description": "Разница в размерах между изображениями",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "description": "Разница в ширине между изображениями"
+        },
+        "height": {
+          "type": "integer",
+          "description": "Разница в высоте между изображениями"
+        }
+      },
+      "required": ["width", "height"]
+    },
+    "misMatchPercentage": {
+      "type": "number",
+      "description": "Процент несоответствия между изображениями",
+      "minimum": 0
+    },
+    "diffBounds": {
+      "type": "object",
+      "description": "Границы области, где найдены различия",
+      "properties": {
+        "top": {
+          "type": "integer",
+          "description": "Верхняя граница области различий"
+        },
+        "left": {
+          "type": "integer",
+          "description": "Левая граница области различий"
+        },
+        "bottom": {
+          "type": "integer",
+          "description": "Нижняя граница области различий"
+        },
+        "right": {
+          "type": "integer",
+          "description": "Правая граница области различий"
+        }
+      },
+      "required": ["top", "left", "bottom", "right"]
+    },
+    "analysisTime": {
+      "type": "integer",
+      "description": "Время анализа в миллисекундах",
+      "minimum": 0
+    },
+    "diffImagePath": {
+      "type": "string",
+      "description": "Путь к изображению с различиями, хранящемуся в MinIO",
+      "format": "uri"
+    }
+  },
+  "required": [
+    "isSameDimensions",
+    "dimensionDifference",
+    "misMatchPercentage",
+    "diffBounds",
+    "analysisTime",
+    "diffImagePath"
+  ]
+}
