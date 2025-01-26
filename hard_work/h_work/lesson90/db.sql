@@ -31,8 +31,8 @@ CREATE INDEX idx_snapshots_type_test_id ON snapshots (snapshot_type, test_id);
 CREATE TABLE snapshot_run (
                               id UUID PRIMARY KEY,         -- Уникальный идентификатор запуска
                               created_at TIMESTAMP NOT NULL, -- Дата и время запуска
-                              name TEXT NOT NULL          -- Имя (например, номер релиза),
-                                  env TEXT NOT NULL          -- среда на которой ран был запущен,
+                              name TEXT NOT NULL,         -- Имя (например, номер релиза),
+                              env TEXT NOT NULL          -- среда на которой ран был запущен,
 );
 
 CREATE INDEX idx_snapshot_run_name_trgm ON snapshot_run USING gin (name gin_trgm_ops);
