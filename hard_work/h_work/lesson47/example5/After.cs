@@ -86,12 +86,12 @@ public interface IDocumentCompanyRelation
     //тут сервис провайдер надо заменить на специфичный IDocumentCompanyRelationServiceProvider, не стал усложнять описание
     Task<List<RelatedCompany>> Get(IServiceProvider provider);
 
-
+}
 /*
 
 public class After
 {
-    
+
     private async Task<List<RelatedCompany>> GetCompanies(DocumentRelation relation)
     {
         //(relation as IDocumentCompanyRelation).Get(provider);

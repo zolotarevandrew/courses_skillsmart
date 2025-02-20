@@ -1,7 +1,7 @@
 ﻿namespace h_work.lesson53;
 
 /*
-public class Example1
+public class Before
 {
     
     public async Task<PassFiltersResponse> GetFilteredAsync(FilterRequest request)
