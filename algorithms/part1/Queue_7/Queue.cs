@@ -3,7 +3,10 @@ using System.Collections.Generic;
 
 namespace AlgorithmsDataStructures
 {
-
+    // microsoft reference - https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/Queue.cs
+    // microsoft reference - https://github.com/microsoft/referencesource/blob/master/mscorlib/system/array.cs
+    // содержит два индекса head,tail сделано как circular buffer
+    // enqueue записывает в tail
     public class Queue<T>
     {
         private List<T> _store;

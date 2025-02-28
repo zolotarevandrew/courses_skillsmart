@@ -42,9 +42,15 @@ namespace LinkedList_3
             
         }
     }
+    
 
+    // microsoft reference - https://github.com/microsoft/referencesource/blob/master/System/compmod/system/collections/generic/linkedlist.cs
+    // This LinkedList is a doubly-Linked circular list - но это скрывается в реализации и соот
+    // (head) ⇄ [1] ⇄ [2] ⇄ [3] ⇄ (head)
+    
     public class LinkedList3
     {
+        private LinkedList<int> _list;
         DummyNode _dummyHead;
         DummyNode _dummyTail;
 

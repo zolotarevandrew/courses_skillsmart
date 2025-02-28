@@ -4,12 +4,18 @@ using System.Collections.Generic;
 namespace AlgorithmsDataStructures
 {
 
+    // microsoft reference - https://github.com/dotnet/runtime/blob/main/src/libraries/System.Collections/src/System/Collections/Generic/Stack.cs
+    // microsoft reference - https://github.com/microsoft/referencesource/blob/master/mscorlib/system/array.cs
+    // почти все операции O(1) Pop просто затирает элемент на последнем месте.
+    // Push с resize O(N) - поскольку надо копировать память.
+    // вместо Array.Copy проще использовать готовую Array.Resize там внутри Array.Copy
     public class Stack<T>
     {
         private List<T> _store;
         public Stack()
         {
             _store = new List<T>();
+            Queue<T>
         }
 
         public int Size()

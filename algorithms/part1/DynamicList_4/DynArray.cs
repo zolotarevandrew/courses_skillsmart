@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AlgorithmsDataStructures
 {
@@ -8,7 +9,14 @@ namespace AlgorithmsDataStructures
         public const int MinArraySize = 16;
         public static int IncreasedCapacity(int capacity = MinArraySize) => Math.Max(MinArraySize, capacity * 2);
         public static int DecreasedCapacity(int capacity = MinArraySize) => Math.Max(MinArraySize, (int)(capacity / 1.5));
+        
     }
+
+    // microsoft reference - List https://github.com/microsoft/referencesource/blob/master/mscorlib/system/collections/generic/list.cs?utm_source=chatgpt.com
+    // microsoft reference - Array https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Array.cs
+    // _defaultCapacity - 4 если capacity 0 то присваивает ссылку на пустой static массив увеличивает Capacity вдвое.
+    
+    
     public class DynArray<T>
     {
         public T [] array;
@@ -18,6 +26,7 @@ namespace AlgorithmsDataStructures
         public DynArray()
         {
             count = 0;
+            Array.Clear();
             MakeArray(16);
         }
 
@@ -33,8 +42,8 @@ namespace AlgorithmsDataStructures
             {
                 Array.Copy(array, newArray, count);
             }
+            
             array = newArray;
-
             capacity = new_capacity;
         }
 
