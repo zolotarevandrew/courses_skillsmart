@@ -3,7 +3,7 @@
 public class After
 {
     /*
-     *  *  public async Task<EBankOnboardingStep?> Next(IBankOnboardingContext context, BankOnboardingStepInfo currentStep)
+    public async Task<EBankOnboardingStep?> Next(IBankOnboardingContext context, BankOnboardingStepInfo currentStep)
     {
         EBankOnboardingStep? result = await _dependencies.Logger.Log(
             context, _source, "IFlowMachineService.Next",

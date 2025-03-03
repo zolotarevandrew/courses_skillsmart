@@ -3,7 +3,7 @@
 public class Before
 {
     /*
-     * private async Task<IFinomAdditionalQuestionsSession> GetSessionOrThrow(AdditionalQuestionsSessionContext context)
+     * private async Task<IAdditionalQuestionsSession> GetSessionOrThrow(AdditionalQuestionsSessionContext context)
     {
         var session = await _additionalQuestionsDataService.GetSession(context.CompanyId, context.UserId);
         if (session == null)

@@ -3,7 +3,7 @@
 public class Before
 {
     /*
-     *  private async Task<(Guid UserId, FinomOnboardingPerson Person)> GetSignerUserIdAndPersonId(
+     *  private async Task<(Guid UserId, OnboardingPerson Person)> GetSignerUserIdAndPersonId(
         IBankOnboardingContext context,
         Guid? personId)
     {
@@ -17,7 +17,7 @@ public class Before
         return (userId, person);
     }
     
-     private async Task<Guid> GetTempUserId(IBankOnboardingContext context, FinomOnboardingPerson person)
+     private async Task<Guid> GetTempUserId(IBankOnboardingContext context, OnboardingPerson person)
     {
         var tempAccessContext = await _personTempAccessService.GetByPerson(context, person.Id);
         if (tempAccessContext is null) throw new Exception($"No temp access for person {person.Id}");
