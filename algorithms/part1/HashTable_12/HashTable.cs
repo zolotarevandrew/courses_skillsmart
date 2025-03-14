@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AlgorithmsDataStructures
 {
 
+    //microsoft reference - https://github.com/microsoft/referencesource/blob/master/mscorlib/system/collections/hashtable.cs
+    //использует метод двойного хэширования, когда используются две совершенно разные хэш-функции h1() и h2(). Если слот k = h1(v) занят, тогда вычисляется h1(v) + i * h2(v) по модулю длины таблицы
+    // The hashtable is created with an initial capacity of zero and a load factor of 1.0
+    //
     public class HashTable
     {
         public int size;
@@ -16,6 +21,7 @@ namespace AlgorithmsDataStructures
             step = stp;
             slots = new string[size];
             for(int i=0; i<size; i++) slots[i] = null;
+            Hashtable
         }
 
         public int HashFun(string value)

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Channels;
 
 namespace AlgorithmsDataStructures
 {
+    
+    //microsoft reference
     class Deque<T>
     {
         private Stack<T> _head;

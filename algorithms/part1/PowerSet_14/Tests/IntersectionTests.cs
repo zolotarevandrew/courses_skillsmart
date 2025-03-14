@@ -52,7 +52,7 @@ namespace PowerSet_14.Tests
             set2.Put("3");
 
             //Act
-            var res = set1.Intersection(set2);
+            var res = set2.Intersection(set1);
             Assert.Equal(2, res.Size());
             Assert.True(res.Get("2"));
             Assert.True(res.Get("3"));

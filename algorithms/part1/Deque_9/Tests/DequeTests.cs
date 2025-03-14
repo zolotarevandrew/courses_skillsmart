@@ -6,6 +6,15 @@ namespace Deque_9.Tests
     public class DequeTests
     {
         [Fact]
+        public void Test()
+        {
+            int a = 0;
+            if (a-- == -1)
+            {
+                
+            }
+        }
+        [Fact]
         public void AddFront_Empty_ShouldHaveCorrectData()
         {
             //Arrange

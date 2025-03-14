@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace AlgorithmsDataStructures
 {
 
+    //microsoft reference - https://github.com/microsoft/referencesource/blob/master/System/compmod/system/collections/generic/sortedlist.cs
     public class Node<T>
     {
         public T value;

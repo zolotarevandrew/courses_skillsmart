@@ -8,6 +8,7 @@ namespace AlgorithmsDataStructures
         public const int MaxSize = 20000;
     }
 
+    //microsoft reference - https://github.com/microsoft/referencesource/blob/master/System.Core/System/Collections/Generic/HashSet.cs
     public class PowerSet<T>
     {
         class Slot
@@ -102,6 +103,11 @@ namespace AlgorithmsDataStructures
         public PowerSet<T> Intersection(PowerSet<T> set2)
         {
             var res = new PowerSet<T>();
+            // 1 2 3 4 5 8 9
+            // 5 6 7 1 4
+            
+            // 5 1 4
+            // 
             
             for (int i = 0; i < set2._slots.Length; i++)
             {
@@ -115,18 +121,7 @@ namespace AlgorithmsDataStructures
                     }
                 }
             }
-            for (int i = 0; i < _slots.Length; i++)
-            {
-                var slot = _slots[i];
-                if (slot != null)
-                {
-                    foreach (var item in slot.Items)
-                    {
-                        var found = set2.Get(item);
-                        if (found) res.Put(item);
-                    }
-                }
-            }
+            
             return res;
         }
 

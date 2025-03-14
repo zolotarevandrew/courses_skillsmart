@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AlgorithmsDataStructures
 {
 
+    //microsoft reference - https://github.com/microsoft/referencesource/blob/master/mscorlib/system/collections/generic/dictionary.cs
     public class NativeDictionary<T>
     {
         public int size;
@@ -14,6 +16,7 @@ namespace AlgorithmsDataStructures
         public NativeDictionary(int sz)
         {
             size = sz;
+            Dictionary<string ,int>
             slots = new string[size];
             values = new T[size];
         }
