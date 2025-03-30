@@ -1,0 +1,8 @@
+﻿let do x y = x + y
+
+let withLogging f x y =
+    let result = f x y
+    printfn $"Result: {result}"
+    result
+
+let doLogged = withLogging do

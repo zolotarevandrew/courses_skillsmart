@@ -1,0 +1,33 @@
+﻿open System
+type Logger = {
+    Log : string -> unit
+}
+
+let consoleLogger = {
+    Log = printfn "[INFO] %s"
+}
+
+let mockTestLogger = {
+    Log = fun _ -> ()
+}
+
+let fileLogger = {
+    Log = fun _ -> ()
+}
+
+type LoggerType = 
+    | Console 
+    | File
+    | Mock
+
+let createLogger (loggerType: LoggerType) =
+    match loggerType with
+    | Console -> consoleLogger
+    | File -> fileLogger
+    | Mock -> mockTestLogger
+
+[<EntryPoint>]
+let main _ =
+    let loggerType = if Environment.GetEnvironmentVariable("ENV") = "test" then Mock else Console
+    let logger = createLogger loggerType
+    0

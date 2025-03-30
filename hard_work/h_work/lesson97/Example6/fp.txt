@@ -1,0 +1,1 @@
+﻿let sum = List.fold (fun acc x -> acc + x)

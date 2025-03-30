@@ -1,0 +1,20 @@
+﻿type VehiclePts =
+    | OldVehiclePts
+    | ElectronicVehiclePts
+
+[<Struct>]
+type VehiclePtsIssueYear = VehiclePtsIssueYear of int
+
+let getByIssueYear (VehiclePtsIssueYear year) : VehiclePts =
+    if year <= 2021 then OldVehiclePts else ElectronicVehiclePts
+
+[<EntryPoint>]
+let main _ =
+    let year = VehiclePtsIssueYear 2022
+    let pts = getByIssueYear year
+
+    match pts with
+    | OldVehiclePts -> printfn "Старый ПТС"
+    | ElectronicVehiclePts -> printfn "Электронный ПТС"
+
+    0

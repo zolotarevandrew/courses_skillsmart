@@ -1,0 +1,9 @@
+﻿type Hashable<'T> = {
+    GetHashCode: 'T -> int
+}
+
+let intHashable = {
+    GetHashCode = fun (x: int) -> x.GetHashCode()
+}
+
+let hashWith (h: Hashable<'T>) (x: 'T) = h.GetHashCode x

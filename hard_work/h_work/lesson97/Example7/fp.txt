@@ -1,0 +1,12 @@
+﻿type LegalForm = {
+    Name: string
+    Code: string
+}
+
+type LegalFormGetter = string -> LegalForm list
+
+let getLegalForms: LegalFormGetter =
+    fun countryCode ->
+        match countryCode with
+        | "DE" -> []
+        | _ -> []

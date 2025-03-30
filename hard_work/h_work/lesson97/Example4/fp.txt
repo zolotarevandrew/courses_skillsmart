@@ -1,0 +1,10 @@
+﻿[<EntryPoint>]
+let main _ =
+    let maybeNumber1 : int option = Some 10
+    let maybeNumber2 : int option = None
+    let result1 = Option.map (fun x -> x * 2) maybeNumber1
+    let result2 = Option.map (fun x -> x * 2) maybeNumber2
+    printfn "%A" result1
+    printfn "%A" result2
+
+    0

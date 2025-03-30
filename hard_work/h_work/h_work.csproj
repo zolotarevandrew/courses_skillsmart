@@ -40,4 +40,8 @@
       <Folder Include="lesson7\After\Members\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="lesson97\Example1\fp.txt" />
+    </ItemGroup>
+
 </Project>

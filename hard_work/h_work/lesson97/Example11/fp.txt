@@ -1,0 +1,18 @@
+﻿type AobBanner = { }
+
+type BannerSortStrategy = AobBanner list -> AobBanner list
+
+    let basicBannerSort : BannerSortStrategy =
+    fun banners -> 
+    banners
+
+let migrationBannerSort : BannerSortStrategy =
+    fun banners -> 
+    banners
+
+let germanyBannerSort : BannerSortStrategy =
+    fun banners -> 
+    banners
+
+let sortBanners (strategy: BannerSortStrategy) (banners: AobBanner list) =
+    strategy banners

@@ -1,0 +1,9 @@
+﻿type IUniqueKeyGenerator =
+    {
+        Generate: int -> int
+    }
+
+let basicUniqueKeyGenerator : IUniqueKeyGenerator =
+    {
+        Generate = fun x -> x.GetHashCode()
+    }

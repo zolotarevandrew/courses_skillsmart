@@ -1,0 +1,3 @@
+﻿type Equatable<'T> = {
+    Equals: 'T -> 'T -> bool
+}
