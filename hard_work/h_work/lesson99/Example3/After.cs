@@ -10,12 +10,6 @@ public class QueryController<TQuery>(IServiceProvider provider) : ControllerBase
     }
 }
 
-public static async Task<QueryResult> Dispatch(IServiceProvider provider, IQuery<QueryResult> query)
-{
-    var handler = provider.GetRequiredKeyedService<IQueryHandler<IQuery<QueryResult>, QueryResult>>(query.GetType());
-    return await handler.QueryAsync(query);
-}
-
 public abstract class QueryResult {}
 public class UserByIdResult : QueryResult {}
 
