@@ -74,7 +74,7 @@ public interface IDataCollectionBannerService
 
 ```csharp
 public abstract class DataCollectionAobBannerRequest { }
-public class DataCollectionRequired : DataCollectionAobBannerRequest { }
+public class DataCollectionRequiredAobBannerRequest : DataCollectionAobBannerRequest { }
 
 public interface IDataCollectionBannerService
 {
