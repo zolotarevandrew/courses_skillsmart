@@ -78,8 +78,8 @@ public class DataCollectionRequiredAobBannerRequest : DataCollectionAobBannerReq
 
 public interface IDataCollectionBannerService
 {
-    Task DeactivateCurrentAobBanner(DataCollectionContext context);
-    Task ActivateAobBanner<T>(DataCollectionContext context, T request) where T : DataCollectionAobBannerRequest;
+    Task DeactivateCurrent(DataCollectionContext context);
+    Task Activate<T>(DataCollectionContext context, T request) where T : DataCollectionAobBannerRequest;
 }
 ```
 
