@@ -50,7 +50,7 @@ public static class NumberOperations
 Добавлена возможность логирования и других cross-cutting concerns.
 В результате снова получился моноид :)
 
-### 2) Обобщение замыкания - 
+### 2) Обобщение замыкания - EntityRule
 
 ```csharp
 using GuestRule = EntityRule<Guest>;
@@ -133,10 +133,10 @@ public static class EntityRulesExtensions
 Попытался реализовать "DSL" для работы с сущностями на основе обобщённого интерфейса EntityRule.
 В итоге интуитивно пришёл к подходам из функционального программирования.
 Забавно, что на уровне реализации в .NET методы всё равно отделены от данных: в каждый метод неявно передаётся ссылка this на текущий объект.
-Планирую поэкспериментировать над тем, как интегрировать такую модель с Entity Framework и заменить собственную реализацию на типы из LanguageExt.
+Планирую поэкспериментировать над тем, как интегрировать функциональную модель с Entity Framework и LanguageExt.
 
 
-### 3) Обобщение замыкания - 
+### 3) Обобщение замыкания - Sanitizer
 
 ```csharp
 public delegate T Sanitizer<T>(T input);
@@ -144,22 +144,125 @@ public delegate T Sanitizer<T>(T input);
 Интерфейс санитизации входных данных. 
 Также поддерживает композицию правил, если выделять функции по сущности отдельно.
 
-### 4) Составные типы - 
+### 4) Составные типы - IDomainEntity
 
 ```csharp
+public abstract class DomainEvent {}
+public sealed class DomainEventsGroup : IEnumerable<DomainEvent>
+{
+    private readonly List<DomainEvent> _events = new();
 
+    public void Add(DomainEvent domainEvent)
+    {
+        if (domainEvent == null) throw new ArgumentNullException(nameof(domainEvent));
+        _events.Add(domainEvent);
+    }
+
+    public DomainEventsGroup Combine(DomainEventsGroup other)
+    {
+        if (other == null) throw new ArgumentNullException(nameof(other));
+        
+        DomainEventsGroup result = new DomainEventsGroup();
+        result._events.AddRange(_events);
+        result._events.AddRange(other._events);
+        return result;
+    }
+
+    public IEnumerator<DomainEvent> GetEnumerator() => _events.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+}
+
+public interface IDomainEntity
+{
+    long Id { get; }
+    DomainEventsGroup GetEvents();
+}
+
+public  class GuestBooking {}
+
+public abstract class BaseDomainEntity : IDomainEntity
+{
+    protected readonly DomainEventsGroup Events = new();
+    public long Id { get; protected set; }
+    
+    public DomainEventsGroup GetEvents() => Events;
+}
+public class Guest : BaseDomainEntity
+{
+    public GuestBooking? Booking { get; private set; }
+
+    public void ChangeBooking(GuestBooking booking)
+    {
+        Booking = booking;
+        Events.Add(new GuestBookingChanged
+        {
+            GuestId = Id
+        });
+    }
+}
+
+public class GuestBookingChanged : DomainEvent
+{
+    public long GuestId { get; set; }
+}
 ```
+Инкапсулируем поведение и операции над DomainEvent в обёртку DomainEventsGroup,
+чтобы удобно добавлять, валидировать, объединять, фильтровать и отправлять доменные события на уровне Entity Framework.
 
-
-### 5) Составные типы - 
+### 5) Составные типы - IRequestHandler
 
 ```csharp
+public readonly struct Result<T>
+{
+    public bool IsSuccess { get; }
+    public T? Value { get; }
+    public string? Error { get; }
 
+    private Result(bool isSuccess, T? value, string? error)
+    {
+        IsSuccess = isSuccess;
+        Value = value;
+        Error = error;
+    }
+
+    public static Result<T> Success(T value) => new(true, value, null);
+    public static Result<T> Failure(string error) => new(false, default, error);
+
+    public Result<U> Map<U>(Func<T, U> mapper)
+        => IsSuccess ? Result<U>.Success(mapper(Value!)) : Result<U>.Failure(Error!);
+
+    public Result<U> Bind<U>(Func<T, Result<U>> binder)
+        => IsSuccess ? binder(Value!) : Result<U>.Failure(Error!);
+
+    public TResult Match<TResult>(Func<T, TResult> onSuccess, Func<string, TResult> onFailure)
+        => IsSuccess ? onSuccess(Value!) : onFailure(Error!);
+}
+
+public interface IRequestHandler<in TRequest, TResponse>
+{
+    Result<TResponse> Handle(TRequest request);
+}
 ```
-
+Интерфейс для обработки условных запросов.
+Результат представлен в виде составного типа, реализованного через "монаду Either" — Result.
 
 ---
 
 ## Итого:
 
-Итого
+Выделю следующий набор правил для повседневного использования:
+1. **Заранее прорабатывать и описывать абстракции** — как средство контроля над Leaky Abstraction (аналогично практике на курсе ООАП).
+2. **Создавать интерфейсы с ограниченным количеством методов** — не более 3–4, соблюдать принципы ISP и OCP.
+3. **Оборачивать входные параметры методов в осмысленные типы** — для повышения расширяемости и читаемости.
+4. **Стремиться к компонуемости выходных значений** — реализовывать через функциональные подходы либо структуры типа `IEnumerable`.
+5. **Переходить к функциональному стилю мышления** — использовать делегаты и интерфейсы с одним методом, реализующие замыкание, как универсальное средство композиции.
+6. **Активно искать архитектурные абстракции** — приоритезировать те, что способствуют ускорению разработки, упрощению поддержки, минимизации однотипного кода.
+
+Очень сильно потянуло в сторону ФП, поскольку надоело писать и поддерживать однотипный ООП код
+с кучей условий, который:
+- тяжело протестировать;
+- кидает исключения где попало, невозможно нормально прервать цепочку и получить результат;
+- тесно привязывает методы к сущности, которые тяжело отвязать и компоновать;
+
+Как бонус - теперь при прочтении интерфейсов сразу вижу типичные проблемы, когда они плохо спроектированы и могу итеративно это исправить.
