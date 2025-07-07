@@ -21,7 +21,6 @@ namespace AlgorithmsDataStructures
             step = stp;
             slots = new string[size];
             for(int i=0; i<size; i++) slots[i] = null;
-            Hashtable
         }
 
         public int HashFun(string value)

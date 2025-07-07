@@ -15,7 +15,6 @@ namespace AlgorithmsDataStructures
         public Stack()
         {
             _store = new List<T>();
-            Queue<T>
         }
 
         public int Size()
