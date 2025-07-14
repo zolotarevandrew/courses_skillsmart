@@ -21,22 +21,25 @@ public static class ArrayProductExceptSelf
     public static long[] ProductExceptSelf( int[] array )
     {
         int n = array.Length;
-        long[] temp = new long [n + 1];
-        temp[n] = 1;
-        for ( int i = n - 1; i >= 0; i-- )
+        long[] res = new long [n];
+        for ( int i = 0; i < n; i++ )
         {
-            temp[i] = array[i] * temp[i + 1];
-        }
-        
-        long[] result = new long[n];
-        int prefix = 1;
-        for (int i = 0; i < n; i++)
-        {
-            result[i] = prefix * temp[i + 1];
-            prefix *= array[i];
+            res[i] = 1;
         }
 
-        return result;
+        for ( int i = 1; i < n; i++ )
+        {
+            res[i] = array[i - 1] * res[i - 1];
+        }
+
+        int product = 1;
+        for (int i = n - 1; i >= 0; i--)
+        {
+            res[i] *= product;
+            product *= array[i];
+        }
+
+        return res;
     }
     
     public static long[] ProductExceptSelfV2( int[] array )
