@@ -33,7 +33,14 @@ public static class MaximumSubArray
 
         for ( int i = 1; i < array.Length; i++ )
         {
-            currentSum = Math.Max( array[i], currentSum + array[i] );
+            if (currentSum <= 0)
+            {
+                currentSum = array[i];
+            }
+            else
+            {
+                currentSum += array[i];
+            }
             maxSum = Math.Max( maxSum, currentSum );
         }
 

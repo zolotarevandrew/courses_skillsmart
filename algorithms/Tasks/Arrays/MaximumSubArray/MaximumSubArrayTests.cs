@@ -79,4 +79,17 @@ public class MaximumSubArrayTests
         // Assert
         Assert.Equal( result, 12 );
     }
+    
+    [Fact]
+    public void RunSlidingWindow_Case4_ShouldBeOk( )
+    {
+        // Arrange
+        var array = new int[] { -2, 1, -3, 4, -1 };
+        
+        // Act
+        var result = MaximumSubArray.RunSlidingWindow(array);
+        
+        // Assert
+        Assert.Equal( result, 4 );
+    }
 }
