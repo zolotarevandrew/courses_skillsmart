@@ -27,6 +27,11 @@ public class Search2DMatrixTests
             [1, 2, 3, 4], 
             [5, 6, 7, 8]
         };
+        
+        // 0 / 4 = 0 , 1 / 4 = 0 , 2 / 4 = 0, 3 / 4 = 0
+        // 4 / 4 = 1, 5 / 4 = 1, 6 / 4 = 1, 7 / 4 = 1
+            
+
         // Act
         for ( int idx = 0; idx < 8; idx++ )
         {
