@@ -26,7 +26,6 @@ namespace AlgorithmsDataStructures
         public DynArray()
         {
             count = 0;
-            Array.Clear();
             MakeArray(16);
         }
 
