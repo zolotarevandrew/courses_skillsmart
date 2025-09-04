@@ -16,7 +16,6 @@ namespace AlgorithmsDataStructures
         public NativeDictionary(int sz)
         {
             size = sz;
-            Dictionary<string ,int> slots = new string[size];
             values = new T[size];
         }
 
