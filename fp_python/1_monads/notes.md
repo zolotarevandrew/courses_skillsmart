@@ -115,7 +115,7 @@ private async Task<List<Substitution>> GetSubstitutionsAsync(
 
 **Замечания**  
 - Явно стоит переделать функцию в чистую, без мутирования `_targetMetrics`, так как это побочный эффект.  
-- В идеале — для следования Open/Closed принципу, чтобы не передавать кучу параметров по цепочке завести тип данных "Запрос на получение/построение подстановок" — `SubstitutionBuildRequest<TRequest>`, похожий на Command:
+- В идеале — для следования Open/Closed принципу, чтобы не передавать кучу параметров по цепочке, нужно завести тип данных "Запрос на получение/построение подстановок" — `SubstitutionBuildRequest<TRequest>`, похожий на Command:
 
 ```csharp
 record NotificationGuestSubstitutionsRequest(NotificationGuest Guest) : SubstitutionBuildRequest;
@@ -125,7 +125,7 @@ record BookingSubstitutionRequest(NotificationGuest Guest, Booking Booking, Guid
 record SurveyAnswerSubstitutionRequest(ScenarioUserKind Kind, BaseAnswer Answer) : SubstitutionBuildRequest;
 ```
 
-Тогда `substitutionBuilder` имел бы один метод, принимающий `SubstitutionBuildRequest`, и обрабатывал соответствующее на основе типа.  
+Тогда `substitutionBuilder` имел бы один метод, принимающий `SubstitutionBuildRequest`, и обрабатывал запрос на основе типа.  
 Добавляем контейнер для `Substitution` — `SubstitutionContainer` с методами `Empty` и `MergeWith`.
 
 В таком случае код превратился бы в нечто следующее:
