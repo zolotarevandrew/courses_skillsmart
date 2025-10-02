@@ -1,8 +1,6 @@
-﻿using Tasks.LinkedList.Palindrome;
+﻿namespace Tasks.LinkedList.Reorder;
 
-namespace Tasks.LinkedList.Merge;
-
-public class MergeSortedLinkedListTest
+public class ReorderLinkedListTest
 {
     [Fact]
     public void Run_Case1_ShouldBeOk( )
@@ -10,28 +8,28 @@ public class MergeSortedLinkedListTest
         // Arrange
         var node = new ListNode
         {
-            Value = 3,
-            Next = new ListNode
-            {
-                Value = 5
-            }
-        };
-        
-        var node2 = new ListNode
-        {
             Value = 1,
             Next = new ListNode
             {
-                Value = 2
+                Value = 2,
+                Next = new ListNode
+                {
+                    Value = 3,
+                    Next = new ListNode
+                    {
+                        Value = 4
+                    }
+                }
             }
         };
+        
         var expected = new int[]
         {
-            1,2,3,5
+            1,4,2,3
         }.ToList();
 
         // Act
-        var res = MergeSortedLinkedList.Run(node, node2);
+        var res = ReorderLinkedList.Run(node);
 
         // Assert
         Assert.NotNull( res );
@@ -51,30 +49,31 @@ public class MergeSortedLinkedListTest
                 Value = 2,
                 Next = new ListNode
                 {
-                    Value = 3
+                    Value = 3,
+                    Next = new ListNode
+                    {
+                        Value = 4,
+                        Next = new ListNode
+                        {
+                            Value = 5
+                        }
+                    }
                 }
             }
         };
         
-        var node2 = new ListNode
-        {
-            Value = 4,
-            Next = new ListNode
-            {
-                Value = 5
-            }
-        };
         var expected = new int[]
-       {
-            1,2,3,4,5
-       }.ToList();
+        {
+            1,5,2,4,3
+        }.ToList();
 
         // Act
-        var res = MergeSortedLinkedList.Run(node, node2);
+        var res = ReorderLinkedList.Run(node);
 
         // Assert
         Assert.NotNull( res );
         Assert.Equal( expected, res.AsArray() );
+
     }
     
     [Fact]
@@ -83,36 +82,21 @@ public class MergeSortedLinkedListTest
         // Arrange
         var node = new ListNode
         {
-            Value = 1,
-            Next = new ListNode
-            {
-                Value = 3,
-                Next = new ListNode
-                {
-                    Value = 5
-                }
-            }
+            Value = 1
         };
         
-        var node2 = new ListNode
-        {
-            Value = 4,
-            Next = new ListNode
-            {
-                Value = 7
-            }
-        };
         var expected = new int[]
-       {
-            1,3,4,5,7
-       }.ToList();
+        {
+            1
+        }.ToList();
 
         // Act
-        var res = MergeSortedLinkedList.Run(node, node2);
+        var res = ReorderLinkedList.Run(node);
 
         // Assert
         Assert.NotNull( res );
         Assert.Equal( expected, res.AsArray() );
+
     }
     
     [Fact]
@@ -121,10 +105,28 @@ public class MergeSortedLinkedListTest
         // Arrange
         var node = new ListNode
         {
-            Value = 5,
+            Value = 1
         };
         
-        var node2 = new ListNode
+        var expected = new int[]
+        {
+            1
+        }.ToList();
+
+        // Act
+        var res = ReorderLinkedList.Run(node);
+
+        // Assert
+        Assert.NotNull( res );
+        Assert.Equal( expected, res.AsArray() );
+
+    }
+    
+    [Fact]
+    public void Run_Case5_ShouldBeOk( )
+    {
+        // Arrange
+        var node = new ListNode
         {
             Value = 1,
             Next = new ListNode
@@ -132,44 +134,49 @@ public class MergeSortedLinkedListTest
                 Value = 2
             }
         };
-
+        
         var expected = new int[]
         {
-                1,2,5
+            1,2
         }.ToList();
+
         // Act
-        var res = MergeSortedLinkedList.Run(node, node2);
+        var res = ReorderLinkedList.Run(node);
 
         // Assert
         Assert.NotNull( res );
         Assert.Equal( expected, res.AsArray() );
-    }
 
+    }
+    
     [Fact]
-    public void Run_Case5_ShouldBeOk()
+    public void Run_Case6_ShouldBeOk( )
     {
         // Arrange
-        ListNode? node = null;
-
-        var node2 = new ListNode
+        var node = new ListNode
         {
             Value = 1,
             Next = new ListNode
             {
                 Value = 2,
-                Next = new ListNode { Value = 3 }
+                Next = new ListNode
+                {
+                    Value = 3
+                }
             }
         };
-
+        
         var expected = new int[]
         {
-           1,2,3
+            1,3,2
         }.ToList();
+
         // Act
-        var res = MergeSortedLinkedList.Run( node, node2 );
+        var res = ReorderLinkedList.Run(node);
 
         // Assert
         Assert.NotNull( res );
         Assert.Equal( expected, res.AsArray() );
+
     }
 }
