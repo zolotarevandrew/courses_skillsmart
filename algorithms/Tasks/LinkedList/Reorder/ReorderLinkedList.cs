@@ -28,7 +28,7 @@ public class ReorderLinkedList
      */
     public static ListNode? Run( ListNode? head )
     {
-        if ( head?.Next?.Next == null ) return head;
+        if ( head?.Next == null ) return head;
         
         ListNode? slow = head;
         ListNode? fast = head;
