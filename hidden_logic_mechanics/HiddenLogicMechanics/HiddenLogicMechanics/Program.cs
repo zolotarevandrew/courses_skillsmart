@@ -1,3 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-Console.WriteLine( "Hello, World!" );
+using HiddenLogicMechanics.Task1;
+
+await DbStorageProgram.RunAsync();

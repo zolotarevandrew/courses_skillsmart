@@ -40,3 +40,25 @@ public class DbStorage( string connectionString ) : IStorage
         return result as string;
     }
 }
+
+public static class DbStorageProgram
+{
+    /*
+     * CREATE TABLE storage (
+            id SERIAL PRIMARY KEY,
+            data TEXT NOT NULL
+        );
+     */
+    public static async Task RunAsync( )
+    {
+        var storage = new DbStorage("Host=localhost;Port=5432;Username=admin;Password=admin;Database=testdb");
+
+        var id1 = await storage.SaveAsync("str 1");
+        var data = await storage.RetrieveAsync( id1 );
+        Console.WriteLine($"{id1} {data}");
+        
+        var id2 = await storage.SaveAsync("str 2");
+        var data2 = await storage.RetrieveAsync( id2 );
+        Console.WriteLine($"{id2} {data2}");
+    }
+}
