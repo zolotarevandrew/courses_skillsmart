@@ -28,4 +28,33 @@ public class SlidingWindowMaximum
 
         return res;
     }
+    
+    public static List<int> RunDeque( int[] num, int k )
+    {
+        List<int> res = new List<int>();
+        MicrosoftDeque<int> deque = new MicrosoftDeque<int>();
+
+        for ( int idx = 0; idx < num.Length; idx++ )
+        {
+            while ( deque.Count > 0 && deque.Head < idx - k + 1 )
+            {
+                deque.DequeueHead( );
+            }
+
+            while ( deque is { Count: > 0 } && num[deque.Tail] < num[idx] )
+            {
+                deque.DequeueTail( );
+            }
+            
+            deque.EnqueueTail( idx);
+
+            if ( idx >= k - 1 )
+            {
+                int max = num[deque.Head];
+                res.Add( max );
+            }
+        }
+
+        return res;
+    }
 }

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace AlgorithmsDataStructures;
+namespace Deque_9;
 
  internal sealed class MicrosoftDeque<T>
     {
