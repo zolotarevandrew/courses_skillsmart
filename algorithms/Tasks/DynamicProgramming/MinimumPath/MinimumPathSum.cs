@@ -27,18 +27,21 @@ public class MinimumPathSum
                 return arr[row, column];
             }
 
-            int sum = arr[row, column];
+            long sum = arr[row, column];
             (int, int) rightPath = ( row, column + 1 );
-            long rightSum = IsInRange( rightPath )
+            long? rightSum = IsInRange( rightPath )
                 ? sum + RunInternal( rightPath.Item1, rightPath.Item2 )
-                : Int64.MaxValue;
+                : null;
 
             (int, int) downPath = ( row + 1, column );
-            long downSum = IsInRange( downPath )
+            long? downSum = IsInRange( downPath )
                 ? sum + RunInternal( downPath.Item1, downPath.Item2 )
-                : Int64.MaxValue;
+                : null;
 
-            return Math.Min( rightSum, downSum );
+            if ( rightSum != null && downSum != null )
+                return Math.Min( rightSum.Value, downSum.Value );
+
+            return rightSum ?? downSum!.Value;
         }
 
         return RunInternal( 0, 0 );

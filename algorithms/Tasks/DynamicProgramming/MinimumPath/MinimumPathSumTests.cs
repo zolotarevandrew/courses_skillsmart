@@ -36,4 +36,68 @@ public class MinimumPathSumTests
         // Assert
         Assert.Equal( 9, res );
     }
+    
+    [Fact]
+    public void Run_Case3_ShouldBeOk( )
+    {
+        // Arrange
+        int[,] arr = new int[,]
+        {
+        };
+        
+        // Act
+        var res = MinimumPathSum.Run( arr );
+
+        // Assert
+        Assert.Equal( 0, res );
+    }
+    
+    [Fact]
+    public void Run_Case4_ShouldBeOk( )
+    {
+        // Arrange
+        int[,] arr = new int[,]
+        {
+            { 1 }
+        };
+        
+        // Act
+        var res = MinimumPathSum.Run( arr );
+
+        // Assert
+        Assert.Equal( 1, res );
+    }
+    
+    [Fact]
+    public void Run_Case5_ShouldBeOk( )
+    {
+        // Arrange
+        int[,] arr = new int[,]
+        {
+            { 1, 2 }
+        };
+        
+        // Act
+        var res = MinimumPathSum.Run( arr );
+
+        // Assert
+        Assert.Equal( 3, res );
+    }
+    
+    [Fact]
+    public void Run_Case6_ShouldBeOk( )
+    {
+        // Arrange
+        int[,] arr = new int[,]
+        {
+            { 1, 2 },
+            { 1, 1 }
+        };
+        
+        // Act
+        var res = MinimumPathSum.Run( arr );
+
+        // Assert
+        Assert.Equal( 3, res );
+    }
 }
