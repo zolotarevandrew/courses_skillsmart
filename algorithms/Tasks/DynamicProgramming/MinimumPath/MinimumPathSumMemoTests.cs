@@ -3,7 +3,7 @@
 public partial class MinimumPathSumTests
 {
     [Fact]
-    public void Run_Case1_ShouldBeOk( )
+    public void RunMemo_Case1_ShouldBeOk( )
     {
         // Arrange
         int[,] arr = new int[,]
@@ -14,14 +14,14 @@ public partial class MinimumPathSumTests
         };
         
         // Act
-        var res = MinimumPathSum.Run( arr );
+        var res = MinimumPathSum.RunMemo( arr );
 
         // Assert
         Assert.Equal( 10, res );
     }
     
     [Fact]
-    public void Run_Case2_ShouldBeOk( )
+    public void RunMemo_Case2_ShouldBeOk( )
     {
         // Arrange
         int[,] arr = new int[,]
@@ -31,14 +31,14 @@ public partial class MinimumPathSumTests
         };
         
         // Act
-        var res = MinimumPathSum.Run( arr );
+        var res = MinimumPathSum.RunMemo( arr );
 
         // Assert
         Assert.Equal( 9, res );
     }
     
     [Fact]
-    public void Run_Case3_ShouldBeOk( )
+    public void RunMemo_Case3_ShouldBeOk( )
     {
         // Arrange
         int[,] arr = new int[,]
@@ -46,14 +46,14 @@ public partial class MinimumPathSumTests
         };
         
         // Act
-        var res = MinimumPathSum.Run( arr );
+        var res = MinimumPathSum.RunMemo( arr );
 
         // Assert
         Assert.Equal( Int64.MaxValue, res );
     }
     
     [Fact]
-    public void Run_Case4_ShouldBeOk( )
+    public void RunMemo_Case4_ShouldBeOk( )
     {
         // Arrange
         int[,] arr = new int[,]
@@ -62,14 +62,14 @@ public partial class MinimumPathSumTests
         };
         
         // Act
-        var res = MinimumPathSum.Run( arr );
+        var res = MinimumPathSum.RunMemo( arr );
 
         // Assert
         Assert.Equal( 1, res );
     }
     
     [Fact]
-    public void Run_Case5_ShouldBeOk( )
+    public void RunMemo_Case5_ShouldBeOk( )
     {
         // Arrange
         int[,] arr = new int[,]
@@ -78,14 +78,14 @@ public partial class MinimumPathSumTests
         };
         
         // Act
-        var res = MinimumPathSum.Run( arr );
+        var res = MinimumPathSum.RunMemo( arr );
 
         // Assert
         Assert.Equal( 3, res );
     }
     
     [Fact]
-    public void Run_Case6_ShouldBeOk( )
+    public void RunMemo_Case6_ShouldBeOk( )
     {
         // Arrange
         int[,] arr = new int[,]
@@ -95,7 +95,7 @@ public partial class MinimumPathSumTests
         };
         
         // Act
-        var res = MinimumPathSum.Run( arr );
+        var res = MinimumPathSum.RunMemo( arr );
 
         // Assert
         Assert.Equal( 3, res );

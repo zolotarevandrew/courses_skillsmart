@@ -12,36 +12,53 @@ public class MinimumPathSum
     {
         int rows = arr.GetLength( 0 );
         int columns = arr.GetLength( 1 );
-
-        if ( rows == 0 || columns == 0 ) return 0;
-
-        bool IsInRange( (int Row, int Column) index )
-        {
-            return index.Row < rows && index.Column < columns;
-        }
+        
         long RunInternal( int row, int column )
         {
             bool isEnd = row == rows - 1 && column == columns - 1;
-            if ( isEnd )
-            {
-                return arr[row, column];
-            }
+            if ( isEnd ) return arr[row, column];
+
+            if ( row >= rows || column >= columns )
+                return Int64.MaxValue;
 
             long sum = arr[row, column];
-            (int, int) rightPath = ( row, column + 1 );
-            long? rightSum = IsInRange( rightPath )
-                ? sum + RunInternal( rightPath.Item1, rightPath.Item2 )
-                : null;
+            long rightSum = RunInternal( row, column + 1 );
+            long downSum = RunInternal( row + 1, column );
 
-            (int, int) downPath = ( row + 1, column );
-            long? downSum = IsInRange( downPath )
-                ? sum + RunInternal( downPath.Item1, downPath.Item2 )
-                : null;
+            return sum + Math.Min( rightSum, downSum );
+        }
 
-            if ( rightSum != null && downSum != null )
-                return Math.Min( rightSum.Value, downSum.Value );
+        return RunInternal( 0, 0 );
+    }
+    
+    public static long RunMemo( int[,] arr )
+    {
+        int rows = arr.GetLength( 0 );
+        int columns = arr.GetLength( 1 );
 
-            return rightSum ?? downSum!.Value;
+        long[,] memo = new long[rows + 1, columns + 1];
+        for (int r = 0; r <= rows; r++)
+        for ( int c = 0; c <= columns; c++ )
+            memo[r, c] = -1;
+
+        long RunInternal( int row, int column )
+        {
+            if ( memo[row, column] != -1 )
+                return memo[row, column];
+            
+            if ( row >= rows || column >= columns )
+                return Int64.MaxValue;
+ 
+            if ( row == rows - 1 && column == columns - 1 )
+                return arr[row, column];
+            
+            long sum = arr[row, column];
+            long rightSum = RunInternal( row, column + 1 );
+            long downSum = RunInternal( row + 1, column );
+
+            long minSum = sum + Math.Min( rightSum, downSum );
+            memo[row, column] = minSum;
+            return minSum;
         }
 
         return RunInternal( 0, 0 );
