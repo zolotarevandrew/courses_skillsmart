@@ -36,18 +36,18 @@ public class MinimumPathSum
         int rows = arr.GetLength( 0 );
         int columns = arr.GetLength( 1 );
 
-        long[,] memo = new long[rows + 1, columns + 1];
-        for (int r = 0; r <= rows; r++)
-        for ( int c = 0; c <= columns; c++ )
+        long[,] memo = new long[rows, columns];
+        for (int r = 0; r < rows; r++)
+        for ( int c = 0; c < columns; c++ )
             memo[r, c] = -1;
 
         long RunInternal( int row, int column )
         {
-            if ( memo[row, column] != -1 )
-                return memo[row, column];
-            
             if ( row >= rows || column >= columns )
                 return Int64.MaxValue;
+            
+            if ( memo[row, column] != -1 )
+                return memo[row, column];
  
             if ( row == rows - 1 && column == columns - 1 )
                 return arr[row, column];
@@ -62,5 +62,37 @@ public class MinimumPathSum
         }
 
         return RunInternal( 0, 0 );
+    }
+    
+    public static long RunTabulation( int[,] arr )
+    {
+        int rows = arr.GetLength( 0 );
+        int columns = arr.GetLength( 1 );
+
+        if ( rows == 0 || columns == 0 ) return 0;
+
+        long[,] dp = new long[rows, columns];
+        dp[0, 0] = arr[0, 0];
+
+        for ( int c = 1; c < columns; c++ )
+        {
+            dp[0, c] = dp[0, c - 1] + arr[0, c];
+        }
+        
+        for ( int r = 1; r < rows; r++ )
+        {
+            dp[r, 0] = dp[r - 1, 0] + arr[r, 0];
+        }
+
+        for ( int r = 1; r < rows; r++ )
+        {
+            for ( int c = 1; c < columns; c++ )
+            {
+                long min = Math.Min( dp[r - 1, c], dp[r, c - 1] );
+                dp[r, c] = min + arr[r, c];
+            }
+        }
+
+        return dp[rows - 1, columns - 1];
     }
 }
