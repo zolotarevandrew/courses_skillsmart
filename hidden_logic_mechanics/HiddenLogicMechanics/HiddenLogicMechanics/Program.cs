@@ -1,5 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using HiddenLogicMechanics.Task8;
 
-using HiddenLogicMechanics.Task3;
-
-BankAccountTests.Run();
+DateExample.Main();
+Console.ReadLine(  );
