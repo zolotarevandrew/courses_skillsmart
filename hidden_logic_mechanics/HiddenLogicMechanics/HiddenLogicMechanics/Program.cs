@@ -1,4 +1,5 @@
 ﻿using HiddenLogicMechanics.Task8;
+using HiddenLogicMechanics.Task9;
 
-DateExample.Main();
+Threads.Main();
 Console.ReadLine(  );
