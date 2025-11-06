@@ -1,5 +1,4 @@
-﻿using HiddenLogicMechanics.Task8;
-using HiddenLogicMechanics.Task9;
+﻿using HiddenLogicMechanics.Task10;
 
-Threads.Main();
+ComplexMultiThreadProcessing.Run();
 Console.ReadLine(  );
