@@ -11,54 +11,37 @@ public class LongestIncreasingPath
         int maxLength = 0;
         int rows = matrix.GetLength( 0 );
         int columns = matrix.GetLength( 1 );
+
+        if ( rows == 0 || columns == 0 ) return 0;
+        
         for ( int r = 0; r < rows; r++ )
         {
             for ( int c = 0; c < columns; c++ )
             {
-                maxLength = Math.Max( maxLength, Calc( ( r, c ), 1 ) );
+                maxLength = Math.Max( maxLength, Calc( ( r, c ), Int32.MinValue ) );
             }
         }
         
-        bool IsStrictlyIncreasing( (int Row, int Col) idx, int item )
+        bool IsStrictlyIncreasing( (int Row, int Col) idx, int prev )
         {
             if ( idx.Row < 0 || idx.Col < 0 || idx.Row >= rows || idx.Col >= columns ) return false;
-            return matrix[idx.Row, idx.Col] > item;
+            return matrix[idx.Row, idx.Col] > prev;
         }
-        int Calc( (int Row, int Col) idx, int length )
+        int Calc( (int Row, int Col) idx, int prev )
         {
-            int leftLength = -1;
-            int rightLength = -1;
-            int downLength = -1;
-            int upLength = -1;
+            if ( !IsStrictlyIncreasing( idx, prev ) ) return 0;
             
             int r = idx.Row;
             int c = idx.Col;
-            int item = matrix[r, c];
-
-            (int, int) left = ( r, c - 1 );
-            (int, int) right = ( r, c + 1 );
-            (int, int) down = ( r - 1, c );
-            (int, int) up = ( r + 1, c );
-
-            if ( IsStrictlyIncreasing( left, item ) )
-            {
-                leftLength = length + Calc( left, 1 );
-            }
-            if ( IsStrictlyIncreasing( right, item ) )
-            {
-                rightLength = length + Calc( right, 1 );
-            }
-            if ( IsStrictlyIncreasing( down, item ) )
-            {
-                downLength = length + Calc( down, 1 );
-            }
-            if ( IsStrictlyIncreasing( up, item ) )
-            {
-                upLength = length + Calc( up, 1 );
-            }
+            int cur = matrix[r, c];
+            
+            int leftLength = Calc( ( r, c - 1 ), cur );
+            int rightLength = Calc( ( r, c + 1 ), cur );
+            int downLength = Calc( ( r - 1, c ), cur );
+            int upLength = Calc( ( r + 1, c ), cur );
 
             int curMax = Math.Max( Math.Max( leftLength, rightLength ), Math.Max( downLength, upLength ) );
-            return Math.Max( length, curMax );
+            return 1 + curMax;
         }
         
         return maxLength;
