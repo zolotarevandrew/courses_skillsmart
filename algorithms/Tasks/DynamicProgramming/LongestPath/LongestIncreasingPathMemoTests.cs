@@ -3,7 +3,7 @@
 public partial class LongestIncreasingPathTests
 {
     [Fact]
-    public void Run_Case1_ShouldBeOk( )
+    public void RunMemo_Case1_ShouldBeOk( )
     {
         // Arrange
         var matrix = new int[,]
@@ -14,14 +14,14 @@ public partial class LongestIncreasingPathTests
         };
 
         // Act
-        var res = LongestIncreasingPath.Run(matrix);
+        var res = LongestIncreasingPath.RunMemo(matrix);
 
         // Assert
         Assert.Equal( 4, res );
     }
     
     [Fact]
-    public void Run_Case2_ShouldBeOk( )
+    public void RunMemo_Case2_ShouldBeOk( )
     {
         // Arrange
         var matrix = new int[,]
@@ -32,14 +32,14 @@ public partial class LongestIncreasingPathTests
         };
 
         // Act
-        var res = LongestIncreasingPath.Run(matrix);
+        var res = LongestIncreasingPath.RunMemo(matrix);
 
         // Assert
         Assert.Equal( 4, res );
     }
     
     [Fact]
-    public void Run_Case3_ShouldBeOk( )
+    public void RunMemo_Case3_ShouldBeOk( )
     {
         // Arrange
         var matrix = new int[,]
@@ -50,14 +50,14 @@ public partial class LongestIncreasingPathTests
         };
 
         // Act
-        var res = LongestIncreasingPath.Run(matrix);
+        var res = LongestIncreasingPath.RunMemo(matrix);
 
         // Assert
         Assert.Equal( 5, res );
     }
     
     [Fact]
-    public void Run_Case4_ShouldBeOk( )
+    public void RunMemo_Case4_ShouldBeOk( )
     {
         // Arrange
         var matrix = new int[,]
@@ -68,14 +68,14 @@ public partial class LongestIncreasingPathTests
         };
 
         // Act
-        var res = LongestIncreasingPath.Run(matrix);
+        var res = LongestIncreasingPath.RunMemo(matrix);
 
         // Assert
         Assert.Equal( 9, res );
     }
     
     [Fact]
-    public void Run_Case5_ShouldBeOk( )
+    public void RunMemo_Case5_ShouldBeOk( )
     {
         // Arrange
         var matrix = new int[,]
@@ -84,14 +84,14 @@ public partial class LongestIncreasingPathTests
         };
 
         // Act
-        var res = LongestIncreasingPath.Run(matrix);
+        var res = LongestIncreasingPath.RunMemo(matrix);
 
         // Assert
         Assert.Equal( 1, res );
     }
     
     [Fact]
-    public void Run_Case6_ShouldBeOk( )
+    public void RunMemo_Case6_ShouldBeOk( )
     {
         // Arrange
         var matrix = new int[,]
@@ -100,14 +100,14 @@ public partial class LongestIncreasingPathTests
         };
 
         // Act
-        var res = LongestIncreasingPath.Run(matrix);
+        var res = LongestIncreasingPath.RunMemo(matrix);
 
         // Assert
         Assert.Equal( 3, res );
     }
     
     [Fact]
-    public void Run_Case7_ShouldBeOk( )
+    public void RunMemo_Case7_ShouldBeOk( )
     {
         // Arrange
         var matrix = new int[,]
@@ -116,14 +116,14 @@ public partial class LongestIncreasingPathTests
         };
 
         // Act
-        var res = LongestIncreasingPath.Run(matrix);
+        var res = LongestIncreasingPath.RunMemo(matrix);
 
         // Assert
         Assert.Equal( 1, res );
     }
     
     [Fact]
-    public void Run_Case8_ShouldBeOk( )
+    public void RunMemo_Case8_ShouldBeOk( )
     {
         // Arrange
         var matrix = new int[,]
@@ -132,7 +132,7 @@ public partial class LongestIncreasingPathTests
         };
 
         // Act
-        var res = LongestIncreasingPath.Run(matrix);
+        var res = LongestIncreasingPath.RunMemo(matrix);
 
         // Assert
         Assert.Equal( 0, res );

@@ -46,4 +46,59 @@ public class LongestIncreasingPath
         
         return maxLength;
     }
+    
+    public static int RunMemo( int[,] matrix )
+    {
+        int maxLength = 0;
+        int rows = matrix.GetLength( 0 );
+        int columns = matrix.GetLength( 1 );
+
+        if ( rows == 0 || columns == 0 ) return 0;
+
+        List<List<int>> memo = [];
+        for ( int r = 0; r < rows; r++ )
+        {
+            List<int> row = [];
+            for ( int c = 0; c < columns; c++ )
+            {
+                row.Add( -1 );
+            }
+            memo.Add( row );
+        }
+        
+        for ( int r = 0; r < rows; r++ )
+        {
+            for ( int c = 0; c < columns; c++ )
+            {
+                maxLength = Math.Max( maxLength, Calc( ( r, c ), Int32.MinValue ) );
+            }
+        }
+        
+        bool IsStrictlyIncreasing( (int Row, int Col) idx, int prev )
+        {
+            if ( idx.Row < 0 || idx.Col < 0 || idx.Row >= rows || idx.Col >= columns ) return false;
+            return matrix[idx.Row, idx.Col] > prev;
+        }
+        int Calc( (int Row, int Col) idx, int prev )
+        {
+            if ( !IsStrictlyIncreasing( idx, prev ) ) return 0;
+            
+            int r = idx.Row;
+            int c = idx.Col;
+            if ( memo[r][c] != -1 ) return memo[r][c];
+            
+            int cur = matrix[r, c];
+            
+            int leftLength = Calc( ( r, c - 1 ), cur );
+            int rightLength = Calc( ( r, c + 1 ), cur );
+            int downLength = Calc( ( r - 1, c ), cur );
+            int upLength = Calc( ( r + 1, c ), cur );
+
+            int curMax = 1+ Math.Max( Math.Max( leftLength, rightLength ), Math.Max( downLength, upLength ) );
+            memo[r][c] = curMax;
+            return curMax;
+        }
+        
+        return maxLength;
+    }
 }
