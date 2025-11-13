@@ -1,4 +1,4 @@
-﻿using HiddenLogicMechanics.Task10;
+﻿using HiddenLogicMechanics.Task13;
 
-ComplexMultiThreadProcessing.Run();
+Invariants.Run();
 Console.ReadLine(  );
