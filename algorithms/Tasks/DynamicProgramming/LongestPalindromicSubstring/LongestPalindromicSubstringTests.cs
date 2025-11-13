@@ -1,6 +1,6 @@
 ﻿namespace Tasks.DynamicProgramming.LongestPalindromicSubstring;
 
-public class LongestPalindromicSubstringTests
+public partial class LongestPalindromicSubstringTests
 {
     [Fact]
     public void Run_Case1_ShouldBeOk( )
