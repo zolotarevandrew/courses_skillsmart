@@ -17,7 +17,7 @@ public class CycleInvariants
           В теле цикла выполняем res = Max(res, arr[k]), i_next = k + 1
           Значит res = Max(Max(arr[0]..arr[k-1]), arr[k])
                  res = Max(arr[0]..arr[k])
-          Таким образом, инвариант по-прежнему истинен: 1 <= i_next < n и 
+          Таким образом, инвариант по-прежнему истинен на следующих итерациях цикла: 1 <= i_next < n и 
             res = Max(arr[0]..arr[i_next-1])
       3. Цикл завершается, когда i = n
         res = Max(arr[0]..arr[n-1]) - истинно, постусловие выполняется
