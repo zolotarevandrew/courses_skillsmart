@@ -1,4 +1,4 @@
-﻿using HiddenLogicMechanics.Task13;
+﻿using HiddenLogicMechanics.Task14;
 
-Invariants.Run();
+CycleInvariants.Run();
 Console.ReadLine(  );
