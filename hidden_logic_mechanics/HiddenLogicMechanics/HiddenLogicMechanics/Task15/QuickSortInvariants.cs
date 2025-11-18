@@ -9,7 +9,7 @@ public class QuickSortInvariants
     }
     
     /*
-     * {P: array.Length > 0 и 0 ≤ start <= end < array.Length }
+     * {P: array != null и 0 ≤ start <= end < array.Length }
      * {Q: array[start..end] отсортирован }
      */
     static void Apply( int[] array, int start, int end )
