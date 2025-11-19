@@ -32,12 +32,36 @@ public class DecodeWays
         if ( idx + 1 < s.Length )
         {
             int num = int.Parse( s.AsSpan( idx, 2 ) );
-            if ( num <= 26 )
+            if ( num is <= 26 and >= 10 )
             {
                 res += CalcInternal( s, idx + 2 );
             }
         }
 
         return res;
+    }
+
+    public static int RunDp( string s )
+    {
+        if ( s.Length == 0 || s[0] == '0' ) return 0;
+
+        int[] dp = new int[s.Length + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+        for ( int i = 1; i < s.Length; i++ )
+        {
+            if ( s[i] != '0' )
+            {
+                dp[i + 1] = dp[i];
+            }
+            
+            int num = int.Parse( s.AsSpan( i - 1, 2 ) );
+            if ( num is <= 26 and >= 10 )
+            {
+                dp[i + 1] += dp[i - 1];
+            }
+        }
+
+        return dp[s.Length];
     }
 }

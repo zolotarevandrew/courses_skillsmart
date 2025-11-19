@@ -1,6 +1,6 @@
 ﻿namespace Tasks.DynamicProgramming.DecodeWays;
 
-public class DecodeWaysTests
+public partial class DecodeWaysTests
 {
     [Fact]
     public void Run_Case1_ShouldBeOk( )
