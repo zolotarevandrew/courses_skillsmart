@@ -1,4 +1,4 @@
-﻿namespace Tasks.Trees;
+﻿namespace Tasks.Trees.InOrder;
 
 public class InorderTraversalTests
 {
