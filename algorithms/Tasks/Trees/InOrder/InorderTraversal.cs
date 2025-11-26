@@ -26,4 +26,41 @@ public class InorderTraversal
             RunInternal( curNode.Right );
         }
     }
+    
+    public static List<T> RunStack<T>( TreeNode<T>? tree )
+    {
+        List<T> res = [];
+        if ( tree == null ) return res;
+
+        Stack<TreeNode<T>> stack = new Stack<TreeNode<T>>( );
+        stack.Push( tree );
+        while ( stack.Count > 0 )
+        {
+            TreeNode<T> curNode = stack.Peek( );
+            if ( curNode.Left != null )
+            {
+                stack.Push( curNode.Left );
+                continue;
+            }
+            
+            res.Add( curNode.Value );
+            stack.Pop( );
+            
+            if ( curNode.Right != null )
+            {
+                stack.Push( curNode.Right );
+            }
+        }
+        
+        return res;
+        
+        void RunInternal( TreeNode<T>? curNode )
+        {
+            if ( curNode == null ) return;
+            
+            RunInternal( curNode.Left );
+            res.Add( curNode.Value );
+            RunInternal( curNode.Right );
+        }
+    }
 }

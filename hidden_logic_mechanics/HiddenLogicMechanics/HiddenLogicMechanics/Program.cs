@@ -1,4 +1,4 @@
-﻿using HiddenLogicMechanics.Task14;
+﻿using HiddenLogicMechanics.Task18;
 
-CycleInvariants.Run();
+FilterManager.Run();
 Console.ReadLine(  );
