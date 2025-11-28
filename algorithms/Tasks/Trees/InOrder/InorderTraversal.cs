@@ -26,41 +26,45 @@ public class InorderTraversal
             RunInternal( curNode.Right );
         }
     }
+
+    class TreeNodeWrapper<T>( TreeNode<T> node )
+    {
+        public TreeNode<T> Node { get; init; } = node;
+        public State State { get; set; }
+    }
+
+    enum State
+    {
+        None = 0,
+        LeftVisited = 1
+    }
     
     public static List<T> RunStack<T>( TreeNode<T>? tree )
     {
         List<T> res = [];
         if ( tree == null ) return res;
 
-        Stack<TreeNode<T>> stack = new Stack<TreeNode<T>>( );
-        stack.Push( tree );
+        Stack<TreeNodeWrapper<T>> stack = new Stack<TreeNodeWrapper<T>>( );
+        stack.Push( new TreeNodeWrapper<T>( tree ) );
         while ( stack.Count > 0 )
         {
-            TreeNode<T> curNode = stack.Peek( );
-            if ( curNode.Left != null )
+            TreeNodeWrapper<T> curNode = stack.Peek( );
+            if ( curNode.Node.Left != null && curNode.State != State.LeftVisited )
             {
-                stack.Push( curNode.Left );
+                curNode.State = State.LeftVisited;
+                stack.Push( new TreeNodeWrapper<T>( curNode.Node.Left ) );
                 continue;
             }
             
-            res.Add( curNode.Value );
+            res.Add( curNode.Node.Value );
             stack.Pop( );
             
-            if ( curNode.Right != null )
+            if ( curNode.Node.Right != null )
             {
-                stack.Push( curNode.Right );
+                stack.Push( new TreeNodeWrapper<T>( curNode.Node.Right ) );
             }
         }
         
         return res;
-        
-        void RunInternal( TreeNode<T>? curNode )
-        {
-            if ( curNode == null ) return;
-            
-            RunInternal( curNode.Left );
-            res.Add( curNode.Value );
-            RunInternal( curNode.Right );
-        }
     }
 }

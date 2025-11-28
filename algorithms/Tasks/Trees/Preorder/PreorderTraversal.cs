@@ -26,4 +26,44 @@ public class PreorderTraversal
             RunInternal( curNode.Right );
         }
     }
+    
+    class TreeNodeWrapper<T>( TreeNode<T> node )
+    {
+        public TreeNode<T> Node { get; init; } = node;
+    }
+
+    enum State
+    {
+        None = 0,
+        Added = 1,
+        LeftVisited = 2,
+        RightVisited = 3,
+    }
+    
+    public static List<T> RunStack<T>( TreeNode<T>? tree )
+    {
+        List<T> res = [];
+        if ( tree == null ) return res;
+
+        Stack<TreeNodeWrapper<T>> stack = new Stack<TreeNodeWrapper<T>>( );
+        stack.Push( new TreeNodeWrapper<T>( tree ) );
+        while ( stack.Count > 0 )
+        {
+            TreeNodeWrapper<T> curNode = stack.Pop( );
+
+            res.Add( curNode.Node.Value );
+            
+            if ( curNode.Node.Right != null )
+            {
+                stack.Push( new TreeNodeWrapper<T>( curNode.Node.Right ) );
+            }
+            
+            if ( curNode.Node.Left != null )
+            {
+                stack.Push( new TreeNodeWrapper<T>( curNode.Node.Left ) );
+            }
+        }
+        
+        return res;
+    }
 }

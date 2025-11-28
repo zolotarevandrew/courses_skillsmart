@@ -27,4 +27,48 @@ public class PostorderTraversal
             res.Add( curNode.Value );
         }
     }
+    
+    class TreeNodeWrapper<T>( TreeNode<T> node )
+    {
+        public TreeNode<T> Node { get; init; } = node;
+        public State State { get; set; }
+    }
+
+    enum State
+    {
+        None = 0,
+        LeftVisited = 1,
+        RightVisited = 2,
+    }
+    
+    public static List<T> RunStack<T>( TreeNode<T>? tree )
+    {
+        List<T> res = [];
+        if ( tree == null ) return res;
+
+        Stack<TreeNodeWrapper<T>> stack = new Stack<TreeNodeWrapper<T>>( );
+        stack.Push( new TreeNodeWrapper<T>( tree ) );
+        while ( stack.Count > 0 )
+        {
+            TreeNodeWrapper<T> curNode = stack.Peek( );
+            if ( curNode.Node.Left != null && curNode.State < State.LeftVisited )
+            {
+                curNode.State = State.LeftVisited;
+                stack.Push( new TreeNodeWrapper<T>( curNode.Node.Left ) );
+                continue;
+            }
+            
+            if ( curNode.Node.Right != null && curNode.State < State.RightVisited )
+            {
+                curNode.State = State.RightVisited;
+                stack.Push( new TreeNodeWrapper<T>( curNode.Node.Right ) );
+                continue;
+            }
+            
+            res.Add( curNode.Node.Value );
+            stack.Pop( );
+        }
+        
+        return res;
+    }
 }
