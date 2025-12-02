@@ -21,6 +21,5 @@ public class SameTrees
         bool right = IsEqual( first.Right, second.Right );
 
         return left && right;
-
     }
 }
