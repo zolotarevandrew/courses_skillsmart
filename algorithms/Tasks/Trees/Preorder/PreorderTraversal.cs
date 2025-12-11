@@ -31,14 +31,6 @@ public class PreorderTraversal
     {
         public TreeNode<T> Node { get; init; } = node;
     }
-
-    enum State
-    {
-        None = 0,
-        Added = 1,
-        LeftVisited = 2,
-        RightVisited = 3,
-    }
     
     public static List<T> RunStack<T>( TreeNode<T>? tree )
     {
