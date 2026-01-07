@@ -15,7 +15,9 @@ public class HeapKClosest
      */
     public static List<HeapPoint> Run( HeapPoint[] points, int k )
     {
-        if ( points.Length == 0 || k <= 0 || k >= points.Length ) return [];
+        if ( points.Length == 0 || k <= 0 ) return [];
+
+        k = Math.Min( k, points.Length );
 
         PriorityQueue<HeapPoint, double> heap = new PriorityQueue<HeapPoint, double>( points.Length );
         for ( int i = 0; i < points.Length; i++ )
