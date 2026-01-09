@@ -16,6 +16,6 @@ public class TreeDepth
         int left = Get( root.Left );
         int right = Get( root.Right );
 
-        return + 1 + Math.Max( left, right );
+        return 1 + Math.Max( left, right );
     }
 }
