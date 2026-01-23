@@ -17,68 +17,34 @@ public class GraphMaximumIslandArea
         {
             for ( int col = 0; col < grid.GetLength( 1 ); col++ )
             {
-                int val = grid[row, col];
                 Index index = new Index( row, col );
-                if ( val == 0 || visited.Contains( index ) )
-                {
-                    continue;
-                }
-
-                int area = SearchThrough( grid, index, visited );
-                max = Math.Max( max, area );
+                max = Math.Max( max, SearchThrough( grid, index, visited ) );
             }
         }
 
         return max;
     }
     
-    static int SearchThrough( int[,] grid, Index index, HashSet<Index> visited )
+    static int SearchThrough( int[,] grid, Index idx, HashSet<Index> visited )
     {
-        visited.Add( index );
-        Stack<Index> stack = new();
-        stack.Push( index );
-        int length = 0;
-        while ( stack.Count > 0 )
-        {
-            Index curIdx = stack.Pop( );
-            length++;
-            IEnumerable<Index> adjList = GetAdjList( grid, curIdx );
-            foreach ( Index idx in adjList )
-            {
-                if ( !visited.Add( idx ) )
-                {
-                    continue;
-                }
+        int rows = grid.GetLength( 0 );
+        int cols = grid.GetLength( 1 );
 
-                stack.Push( idx );
-            }
-        }
+        bool isValidIdx = ( idx.Row >= 0 && idx.Row < rows )
+                          && ( idx.Column >= 0 && idx.Column < cols );
+        bool shouldSkip = !isValidIdx
+                          || visited.Contains( idx )
+                          || grid[idx.Row, idx.Column] != 1;
+        if ( shouldSkip ) return 0;
 
-        return length;
-    }
-
-    private static IEnumerable<Index> GetAdjList( int[,] grid, Index curIdx )
-    {
-        bool IsPathExists( Index idx )
-        {
-            int rows = grid.GetLength( 0 );
-            int cols = grid.GetLength( 1 );
-            return ( idx.Row >= 0 && idx.Row < rows )
-                   && ( idx.Column >= 0 && idx.Column < cols )
-                   && grid[idx.Row, idx.Column] == 1;
-        }
-
-        Index right = curIdx with { Column = curIdx.Column + 1 };
-        if ( IsPathExists( right ) ) yield return right;
+        visited.Add( idx );
         
-        Index left = curIdx with { Column = curIdx.Column - 1 };
-        if ( IsPathExists( left ) ) yield return left;
-        
-        Index down = curIdx with { Row = curIdx.Row + 1 };
-        if ( IsPathExists( down ) ) yield return down;
-        
-        Index up = curIdx with { Row = curIdx.Row - 1 };
-        if ( IsPathExists( up ) ) yield return up;
+        int right = SearchThrough( grid, idx with { Column = idx.Column + 1 }, visited );
+        int left = SearchThrough( grid, idx with { Column = idx.Column - 1 }, visited );
+        int down = SearchThrough( grid, idx with { Row = idx.Row + 1 }, visited );
+        int up = SearchThrough( grid, idx with { Row = idx.Row - 1 }, visited );
+
+        return 1 + right + left + down + up;
     }
 
     record struct Index( int Row, int Column );
