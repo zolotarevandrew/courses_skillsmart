@@ -82,7 +82,7 @@ class LinkedList2:
         def _insert():
             # None и список пустой, добавьте новый элемент первым в списке
             if afterNode is None and self.len() == 0:
-                self.add_in_tail(newNode)
+                self.add_in_head(newNode)
                 return
             # None и список непустой, добавьте новый элемент последним в списке.
             if afterNode is None and self.len() > 0:
@@ -104,11 +104,9 @@ class LinkedList2:
         _insert()
 
     def add_in_head(self, newNode):
-        if self.len() == 0:
-            self.add_in_tail(newNode)
-            return
         oldHead = self.head
         self.head = newNode
         self.head.next = oldHead
-        oldHead.prev = newNode
+        if oldHead is None: self.tail = self.head
+        else: oldHead.prev = newNode
         self.count = self.count + 1
