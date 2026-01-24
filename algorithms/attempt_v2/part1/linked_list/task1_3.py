@@ -15,7 +15,7 @@ class Delete_LinkedListTests(unittest.TestCase):
         self.assertIsNone(s_list.tail)
         self.assertEqual(0, s_list.len())
 
-    def test_delete_allFalseTrue_shouldBeEmpty(self):
+    def test_delete_allTrueEmpty_shouldBeEmpty(self):
         # Arrange
         s_list = LinkedList()
 
@@ -130,7 +130,6 @@ class Delete_LinkedListTests(unittest.TestCase):
         self.assertEqual(2, s_list.len())
         self.assertIsNotNone(s_list.head)
         self.assertEqual(1, s_list.head.value)
-        self.assertIsNotNone(s_list.head.next)
         self.assertEqual(3, s_list.head.next.value)
         self.assertEqual(s_list.tail, s_list.head.next)
         self.assertIsNone(s_list.tail.next)
@@ -149,7 +148,6 @@ class Delete_LinkedListTests(unittest.TestCase):
         self.assertEqual(2, s_list.len())
         self.assertIsNotNone(s_list.head)
         self.assertEqual(1, s_list.head.value)
-        self.assertIsNotNone(s_list.head.next)
         self.assertEqual(3, s_list.head.next.value)
         self.assertEqual(s_list.tail, s_list.head.next)
         self.assertIsNone(s_list.tail.next)
@@ -216,11 +214,9 @@ class Delete_LinkedListTests(unittest.TestCase):
         # Assert
         self.assertEqual(3, s_list.len())
         self.assertIsNotNone(s_list.head)
-        self.assertEqual(2, s_list.head.value)
-        self.assertIsNotNone(s_list.head.next)
-        self.assertEqual(3, s_list.head.next.value)
-        self.assertIsNotNone(s_list.head.next.next)
         self.assertIsNotNone(s_list.tail)
+        self.assertEqual(2, s_list.head.value)
+        self.assertEqual(3, s_list.head.next.value)
         self.assertEqual(4, s_list.head.next.next.value)
         self.assertEqual(s_list.head.next.next, s_list.tail)
         self.assertIsNone(s_list.tail.next)
@@ -240,10 +236,10 @@ class Delete_LinkedListTests(unittest.TestCase):
         # Assert
         self.assertEqual(3, s_list.len())
         self.assertIsNotNone(s_list.head)
+        self.assertIsNotNone(s_list.tail)
         self.assertEqual(1, s_list.head.value)
         self.assertEqual(3, s_list.head.next.value)
         self.assertEqual(4, s_list.head.next.next.value)
-        self.assertIsNotNone(s_list.tail)
         self.assertEqual(s_list.head.next.next, s_list.tail)
         self.assertIsNone(s_list.tail.next)
 
@@ -253,6 +249,29 @@ class Delete_LinkedListTests(unittest.TestCase):
         s_list.add_in_tail(Node(1))
         s_list.add_in_tail(Node(2))
         s_list.add_in_tail(Node(3))
+        s_list.add_in_tail(Node(2))
+        s_list.add_in_tail(Node(4))
+
+        # Act
+        s_list.delete(2, all = True)
+
+        # Assert
+        self.assertEqual(3, s_list.len())
+        self.assertIsNotNone(s_list.head)
+        self.assertEqual(1, s_list.head.value)
+        self.assertEqual(3, s_list.head.next.value)
+        self.assertEqual(4, s_list.head.next.next.value)
+        self.assertIsNotNone(s_list.tail)
+        self.assertEqual(s_list.head.next.next, s_list.tail)
+        self.assertIsNone(s_list.tail.next)
+    
+    def test_delete_allTrueThreeEqualElementsInDifferentPlaces_shouldDeleteAll(self):
+        # Arrange
+        s_list = LinkedList()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        s_list.add_in_tail(Node(3))
+        s_list.add_in_tail(Node(2))
         s_list.add_in_tail(Node(2))
         s_list.add_in_tail(Node(4))
 
@@ -573,6 +592,39 @@ class Insert_LinkedListTests(unittest.TestCase):
         self.assertEqual(s_list.tail, s_list.head.next.next.next)
         self.assertIsNone(s_list.tail.next)
 
+    def test_insertDelete_multipleTimes_shouldBeCorrect(self):
+        # Arrange
+        s_list = LinkedList()
+        
+        # Act
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        s_list.add_in_tail(Node(4))
+        s_list.insert(s_list.head.next, Node(3))
+        # 1 -> 2 -> 3 -> 4
+        s_list.delete(1)
+        s_list.delete(3)
+        # 2 -> 4
+        s_list.insert(s_list.head, Node(5))
+        s_list.add_in_tail(Node(5))
+        s_list.add_in_tail(Node(5))
+        # 2 -> 5 -> 4 -> 5 -> 5 
+        s_list.delete(5, True)
+        # 2 -> 4 -> 6 -> 7
+        s_list.add_in_tail(Node(6))
+        s_list.add_in_tail(Node(7))
+
+        # Assert
+        self.assertEqual(4, s_list.len())
+        self.assertEqual(2, s_list.head.value)
+        self.assertEqual(4, s_list.head.next.value)
+        self.assertEqual(6, s_list.head.next.next.value)
+        self.assertEqual(7, s_list.head.next.next.next.value)
+        self.assertIsNotNone(s_list.head)
+        self.assertIsNotNone(s_list.tail)
+        self.assertEqual(s_list.tail, s_list.head.next.next.next)
+        self.assertIsNone(s_list.tail.next)
+
 class SumLists_LinkedListTests(unittest.TestCase):
     def test_sumLists_emptyLists_shouldBeEmptyList(self):
         # Arrange
@@ -637,7 +689,5 @@ class SumLists_LinkedListTests(unittest.TestCase):
         self.assertIsNotNone(res.tail)
         self.assertIsNone(res.tail.next)
         self.assertEqual(res.tail, res.head.next)
-        self.assertEqual(res.head, res.tail)
-
 if __name__ == "__main__":
     unittest.main()

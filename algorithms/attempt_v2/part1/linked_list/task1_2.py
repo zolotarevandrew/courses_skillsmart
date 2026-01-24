@@ -1,10 +1,3 @@
-#- порядковый номер самого задания на курсе (начиная с 1),
-#- номер задачи из задания,
-#- краткое название,
-#- сложность вашего решения (O-большое): как временнАя, так и пространственная,
-#- рефлексия по эталонному варианту решения
-
-
 # порядковый номер самого задания на курсе - 1
 #
 # номер задачи из задания - 1.8
@@ -24,16 +17,15 @@ from task1 import LinkedList, Node
 
 def sumLists(list1: LinkedList, list2: LinkedList):
     if list1.len() != list2.len(): return None
-    if list1.len() == 0: return list1
 
     node1Cur = list1.head
     node2Cur = list2.head
 
-    list = LinkedList()
+    res = LinkedList()
     while node1Cur is not None:
-        list.add_in_tail(Node(node1Cur.value + node2Cur.value))
+        res.add_in_tail(Node(node1Cur.value + node2Cur.value))
         node1Cur = node1Cur.next
         node2Cur = node2Cur.next
-    return list
+    return res
 
 
