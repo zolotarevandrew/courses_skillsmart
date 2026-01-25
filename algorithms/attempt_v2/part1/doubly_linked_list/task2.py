@@ -106,6 +106,7 @@ class LinkedList2:
         oldHead = self.head
         self.head = newNode
         self.head.next = oldHead
+        self.head.prev = None
         if oldHead is None: self.tail = self.head
         else: oldHead.prev = newNode
         self.count = self.count + 1

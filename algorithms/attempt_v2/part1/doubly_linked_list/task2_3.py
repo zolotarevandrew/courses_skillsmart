@@ -1,5 +1,6 @@
 import unittest
 from task2 import LinkedList2, Node
+from task2_2 import reverse, hasCycle
 
 class Delete_LinkedList2Tests(unittest.TestCase):
     def test_delete_allFalseEmpty_shouldBeEmpty(self):
@@ -865,6 +866,246 @@ class AddInHead_LinkedListTests(unittest.TestCase):
         self.assertEqual(s_list.tail, s_list.head.next.next)
         self.assertIsNone(s_list.tail.next)
         self.assertIsNone(s_list.head.prev)
+
+class Reverse_LinkedListTests(unittest.TestCase):
+    def test_reverse_empty_shouldBeCorrect(self):
+        # Arrange
+        s_list = LinkedList2()
+        
+        # Act
+        new_list = reverse(s_list)
+
+        # Assert
+        self.assertEqual(0, new_list.len())
+        self.assertIsNone(new_list.head)
+        self.assertIsNone(new_list.tail)
+
+    def test_reverse_oneElement_shouldBeCorrect(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        
+        # Act
+        new_list = reverse(s_list)
+
+        # Assert
+        self.assertEqual(1, new_list.len())
+        self.assertEqual(1, new_list.head.value)
+        self.assertIsNotNone(new_list.head)
+        self.assertIsNone(new_list.head.prev)
+        self.assertIsNotNone(new_list.tail)
+        self.assertIsNone(new_list.tail.next)
+        self.assertEqual(new_list.head, new_list.tail)
+
+    def test_reverse_twoElements_shouldBeCorrect(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        
+        # Act
+        new_list = reverse(s_list)
+
+        # Assert
+        self.assertEqual(2, new_list.len())
+        self.assertEqual(2, new_list.head.value)
+        self.assertEqual(1, new_list.head.next.value)
+        self.assertEqual(2, new_list.tail.prev.value)
+        self.assertIsNotNone(new_list.head)
+        self.assertIsNotNone(new_list.tail)
+        self.assertEqual(new_list.head.next, new_list.tail)
+        self.assertIsNone(new_list.head.prev)
+        self.assertIsNone(new_list.tail.next)
+
+    def test_reverse_threeElements_shouldBeCorrect(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        s_list.add_in_tail(Node(3))
+        
+        # Act
+        new_list = reverse(s_list)
+
+        # Assert
+        self.assertEqual(3, new_list.len())
+        self.assertEqual(3, new_list.head.value)
+        self.assertEqual(2, new_list.head.next.value)
+        self.assertEqual(1, new_list.head.next.next.value)
+        self.assertEqual(2, new_list.tail.prev.value)
+        self.assertEqual(3, new_list.tail.prev.prev.value)
+        self.assertIsNotNone(new_list.head)
+        self.assertIsNotNone(new_list.tail)
+        self.assertEqual(new_list.head.next.next, new_list.tail)
+        self.assertIsNone(new_list.head.prev)
+        self.assertIsNone(new_list.tail.next)
+
+    def test_reverse_fourElements_shouldBeCorrect(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(5))
+        s_list.add_in_tail(Node(2))
+        s_list.add_in_tail(Node(3))
+        
+        # Act
+        new_list = reverse(s_list)
+
+        # Assert
+        self.assertEqual(4, new_list.len())
+        self.assertEqual(3, new_list.head.value)
+        self.assertEqual(2, new_list.head.next.value)
+        self.assertEqual(5, new_list.head.next.next.value)
+        self.assertEqual(1, new_list.head.next.next.next.value)
+        self.assertEqual(5, new_list.tail.prev.value)
+        self.assertEqual(2, new_list.tail.prev.prev.value)
+        self.assertEqual(3, new_list.tail.prev.prev.prev.value)
+        self.assertIsNotNone(new_list.head)
+        self.assertIsNotNone(new_list.tail)
+        self.assertEqual(new_list.head.next.next.next, new_list.tail)
+        self.assertIsNone(new_list.head.prev)
+        self.assertIsNone(new_list.tail.next)
+
+class HasCycle_LinkedListTests(unittest.TestCase):
+    def test_hasCycle_empty_shouldBeCorrect(self):
+        # Arrange
+        s_list = LinkedList2()
+        
+        # Act
+
+        # Assert
+        self.assertFalse(hasCycle(s_list))
+
+    def test_hasCycle_oneElement_shouldBeCorrect(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        
+        # Act
+
+        # Assert
+        self.assertFalse(hasCycle(s_list))
+
+    def test_hasCycle_twoElements_shouldBeCorrect(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        
+        # Act
+
+        # Assert
+        self.assertFalse(hasCycle(s_list))
+
+    def test_hasCycle_threeElements_shouldBeCorrect(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        s_list.add_in_tail(Node(3))
+        
+        # Act
+
+        # Assert
+        self.assertFalse(hasCycle(s_list))
+
+    def test_hasCycle_oneElementWithNextCycle_shouldFoundCycle(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.head.next = s_list.head
+        
+        # Act
+
+        # Assert
+        self.assertTrue(hasCycle(s_list))
+
+    def test_hasCycle_threeElementsWithNextCycle_shouldFoundCycle(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        s_list.add_in_tail(Node(3))
+        s_list.head.next.next = s_list.head
+        
+        # Act
+
+        # Assert
+        self.assertTrue(hasCycle(s_list))
+
+    def test_hasCycle_oneElementWithPrevSelfCycle_shouldFoundCycle(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.head.prev = s_list.head
+        
+        # Act
+
+        # Assert
+        self.assertTrue(hasCycle(s_list))
+
+    def test_hasCycle_twoElementsWithPrevHeadSelfCycle_shouldFoundCycle(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        s_list.head.prev = s_list.head
+        
+        # Act
+
+        # Assert
+        self.assertTrue(hasCycle(s_list))
+
+    def test_hasCycle_twoElementsWithNextTailCycle_shouldFoundCycle(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        s_list.tail.next = s_list.head
+        
+        # Act
+
+        # Assert
+        self.assertTrue(hasCycle(s_list))
+
+    def test_hasCycle_threeElementsWithPrevSelfCycle_shouldFoundCycle(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        s_list.add_in_tail(Node(3))
+        s_list.tail.prev = s_list.tail
+        
+        # Act
+
+        # Assert
+        self.assertTrue(hasCycle(s_list))
+
+    def test_hasCycle_threeElementsWithPrevCycle_shouldFoundCycle(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        s_list.add_in_tail(Node(3))
+        s_list.head.prev = s_list.tail
+        
+        # Act
+
+        # Assert
+        self.assertTrue(hasCycle(s_list))
+
+    def test_hasCycle_threeElementsWithNextTailCycle_shouldFoundCycle(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        s_list.add_in_tail(Node(3))
+        s_list.tail.next = s_list.head
+        
+        # Act
+
+        # Assert
+        self.assertTrue(hasCycle(s_list))
 
 if __name__ == "__main__":
     unittest.main()
