@@ -43,7 +43,7 @@ class LinkedList2:
             # [1] -> 2 -> 3
             if selectedNode == self.head:
                 self.head = self.head.next
-                if self.head is None: 
+                if self.head is None:
                     self.tail = None
                 else:
                     self.head.prev = None
@@ -91,7 +91,6 @@ class LinkedList2:
             if afterNode == self.tail:
                 self.add_in_tail(newNode)
                 return
-            # можно ли вставить прямо после головы?
             
             # 1 -> [2] -> 3
             oldNext = afterNode.next

@@ -70,6 +70,26 @@ class Delete_LinkedList2Tests(unittest.TestCase):
         self.assertIsNone(s_list.head.prev)
         self.assertEqual(s_list.head, s_list.tail)
 
+    def test_delete_allFalseInTailThreeElements_shouldDeleteTail(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        s_list.add_in_tail(Node(3))
+
+        # Act
+        s_list.delete(3, all = False)
+
+        # Assert
+        self.assertIsNotNone(s_list.head)
+        self.assertEqual(2, s_list.len())
+        self.assertEqual(1, s_list.head.value)
+        self.assertEqual(2, s_list.head.next.value)
+        self.assertEqual(1, s_list.tail.prev.value)
+        self.assertIsNone(s_list.tail.next)
+        self.assertIsNone(s_list.head.prev)
+        self.assertEqual(s_list.head.next, s_list.tail)
+
     def test_delete_allTrueInTail_shouldDeleteTail(self):
         # Arrange
         s_list = LinkedList2()
@@ -103,6 +123,26 @@ class Delete_LinkedList2Tests(unittest.TestCase):
         self.assertIsNone(s_list.head.next)
         self.assertIsNone(s_list.head.prev)
         self.assertEqual(s_list.head, s_list.tail)
+
+    def test_delete_allFalseInHeadThreeElements_shouldDeleteHead(self):
+        # Arrange
+        s_list = LinkedList2()
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        s_list.add_in_tail(Node(3))
+
+        # Act
+        s_list.delete(1, all = False)
+
+        # Assert
+        self.assertIsNotNone(s_list.head)
+        self.assertEqual(2, s_list.len())
+        self.assertEqual(2, s_list.head.value)
+        self.assertEqual(3, s_list.head.next.value)
+        self.assertEqual(2, s_list.tail.prev.value)
+        self.assertIsNone(s_list.tail.next)
+        self.assertIsNone(s_list.head.prev)
+        self.assertEqual(s_list.head.next, s_list.tail)
 
     def test_delete_allTrueInHeadTwoElements_shouldDeleteHead(self):
         # Arrange
@@ -584,7 +624,7 @@ class Find_LinkedList2Tests(unittest.TestCase):
         self.assertEqual(node1, res)
 
 class Insert_LinkedListTests(unittest.TestCase):
-    def test_insert_empty_beforeHead_shouldBeOneElement(self):
+    def test_insert_empty_afterNone_shouldBeAddedAsFirstElement(self):
         # Arrange
         s_list = LinkedList2()
         
@@ -600,7 +640,7 @@ class Insert_LinkedListTests(unittest.TestCase):
         self.assertIsNone(s_list.head.prev)
         self.assertEqual(s_list.head, s_list.tail)
 
-    def test_insert_oneElement_afterNone_shouldBeTwoElements(self):
+    def test_insert_oneElement_afterNone_shouldBeAddedAtEnd(self):
         # Arrange
         s_list = LinkedList2()
         
@@ -620,7 +660,7 @@ class Insert_LinkedListTests(unittest.TestCase):
         self.assertIsNone(s_list.tail.next)
         self.assertIsNone(s_list.head.prev)
 
-    def test_insert_twoElements_afterNone_shouldBeThreeElements(self):
+    def test_insert_twoElements_afterNone_shouldBeAddedAtEnd(self):
         # Arrange
         s_list = LinkedList2()
         
@@ -724,6 +764,43 @@ class Insert_LinkedListTests(unittest.TestCase):
         self.assertEqual(3, s_list.tail.prev.value)
         self.assertEqual(2, s_list.tail.prev.prev.value)
         self.assertEqual(1, s_list.tail.prev.prev.prev.value)
+        self.assertIsNotNone(s_list.head)
+        self.assertIsNotNone(s_list.tail)
+        self.assertEqual(s_list.tail, s_list.head.next.next.next)
+        self.assertIsNone(s_list.tail.next)
+        self.assertIsNone(s_list.head.prev)
+
+    def test_insertDelete_multipleTimes_shouldBeCorrect(self):
+        # Arrange
+        s_list = LinkedList2()
+        
+        # Act
+        s_list.add_in_tail(Node(1))
+        s_list.add_in_tail(Node(2))
+        s_list.add_in_tail(Node(4))
+        s_list.insert(s_list.head.next, Node(3))
+        # 1 -> 2 -> 3 -> 4
+        s_list.delete(1)
+        s_list.delete(3)
+        # 2 -> 4
+        s_list.insert(s_list.head, Node(5))
+        s_list.add_in_tail(Node(5))
+        s_list.add_in_tail(Node(5))
+        # 2 -> 5 -> 4 -> 5 -> 5 
+        s_list.delete(5, True)
+        # 2 -> 4 -> 6 -> 7
+        s_list.add_in_tail(Node(6))
+        s_list.add_in_tail(Node(7))
+
+        # Assert
+        self.assertEqual(4, s_list.len())
+        self.assertEqual(2, s_list.head.value)
+        self.assertEqual(4, s_list.head.next.value)
+        self.assertEqual(6, s_list.head.next.next.value)
+        self.assertEqual(7, s_list.head.next.next.next.value)
+        self.assertEqual(6, s_list.tail.prev.value)
+        self.assertEqual(4, s_list.tail.prev.prev.value)
+        self.assertEqual(2, s_list.tail.prev.prev.prev.value)
         self.assertIsNotNone(s_list.head)
         self.assertIsNotNone(s_list.tail)
         self.assertEqual(s_list.tail, s_list.head.next.next.next)
