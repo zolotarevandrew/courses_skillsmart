@@ -243,27 +243,9 @@ class LinkedList3:
 
     def delete(self, val, all=False):
         def _deleteNode(selectedNode: Node):
-            # [1]
-            # [1] -> 2
-            # [1] -> 2 -> 3
-            if selectedNode == self.head:
-                self.head = self.head.next
-                if self.head is None:
-                    self.tail = None
-                else:
-                    self.head.prev = None
-                return
-            # 1 -> [2]
-            # 1 -> 2 -> [3]
-            if selectedNode == self.tail:
-                self.tail = self.tail.prev
-                self.tail.next = None
-                return
-            
-            # 1 -> [2] -> 3
-            selectedNode.prev.next = selectedNode.next
-            selectedNode.next.prev = selectedNode.prev
-            selectedNode.next = None
+            selectedNode._prev._next = selectedNode._next
+            selectedNode._next._prev = selectedNode._prev
+            selectedNode._next = None
 
         node = self.head
         while node is not None:
@@ -284,10 +266,10 @@ class LinkedList3:
         return self.dummyTail.prev
     
     def clean(self):
-        self.dummyHead = DummyNode()
-        self.dummyTail = DummyNode()
-        self.dummyHead.next = self.dummyTail
-        self.dummyTail.prev = self.dummyHead
+        self.dummyHead = DummyNode(0)
+        self.dummyTail = DummyNode(0)
+        self.dummyHead._next = self.dummyTail
+        self.dummyTail._prev = self.dummyHead
         self.count = 0
 
     def len(self):
@@ -300,13 +282,13 @@ class LinkedList3:
         elif afterNode is None and self.len() > 0:
             curNode = self.dummyHead if self.tail is None else self.tail
         else:
-            curNode = self.dummyHead
+            curNode = afterNode
        
-        oldNext = curNode.next
-        curNode.next = newNode
-        newNode.prev = curNode
-        newNode.next = oldNext
-        oldNext.prev = newNode
+        oldNext = curNode._next
+        curNode._next = newNode
+        newNode._prev = curNode
+        newNode._next = oldNext
+        oldNext._prev = newNode
         self.count = self.count + 1
 
     def add_in_head(self, newNode: Node3):
