@@ -184,7 +184,8 @@ def mergeLists(list1: LinkedList2, list2: LinkedList2):
 # пространственная - такая же как в LinkedList2
 
 # рефлексия по эталонному варианту решения:
-# DummyNodes сильно упрощают реализацию, 
+# DummyNodes сильно упрощают реализацию. Здесь, кажется, ничего особо не улучшить.
+# С зацикленной версией придумывать не стал, оставлю себе на будущее :)
 
 class Node3:
     def __init__(self, v):
@@ -280,7 +281,7 @@ class LinkedList3:
         if afterNode is None and self.len() == 0:
             curNode = self.dummyHead
         elif afterNode is None and self.len() > 0:
-            curNode = self.dummyHead if self.tail is None else self.tail
+            curNode = self.tail
         else:
             curNode = afterNode
        
