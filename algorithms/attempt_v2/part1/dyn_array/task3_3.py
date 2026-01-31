@@ -1,5 +1,6 @@
 import unittest
 from task3 import DynArray, MIN_ARRAY_SIZE
+from task3_2 import DimensionalDynArray
 
 
 class Insert_DynArrayTests(unittest.TestCase):
@@ -286,6 +287,260 @@ class Delete_DynArrayTests(unittest.TestCase):
         s_list.delete(2)
 
         self.assertEqual(int(prevCapacity / 1.5), s_list.capacity)
+
+class DimensionalDynArray_Tests(unittest.TestCase):
+
+    def test_create_invalidSizes_shouldThrow(self):
+        # Arrange
+
+        # Assert
+        with self.assertRaises(ValueError):
+            s_list = DimensionalDynArray([-1,2,3])
+
+    def test_create_emptySizes_shouldThrow(self):
+        # Arrange
+
+        # Assert
+        with self.assertRaises(ValueError):
+            s_list = DimensionalDynArray([])
+
+    def test_create_oneDimension_shouldBeOk(self):
+        # Arrange
+        sizes = [2]
+        s_list = DimensionalDynArray(sizes)
+
+        #Act
+        self.assertEqual(2, len(s_list.array))
+
+    def test_create_twoDimensions_shouldBeOk(self):
+        # Arrange
+        sizes = [2, 5]
+        s_list = DimensionalDynArray(sizes)
+
+        #Act
+        self.assertEqual(2, len(s_list.array))
+        self.assertEqual(5, len(s_list.array[0]))
+        self.assertEqual(5, len(s_list.array[1]))
+
+    def test_create_threeDimensions_shouldBeOk(self):
+        # Arrange
+        sizes = [2, 5, 4]
+        s_list = DimensionalDynArray(sizes)
+
+        #Act
+        self.assertEqual(2, len(s_list.array))
+        self.assertEqual(5, len(s_list.array[0]))
+        self.assertEqual(5, len(s_list.array[1]))
+
+        self.assertEqual(4, len(s_list.array[0][0]))
+        self.assertIsNone(s_list.array[0][0][0])
+        self.assertIsNone(s_list.array[0][0][1])
+        self.assertIsNone(s_list.array[0][0][2])
+        self.assertIsNone(s_list.array[0][0][3])
+
+        self.assertEqual(4, len(s_list.array[0][1]))
+        self.assertEqual(4, len(s_list.array[0][2]))
+        self.assertEqual(4, len(s_list.array[0][3]))
+        self.assertEqual(4, len(s_list.array[0][4]))
+        
+
+        self.assertEqual(4, len(s_list.array[1][0]))
+        self.assertEqual(4, len(s_list.array[1][1]))
+        self.assertEqual(4, len(s_list.array[1][2]))
+        self.assertEqual(4, len(s_list.array[1][3]))
+        self.assertEqual(4, len(s_list.array[1][4]))
+
+    def test_insert_oneDimension_shouldBeOk(self):
+        # Arrange
+        sizes = [0]
+        s_list = DimensionalDynArray(sizes)
+        self.assertEqual(0, len(s_list.array))
+
+        s_list.insert((0,), 2)
+        self.assertEqual(1, len(s_list.array))
+        self.assertEqual(2, len(s_list.array[0]))
+    
+    def test_insert_oneDimension_shouldNotAdd(self):
+        # Arrange
+        sizes = [1]
+        s_list = DimensionalDynArray(sizes)
+        self.assertEqual(1, len(s_list.array))
+
+        s_list.insert((0,), 3)
+        self.assertEqual(1, len(s_list.array))
+        self.assertEqual(3, s_list.array[0])
+
+    def test_insert_oneDimension_shouldBeOk(self):
+        # Arrange
+        sizes = [1]
+        s_list = DimensionalDynArray(sizes)
+        self.assertEqual(1, len(s_list.array))
+
+        s_list.insert((1,),2)
+        self.assertEqual(2, len(s_list.array))
+        self.assertIsNone(s_list.array[0])
+        self.assertEqual(2, s_list.array[1])
+
+    def test_insert_oneDimension_shouldBeOk(self):
+        # Arrange
+        sizes = [1]
+        s_list = DimensionalDynArray(sizes)
+        self.assertEqual(1, len(s_list.array))
+
+        s_list.insert((3,), 2)
+        self.assertEqual(4, len(s_list.array))
+        self.assertIsNone(s_list.array[0])
+        self.assertIsNone(s_list.array[1])
+        self.assertIsNone(s_list.array[2])
+        self.assertEqual(2, s_list.array[3])
+
+    def test_insert_twoDimensions_shouldBeOk(self):
+        # Arrange
+        sizes = [0, 0]
+        s_list = DimensionalDynArray(sizes)
+        self.assertEqual(0, len(s_list.array))
+
+        s_list.insert((0,1), 1)
+        self.assertEqual(1, len(s_list.array))
+        self.assertEqual(2, len(s_list.array[0]))
+        self.assertIsNone(s_list.array[0][0])
+        self.assertEqual(1, s_list.array[0][1])
+
+    def test_insert_twoDimensions_shouldBeOk(self):
+        # Arrange
+        sizes = [1, 2]
+        s_list = DimensionalDynArray(sizes)
+        self.assertEqual(1, len(s_list.array))
+        self.assertEqual(2, len(s_list.array[0]))
+
+        s_list.insert((0,1), 2)
+        self.assertEqual(1, len(s_list.array))
+        self.assertIsNone(s_list.array[0][0])
+        self.assertEqual(2, s_list.array[0][1])
+
+    def test_ensurePathExists_twoDimensions_shouldBeOk(self):
+        # Arrange
+        sizes = [1, 2]
+        s_list = DimensionalDynArray(sizes)
+        self.assertEqual(1, len(s_list.array))
+        self.assertEqual(2, len(s_list.array[0]))
+
+        s_list.insert((1,2), 5)
+        self.assertEqual(2, len(s_list.array))
+        self.assertEqual(2, len(s_list.array[0]))
+        self.assertIsNone(s_list.array[0][0])
+        self.assertIsNone(s_list.array[0][1])
+        self.assertEqual(3, len(s_list.array[1]))
+        self.assertIsNone(s_list.array[1][0])
+        self.assertIsNone(s_list.array[1][1])
+        self.assertEqual(5, s_list.array[1][2])
+
+    def test_insert_threeDimensions_shouldBeOk(self):
+        # Arrange
+        sizes = [0, 0, 0]
+        s_list = DimensionalDynArray(sizes)
+        self.assertEqual(0, len(s_list.array))
+
+        s_list.insert((0,0,0), 1)
+        self.assertEqual(1, len(s_list.array))
+        self.assertEqual(1, len(s_list.array[0]))
+        self.assertEqual(1, len(s_list.array[0][0]))
+        self.assertEqual(1, s_list.array[0][0][0])
+
+    def test_insert_threeDimensions_shouldBeOk(self):
+        # Arrange
+        sizes = [1, 2, 0]
+        s_list = DimensionalDynArray(sizes)
+        self.assertEqual(1, len(s_list.array))
+        self.assertEqual(2, len(s_list.array[0]))
+        self.assertEqual(0, len(s_list.array[0][0]))
+        self.assertEqual(0, len(s_list.array[0][1]))
+
+        s_list._set((0,1,0), 5)
+        self.assertEqual(1, len(s_list.array))
+        self.assertEqual(2, len(s_list.array[0]))
+        self.assertEqual(0, len(s_list.array[0][0]))
+        self.assertEqual(1, len(s_list.array[0][1]))
+        self.assertEqual(5, s_list.array[0][1][0])
+
+    def test_insert_invalidPath_shouldThrow(self):
+        # Arrange
+        sizes = [1, 2, 0]
+        s_list = DimensionalDynArray(sizes)
+
+        # Assert
+        with self.assertRaises(ValueError):
+            s_list.insert((-1,2,3), 2)
+
+    def test_insert_invalidPath_shouldThrow(self):
+        # Arrange
+        sizes = [1, 2, 0]
+        s_list = DimensionalDynArray(sizes)
+
+        # Assert
+        with self.assertRaises(ValueError):
+            s_list.insert((-1,2), 2)
+
+    def test_delete_invalidPath_shouldThrow(self):
+        # Arrange
+        sizes = [1, 2, 0]
+        s_list = DimensionalDynArray(sizes)
+
+        # Assert
+        with self.assertRaises(ValueError):
+            s_list.delete((-1,2,3))
+
+    def test_delete_invalidPath_shouldThrow(self):
+        # Arrange
+        sizes = [1, 2, 0]
+        s_list = DimensionalDynArray(sizes)
+
+        # Assert
+        with self.assertRaises(ValueError):
+            s_list.delete((-1,2))
+
+    def test_delete_oneDimension_shouldNotDelete(self):
+        # Arrange
+        sizes = [0]
+        s_list = DimensionalDynArray(sizes)
+        self.assertEqual(0, len(s_list.array))
+
+        self.assertFalse(s_list.delete((0,)))
+
+    def test_delete_oneDimension_shouldDelete(self):
+        # Arrange
+        sizes = [0]
+        s_list = DimensionalDynArray(sizes)
+        s_list.insert((0,),1)
+        self.assertEqual(1, len(s_list.array))
+
+        self.assertTrue(s_list.delete((0,)))
+
+    def test_delete_twoDimension_shouldNotDelete(self):
+        # Arrange
+        sizes = [0, 0]
+        s_list = DimensionalDynArray(sizes)
+        self.assertEqual(0, len(s_list.array))
+
+        self.assertFalse(s_list.delete((0,0)))
+
+    def test_delete_twoDimension_shouldDelete(self):
+        # Arrange
+        sizes = [1, 2]
+        s_list = DimensionalDynArray(sizes)
+        s_list.insert((0,1),1)
+        self.assertEqual(1, len(s_list.array))
+
+        self.assertTrue(s_list.delete((0,1)))
+
+    def test_delete_twoDimensionEmpty_shouldDelete(self):
+        # Arrange
+        sizes = [1, 2]
+        s_list = DimensionalDynArray(sizes)
+        self.assertEqual(1, len(s_list.array))
+
+        self.assertTrue(s_list.delete((0,1)))
+
 
 if __name__ == "__main__":
     unittest.main()
