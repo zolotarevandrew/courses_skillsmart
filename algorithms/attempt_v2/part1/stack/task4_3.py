@@ -2,6 +2,7 @@ import unittest
 
 import unittest
 from task4 import Stack
+from task4_2 import checkBrackets,postfixExpression
 
 
 class StackTests(unittest.TestCase):
@@ -133,7 +134,7 @@ class StackTests(unittest.TestCase):
         self.assertEqual(2, stack.size())
         self.assertEqual(2, stack.peek())
 
-    def test_pop_twoElements_shouldBeCorrect(self):
+    def test_push_twoElements_shouldBeCorrect(self):
         # Arrange
         stack = Stack()
         stack.push(1)
@@ -160,7 +161,114 @@ class StackTests(unittest.TestCase):
         self.assertEqual(4, stack.size())
         self.assertEqual(5, stack.peek())
         
+class CheckBracketTests(unittest.TestCase):
+    def test_check_none_shouldReturnFalse(self):
+        # Arrange
 
+        # Act
+
+        # Assert
+        self.assertFalse(checkBrackets(None))
+
+    def test_check_empty_shouldReturnFalse(self):
+        # Arrange
+
+        # Act
+
+        # Assert
+        self.assertFalse(checkBrackets(''))
+
+    def test_check_invalidChar_shouldReturnFalse(self):
+        # Arrange
+
+        # Act
+
+        # Assert
+        self.assertFalse(checkBrackets('1'))
+
+    def test_check_invalidCharWithValidBrackets_shouldReturnFalse(self):
+        # Arrange
+
+        # Act
+
+        # Assert
+        self.assertFalse(checkBrackets('(1)'))
+
+    def test_check_invalidCharWithValidBrackets_shouldReturnFalse(self):
+        # Arrange
+
+        # Act
+
+        # Assert
+        self.assertFalse(checkBrackets('(1)'))
+
+    def test_check_validBracketsOne_shouldReturnTrue(self):
+        # Arrange
+
+        # Act
+
+        # Assert
+        self.assertTrue(checkBrackets('()'))
+        self.assertTrue(checkBrackets('{}'))
+        self.assertTrue(checkBrackets('[]'))
+
+    def test_check_validBracketsNested_shouldReturnTrue(self):
+        # Arrange
+
+        # Act
+
+        # Assert
+        self.assertTrue(checkBrackets('(())'))
+        self.assertTrue(checkBrackets('((()))'))
+        self.assertTrue(checkBrackets('[([{}])]'))
+        self.assertTrue(checkBrackets('({})'))
+
+    def test_check_invalidBrackets_shouldReturnFalse(self):
+        # Arrange
+
+        # Act
+
+        # Assert
+        self.assertFalse(checkBrackets('(('))
+        self.assertFalse(checkBrackets('(()'))
+        self.assertFalse(checkBrackets('{{}'))
+        self.assertFalse(checkBrackets('[[]'))
+        self.assertFalse(checkBrackets('())'))
+        self.assertFalse(checkBrackets('}}'))
+        self.assertFalse(checkBrackets('}{'))
+        self.assertFalse(checkBrackets(']]'))
+        self.assertFalse(checkBrackets('[{([})}]'))
+
+class PostfixExpressionTests(unittest.TestCase):
+    def test_postfixExpression_none_shouldReturnNone(self):
+        self.assertIsNone(postfixExpression(None))
+
+    def test_postfixExpression_empty_shouldReturnNone(self):
+        self.assertIsNone(postfixExpression(''))
+
+    def test_postfixExpression_spaces_shouldReturnNone(self):
+        self.assertIsNone(postfixExpression(' '))
+
+    def test_postfixExpression_invalidOperatorOnly_shouldReturnNone(self):
+        with self.assertRaises(ValueError):
+            postfixExpression('+')
+
+    def test_postfixExpression_invalidDigitsOnly_shouldReturnNone(self):
+        with self.assertRaises(ValueError):
+            postfixExpression('1 2')
+
+    def test_postfixExpression_invalidExpression_shouldReturnNone(self):
+        with self.assertRaises(ValueError):
+            postfixExpression('8 10 + 9 / -')
+
+    def test_postfixExpression_valid1_shouldReturnOk(self):
+        self.assertEqual(59, postfixExpression('8 2 + 5 * 9 +'))
+
+    def test_postfixExpression_valid2_shouldReturnOk(self):
+        self.assertEqual(39, postfixExpression('8 2 - 5 * 9 +'))
+
+    def test_postfixExpression_valid3_shouldReturnOk(self):
+        self.assertEqual(2, postfixExpression('8 10 + 9 /'))
 
 if __name__ == "__main__":
     unittest.main()
