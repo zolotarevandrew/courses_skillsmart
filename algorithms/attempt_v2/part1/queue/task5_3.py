@@ -2,7 +2,7 @@ import unittest
 
 import unittest
 from task5 import Queue
-from task5_2 import rotate
+from task5_2 import rotate, StackQueue
 
 
 class QueueTests(unittest.TestCase):
@@ -248,5 +248,151 @@ class RotateTests(unittest.TestCase):
         self.assertEqual(2, res.dequeue())
         self.assertEqual(3, res.dequeue())
         self.assertIsNone(res.dequeue())
+
+class StackQueueTests(unittest.TestCase):
+    def test_dequeue_empty_shouldReturnNone(self):
+        # Arrange
+        queue = StackQueue()
+
+        # Act
+        res = queue.dequeue()
+
+        # Assert
+        self.assertEqual(0, queue.size())
+        self.assertIsNone(res)
+
+    def test_dequeue_oneElement_shouldBeCorrect(self):
+        # Arrange
+        queue = StackQueue()
+        queue.enqueue(1)
+
+        # Act
+        res = queue.dequeue()
+
+        # Assert
+        self.assertEqual(0, queue.size())
+        self.assertEqual(1, res)
+        self.assertIsNone(queue.dequeue())
+
+    def test_dequeue_twoElements_shouldBeCorrect(self):
+        # Arrange
+        queue = StackQueue()
+        queue.enqueue(1)
+        queue.enqueue(2)
+
+        # Act
+        res = queue.dequeue()
+
+        # Assert
+        self.assertEqual(1, res)
+        self.assertEqual(1, queue.size())
+        self.assertEqual(2, queue.dequeue())
+        self.assertIsNone(queue.dequeue())
+
+    def test_dequeue_threeElements_shouldBeCorrect(self):
+        # Arrange
+        queue = StackQueue()
+        queue.enqueue(1)
+        queue.enqueue(2)
+        queue.enqueue(3)
+
+        # Act
+        res = queue.dequeue()
+
+        # Assert
+        self.assertEqual(1, res)
+        self.assertEqual(2, queue.size())
+        self.assertEqual(2, queue.dequeue())
+        self.assertEqual(3, queue.dequeue())
+        self.assertIsNone(queue.dequeue())
+    
+    def test_enqueue_empty_shouldBeCorrect(self):
+        # Arrange
+        queue = StackQueue()
+
+        # Act
+        queue.enqueue(1)
+
+        # Assert
+        self.assertEqual(1, queue.size())
+
+    def test_enqueue_oneElement_shouldBeCorrect(self):
+        # Arrange
+        queue = StackQueue()
+        queue.enqueue(1)
+
+        # Act
+        queue.enqueue(2)
+
+        # Assert
+        self.assertEqual(2, queue.size())
+
+    def test_enqueue_twoElements_shouldBeCorrect(self):
+        # Arrange
+        queue = StackQueue()
+        queue.enqueue(1)
+        queue.enqueue(2)
+
+        # Act
+        queue.enqueue(3)
+
+        # Assert
+        self.assertEqual(3, queue.size())
+
+    def test_enqueue_threeElements_shouldBeCorrect(self):
+        # Arrange
+        queue = StackQueue()
+        queue.enqueue(1)
+        queue.enqueue(2)
+        queue.enqueue(3)
+
+        # Act
+        queue.enqueue(5)
+
+        # Assert
+        self.assertEqual(4, queue.size())
+
+    def test_enqueue_multipleCases_shouldBeCorrect(self):
+        # Arrange
+        queue = StackQueue()
+
+        # Assert 1 - simple dequeue
+        queue.enqueue(25)
+        self.assertEqual(1, queue.size())
+        res = queue.dequeue()
+        self.assertEqual(res, 25)
+        self.assertEqual(0, queue.size())
+        
+        # Assert 2 - two enqueue, sequential dequeue
+        queue.enqueue(25)
+        queue.enqueue(6)
+        self.assertEqual(2, queue.size())
+        res = queue.dequeue()
+        self.assertEqual(res, 25)
+        self.assertEqual(1, queue.size())
+        res = queue.dequeue()
+        self.assertEqual(res, 6)
+        self.assertEqual(0, queue.size())
+
+        # Assert 3 - three sequential enqueue, dequeue
+        queue.enqueue(25)
+        self.assertEqual(1, queue.size())
+        res = queue.dequeue()
+        self.assertEqual(res, 25)
+        self.assertEqual(0, queue.size())
+
+        queue.enqueue(26)
+        self.assertEqual(1, queue.size())
+        res = queue.dequeue()
+        self.assertEqual(res, 26)
+        self.assertEqual(0, queue.size())
+
+        queue.enqueue(27)
+        self.assertEqual(1, queue.size())
+        res = queue.dequeue()
+        self.assertEqual(res, 27)
+        self.assertEqual(0, queue.size())
+
+
 if __name__ == "__main__":
     unittest.main()

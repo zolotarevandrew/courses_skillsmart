@@ -52,12 +52,35 @@ def rotate(queue: Queue, r):
 #
 # сложность решения (O-большое) 
 # временнАя - 
-# пространственная - 
+# enqueue - O(1) пушим в stack1
+# dequeue - 
+# O(N) в худшем случае
+# Но амортизированно O(1) - поскольку для прохода элемента через enqueue а потом dequeue, нужно всего 4 операции:
+# - push stack1, pop stack1, push stack2, pop stack2
+# пространственная - O(N) храним все элементы, но в двух стэках
 #
 # рефлексия по эталонному варианту решения:
 # 
 
-from stack.task4 import Stack
+class Stack:
+    def __init__(self):
+        self.stack = []
+
+    def size(self):
+        return len(self.stack)
+
+    def pop(self):
+        if self.size() == 0:
+            return None
+        return self.stack.pop()
+
+    def push(self, value):
+        self.stack.append(value)
+
+    def peek(self):
+        if self.size() == 0:
+            return None
+        return self.stack[-1]
 class StackQueue:
     def __init__(self):
         self.stack1 = Stack()
@@ -67,10 +90,12 @@ class StackQueue:
         self.stack1.push(item)
 
     def dequeue(self):
+        if self.stack2.size() != 0: return self.stack2.pop()
+
         while self.stack1.size() > 0:
             self.stack2.push(self.stack1.pop())
 
-        if self.stack2.size() == 0: return None
+        # здесь не будет падать, при size = 0, так как кастомная реализация стэка
         return self.stack2.pop()
 
     def size(self):
