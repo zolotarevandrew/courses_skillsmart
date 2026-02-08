@@ -2,7 +2,7 @@ import unittest
 
 import unittest
 from task5 import Queue
-from task5_2 import rotate, StackQueue
+from task5_2 import rotate, reverse, StackQueue, CircularQueue
 
 
 class QueueTests(unittest.TestCase):
@@ -393,6 +393,133 @@ class StackQueueTests(unittest.TestCase):
         self.assertEqual(res, 27)
         self.assertEqual(0, queue.size())
 
+class ReverseQueueTests(unittest.TestCase):
+    def test_reverse_oneElement_shouldReturnSameQueue(self):
+        # Arrange
+        queue = Queue()
+        queue.enqueue(1)
+
+        # Act
+        res = reverse(queue)  
+
+        # Assert
+        self.assertEqual(1, res.size())
+        self.assertEqual(1, res.dequeue())
+
+    def test_reverse_empty_shouldReturnSameQueue(self):
+        # Arrange
+        queue = Queue()
+
+        # Act
+        res = reverse(queue)  
+
+        # Assert
+        self.assertEqual(0, res.size())
+        self.assertIsNone(res.dequeue())
+
+    def test_reverse_twoElements_shouldReturnReversedQueue(self):
+        # Arrange
+        queue = Queue()
+        queue.enqueue(1)
+        queue.enqueue(2)
+
+        # Act
+        res = reverse(queue)  
+
+        # Assert
+        self.assertEqual(2, res.size())
+        self.assertEqual(2, res.dequeue())
+        self.assertEqual(1, res.dequeue())
+        self.assertIsNone(res.dequeue())
+
+    def test_reverse_threeElements_shouldReturnReversedQueue(self):
+        # Arrange
+        queue = Queue()
+        queue.enqueue(1)
+        queue.enqueue(2)
+        queue.enqueue(3)
+
+        # Act
+        res = reverse(queue)  
+
+        # Assert
+        self.assertEqual(3, res.size())
+        self.assertEqual(3, res.dequeue())
+        self.assertEqual(2, res.dequeue())
+        self.assertEqual(1, res.dequeue())
+        self.assertIsNone(res.dequeue())
+
+class QueueTests(unittest.TestCase):
+    def test_multiCases_shouldBeOk(self):
+        # Arrange
+        queue = CircularQueue(3)
+        
+        self.assertEqual(0, queue.size())
+
+        #1
+        self.assertTrue(queue.enqueue(1))
+        self.assertTrue(queue.enqueue(2))
+        self.assertTrue(queue.enqueue(3))
+        self.assertEqual(3, queue.size())
+        self.assertTrue(queue.isFull())
+        self.assertEqual(0, queue.head)
+        self.assertEqual(0, queue.tail)
+
+        #2
+        self.assertEqual(1, queue.dequeue())
+        self.assertEqual(2, queue.size())
+        self.assertFalse(queue.isFull())
+        self.assertEqual(1, queue.head)
+
+        #3
+        self.assertEqual(2, queue.dequeue())
+        self.assertEqual(1, queue.size())
+        self.assertFalse(queue.isFull())
+        self.assertEqual(2, queue.head)
+
+        #4
+        queue.enqueue(1)
+        self.assertEqual(2, queue.size())
+        self.assertFalse(queue.isFull())
+        self.assertEqual(2, queue.head)
+        self.assertEqual(1, queue.tail)
+
+        #5
+        queue.enqueue(2)
+        self.assertEqual(3, queue.size())
+        self.assertTrue(queue.isFull())
+        self.assertEqual(2, queue.head)
+        self.assertEqual(2, queue.tail)
+
+        #6
+        self.assertEqual(3, queue.dequeue())
+        self.assertEqual(2, queue.size())
+        self.assertFalse(queue.isFull())
+        self.assertEqual(0, queue.head)
+        self.assertEqual(2, queue.tail)
+
+        #7
+        queue.enqueue(3)
+        self.assertEqual(3, queue.size())
+        self.assertTrue(queue.isFull())
+        self.assertEqual(0, queue.head)
+        self.assertEqual(0, queue.tail)
+
+        #8 
+        self.assertEqual(1,queue.dequeue())
+        self.assertEqual(2,queue.size())
+        self.assertFalse(queue.isFull())
+        self.assertEqual(1, queue.head)
+        self.assertEqual(0, queue.tail)
+
+        #9
+        self.assertEqual(1,queue.dequeue())
+        self.assertEqual(2,queue.size())
+        self.assertFalse(queue.isFull())
+        self.assertEqual(1, queue.head)
+        self.assertEqual(0, queue.tail)
+
+        
 
 if __name__ == "__main__":
     unittest.main()
