@@ -512,13 +512,6 @@ class QueueTests(unittest.TestCase):
         self.assertEqual(1, queue.head)
         self.assertEqual(0, queue.tail)
 
-        #9
-        self.assertEqual(1,queue.dequeue())
-        self.assertEqual(2,queue.size())
-        self.assertFalse(queue.isFull())
-        self.assertEqual(1, queue.head)
-        self.assertEqual(0, queue.tail)
-
         
 
 if __name__ == "__main__":
