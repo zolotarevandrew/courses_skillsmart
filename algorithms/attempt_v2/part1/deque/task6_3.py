@@ -1,6 +1,6 @@
 import unittest
 from task6 import Deque
-from task6_2 import isPalindrome
+from task6_2 import isPalindrome, MinDeque
 
 class DequeTests(unittest.TestCase):
     def test_removeTailAndHead_empty_shouldReturnNone(self):
@@ -249,6 +249,46 @@ class IsPalindromeTests(unittest.TestCase):
         # Assert
         self.assertTrue(isPalindrome('1221'))
 
+class MinDequeTests(unittest.TestCase):
+    def test_allCases_shouldBeCorrect(self):
+        # Arrange
+        deque = MinDeque()
+
+        #1
+        self.assertIsNone(deque.min())
+
+        #2
+        deque.addFront(3)
+        self.assertEqual(3, deque.min())
+
+        #3
+        deque.addFront(2)
+        self.assertEqual(2, deque.min())
+
+        #4
+        deque.addTail(4)
+        self.assertEqual(2, deque.min())
+
+        #5
+        deque.addTail(5)
+        self.assertEqual(2, deque.min())
+
+        #6
+        deque.addFront(1)
+        self.assertEqual(1, deque.min())
+
+        deque.removeFront()
+        self.assertEqual(2, deque.min())
+
+        deque.removeTail()
+        self.assertEqual(2, deque.min())
+
+        deque.removeFront()
+        self.assertEqual(3, deque.min())
+
+        deque.removeFront()
+        self.assertEqual(4, deque.min())
+        
 
 if __name__ == "__main__":
     unittest.main()
