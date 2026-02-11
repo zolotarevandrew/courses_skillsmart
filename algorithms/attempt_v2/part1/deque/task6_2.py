@@ -130,3 +130,88 @@ class MinDeque:
 
     def size(self):
         return self.front.size() + self.tail.size()
+    
+
+# порядковый номер самого задания на курсе - 6
+#
+# номер задачи из задания - 7.5
+#
+# краткое название - Реализуйте двустороннюю очередь с помощью динамического массива. Методы добавления и удаления элементов с обоих концов деки должны работать за амортизированное время o(1)
+#
+# сложность решения (O-большое) 
+# временнАя - 
+# removeTail, removeFront - O(1) двигаем указатели
+# addFront, addTail - амортизированно O(1) из-за потенциального роста массива
+# пространственная - O(N) на массив
+#
+# рефлексия по эталонному варианту решения:
+# Очередь на основе кольцевого буфера, видел подобную реализацию еще давно у Microsoft.
+# Здесь более оптимальных вариантов не видится.
+
+MIN_CAPACITY = 4
+
+class CircularDeque:
+    def __init__(self, cap = MIN_CAPACITY):
+        self.capacity = cap
+        self.queue = [None] * cap
+        self.count = 0
+        self.head = 0
+        self.tail = 0
+
+    def addTail(self, item):
+        self._tryGrow()
+        self.queue[self.tail] = item
+        self.tail += 1
+        if self.tail == self.capacity: 
+            self.tail = 0
+        self.count += 1
+
+    def removeTail(self):
+        if self.count == 0: 
+            return None
+        self.tail -= 1
+        if self.tail == -1:
+            self.tail = self.capacity - 1
+
+        item = self.queue[self.tail]
+        self.queue[self.tail] = None
+        self.count -= 1        
+        return item
+
+    def addFront(self, item):
+        self._tryGrow()
+        self.head = self.capacity - 1 if self.head == 0 else self.head - 1
+        self.queue[self.head] = item
+        self.count += 1
+
+    def removeFront(self):        
+        if self.count == 0: 
+            return None
+        item = self.queue[self.head]
+        self.queue[self.head] = None
+
+        self.head += 1
+        if self.head == self.capacity:
+            self.head = 0
+        self.count -= 1
+        return item
+
+    def _tryGrow(self):
+        if self.count != self.capacity:
+            return
+        newCapacity = self.capacity * 2
+        new_queue = [None] * newCapacity
+    
+        if self.head < self.tail:
+            merged = self.queue[self.head:self.tail]
+        else:
+            merged = self.queue[self.head:] + self.queue[:self.tail]
+
+        new_queue[:self.count] = merged
+        self.queue = new_queue
+        self.head = 0
+        self.capacity = newCapacity
+        self.tail = self.count
+
+    def size(self):
+        return self.count

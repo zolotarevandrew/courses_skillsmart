@@ -1,6 +1,6 @@
 import unittest
 from task6 import Deque
-from task6_2 import isPalindrome, MinDeque
+from task6_2 import isPalindrome, MinDeque, CircularDeque
 
 class DequeTests(unittest.TestCase):
     def test_removeTailAndHead_empty_shouldReturnNone(self):
@@ -288,6 +288,155 @@ class MinDequeTests(unittest.TestCase):
 
         deque.removeFront()
         self.assertEqual(4, deque.min())
+
+class CircularDequeTests(unittest.TestCase):
+    def test_allCases_shouldBeCorrect(self):
+        # Arrange
+        cap = 3
+        deque = CircularDeque(cap)
+
+        #1
+        self.assertIsNone(deque.removeFront())
+        self.assertIsNone(deque.removeTail())
+        self.assertEqual(deque.capacity, cap)
+
+        #2
+        deque.addFront(1)
+        deque.addFront(2)
+        deque.addFront(3)
+
+        self.assertEqual(3, deque.removeFront())
+        self.assertEqual(2, deque.removeFront())
+        self.assertEqual(1, deque.removeFront())
+        self.assertIsNone(deque.removeFront())
+        self.assertEqual(deque.capacity, cap)
+
+        #3
+        deque.addTail(1)
+        deque.addTail(2)
+        deque.addTail(3)
+
+        self.assertEqual(3, deque.removeTail())
+        self.assertEqual(2, deque.removeTail())
+        self.assertEqual(1, deque.removeTail())
+        self.assertIsNone(deque.removeTail())
+        self.assertEqual(deque.capacity, cap)
+
+        #4
+        deque.addTail(1)
+        deque.addTail(2)
+        deque.addFront(3)
+
+        self.assertEqual(2, deque.removeTail())
+        self.assertEqual(1, deque.removeTail())
+        self.assertEqual(3, deque.removeTail())
+        self.assertIsNone(deque.removeTail())
+        self.assertEqual(deque.capacity, cap)
+
+        #5
+        deque.addTail(1)
+        deque.addTail(2)
+        deque.addFront(3)
+
+        self.assertEqual(3, deque.removeFront())
+        self.assertEqual(1, deque.removeFront())
+        self.assertEqual(2, deque.removeFront())
+        self.assertIsNone(deque.removeFront())
+        self.assertEqual(deque.capacity, cap)
+
+        #6
+        deque.addFront(1)
+        deque.addTail(2)
+        deque.addFront(3)
+
+        self.assertEqual(3, deque.removeFront())
+        self.assertEqual(1, deque.removeFront())
+        self.assertEqual(2, deque.removeFront())
+        self.assertIsNone(deque.removeFront())
+        self.assertEqual(deque.capacity, cap)
+
+        #7
+        deque.addFront(1)
+        deque.addFront(2)
+
+        self.assertEqual(1, deque.removeTail())
+        self.assertEqual(2, deque.removeTail())
+        self.assertIsNone(deque.removeTail())
+        self.assertEqual(deque.capacity, cap)
+
+        #8
+        deque.addTail(1)
+        deque.addTail(2)
+
+        self.assertEqual(1, deque.removeFront())
+        self.assertEqual(2, deque.removeFront())
+        self.assertIsNone(deque.removeFront())
+        self.assertEqual(deque.capacity, cap)
+
+        #8
+        deque.addTail(1)
+        deque.addTail(2)
+        deque.addTail(3)
+        deque.addTail(4)
+
+        self.assertEqual(1, deque.removeFront())
+        self.assertEqual(2, deque.removeFront())
+        self.assertEqual(3, deque.removeFront())
+        self.assertEqual(4, deque.removeFront())
+        self.assertIsNone(deque.removeFront())
+        self.assertEqual(deque.capacity, cap * 2)
+
+        #8
+        deque.addTail(1)
+        deque.addTail(2)
+        deque.addFront(3)
+        deque.addTail(4)
+
+        self.assertEqual(3, deque.removeFront())
+        self.assertEqual(1, deque.removeFront())
+        self.assertEqual(2, deque.removeFront())
+        self.assertEqual(4, deque.removeFront())
+        self.assertIsNone(deque.removeFront())
+        self.assertEqual(deque.capacity, cap * 2)
+
+        #9
+        deque.addTail(1)
+        deque.addFront(2)
+        deque.addFront(3)
+        deque.addTail(4)
+
+        self.assertEqual(3, deque.removeFront())
+        self.assertEqual(2, deque.removeFront())
+        self.assertEqual(1, deque.removeFront())
+        self.assertEqual(4, deque.removeFront())
+        self.assertIsNone(deque.removeFront())
+        self.assertEqual(deque.capacity, cap * 2)
+
+        #9
+        deque.addFront(1)
+        deque.addFront(2)
+        deque.addTail(3)
+        deque.addTail(4)
+
+        self.assertEqual(2, deque.removeFront())
+        self.assertEqual(1, deque.removeFront())
+        self.assertEqual(3, deque.removeFront())
+        self.assertEqual(4, deque.removeFront())
+        self.assertIsNone(deque.removeFront())
+        self.assertEqual(deque.capacity, cap * 2)
+
+        #10
+        deque.addFront(1)
+        deque.addFront(2)
+        deque.addFront(3)
+        deque.addFront(4)
+
+        self.assertEqual(4, deque.removeFront())
+        self.assertEqual(3, deque.removeFront())
+        self.assertEqual(2, deque.removeFront())
+        self.assertEqual(1, deque.removeFront())
+        self.assertIsNone(deque.removeFront())
+        self.assertEqual(deque.capacity, cap * 2)
         
 
 if __name__ == "__main__":
