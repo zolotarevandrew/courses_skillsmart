@@ -215,3 +215,44 @@ class CircularDeque:
 
     def size(self):
         return self.count
+    
+
+# порядковый номер самого задания на курсе - 6
+#
+# номер задачи из задания - 7.6
+#
+# краткое название - Напишите автономную функцию, которая проверяет правильность расстановки (баланс) скобок в символьном (например, арифметическом) выражении
+#
+# сложность решения (O-большое) 
+# временнАя - O(N) проходимся по всем элементам строки
+# пространственная - O(N), используем стэк
+
+# рефлексия по эталонному варианту решения:
+# Возможно я не до конца понял, что надо сделать, но это та же самая задача в что и доп.задача по стэку с открывающими и закрывающими скобками - ее уже делал в task4_2..
+
+openByClosed = {
+    ')': '(',
+    '}': '{',
+    ']': '['
+}
+def checkBrackets(str):
+    if str is None or str == '': return False
+
+    stack = Stack()
+    for ch in str:
+        if ch == '{' or ch == '(' or ch == '[':
+            stack.push(ch)
+            continue
+        if ch not in openByClosed:
+            return False
+
+        if stack.size() == 0:
+            return False
+        open = openByClosed[ch]
+        popped = stack.pop()
+
+        if popped != open: 
+            return False
+        
+    return stack.size() == 0
+
