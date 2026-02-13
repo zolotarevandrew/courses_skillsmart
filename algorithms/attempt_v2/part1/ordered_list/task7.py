@@ -22,14 +22,14 @@ class OrderedList:
         if self.head is None:
             self._insert(None, _insertNode)
             return
-        
+
         # <- 1
         headCompare = self.compare(_insertNode.value, self.head.value)
         shouldAddInHead = (headCompare <= 0) if self.__ascending else (headCompare >= 0)
         if shouldAddInHead:
             self._insert(None, _insertNode)
             return
-        
+
         # 1 ->
         tailCompare = self.compare(_insertNode.value, self.tail.value)
         shouldAddInTail = (tailCompare >= 0) if self.__ascending else (tailCompare <= 0)
@@ -38,7 +38,7 @@ class OrderedList:
             return
 
         # 1 -> 2 -> 3
-        node: Node = self.head.next
+        node: Node = self.head
         while node != None:
             nodeCompare = self.compare(_insertNode.value, node.value)
             shouldAddBeforeNode = (nodeCompare <= 0) if self.__ascending else (nodeCompare >= 0)
@@ -46,7 +46,6 @@ class OrderedList:
                 self._insert(node.prev, _insertNode)
                 break
             node = node.next
-        
 
     def find(self, val):
         node: Node = self.head
@@ -83,7 +82,7 @@ class OrderedList:
             r.append(node)
             node = node.next
         return r
-    
+
     def _deleteNode(self, selectedNode: Node):
         # [1]
         # [1] -> 2
@@ -101,7 +100,7 @@ class OrderedList:
             self.tail = self.tail.prev
             self.tail.next = None
             return
-        
+
         # 1 -> [2] -> 3
         selectedNode.prev.next = selectedNode.next
         selectedNode.next.prev = selectedNode.prev
@@ -115,7 +114,7 @@ class OrderedList:
             if afterNode == self.tail:
                 self._add_in_tail(newNode)
                 return
-            
+
             # 1 -> [2] -> 3
             oldNext = afterNode.next
             afterNode.next = newNode
@@ -123,7 +122,7 @@ class OrderedList:
             newNode.next = oldNext
             oldNext.prev = newNode
             self.count = self.count + 1
-        
+
         _insertLocal()
 
     def _add_in_head(self, newNode):
