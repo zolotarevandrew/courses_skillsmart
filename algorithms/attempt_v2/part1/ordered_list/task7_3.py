@@ -2,6 +2,28 @@ import unittest
 from task7 import OrderedList, OrderedStringList
 from task7_2 import removeDuplicates, merge
 
+class Compare_OrderedStringListTests(unittest.TestCase):
+    def test_asc_compare_allCases_shouldBeCorrect(self):
+        # Arrange
+        s_list = OrderedStringList(True)
+
+        # Act
+        self.assertEqual(0, s_list.compare(None, None))
+        self.assertEqual(0, s_list.compare(None, ''))
+        self.assertEqual(0, s_list.compare('', None))
+        self.assertEqual(0, s_list.compare(None, ' '))
+        self.assertEqual(0, s_list.compare(' ', None))
+        self.assertEqual(0, s_list.compare(' ', ''))
+        self.assertEqual(0, s_list.compare(' ', ' '))
+        self.assertEqual(1,  s_list.compare('b', ' a '))
+        self.assertEqual(-1, s_list.compare(' a ', 'b'))
+        self.assertEqual(0, s_list.compare(' abc ', 'abc   '))
+        self.assertEqual(-1, s_list.compare(' abcd', 'abce   '))
+        self.assertEqual(-1, s_list.compare('a b', 'ab'))
+        self.assertEqual(1,  s_list.compare('ab', 'a b'))
+
+        # Assert
+
 class AddAsc_OrderedListTests(unittest.TestCase):
     def test_add_asc_empty_shouldBeCorrect(self):
         # Arrange
