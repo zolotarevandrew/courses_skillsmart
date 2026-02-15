@@ -64,3 +64,85 @@ def merge(list1: OrderedList, list2: OrderedList):
     if left is not None: append(left)
     if right is not None:  append(right)
     return res
+
+# порядковый номер самого задания на курсе - 7
+#
+# номер задачи из задания - 10
+#
+# краткое название - Напишите метод проверки наличия заданного упорядоченного под-списка (параметр метода) в текущем списке
+#
+# сложность решения (O-большое)
+# временнАя - O(N * M) перебор
+# пространственная - O(1) не используем доп.память
+
+# рефлексия по эталонному варианту решения:
+# Реализовал через полный перебор, так как могут быть ситуации с дубликатами. Без дубликатов было бы за O(N)
+# Можно дополнительно улучшить - проверять, сколько в основном списке осталось элементов, если меньше чем в subList то сразу выходим
+# А также, проверять заведомо большие или меньшие элементы.
+
+def isSublistOf(list: OrderedList, sublist: OrderedList):
+    if list._OrderedList__ascending != sublist._OrderedList__ascending:
+        raise ValueError('List asc param should be equal')
+    if sublist.len() > list.len(): return False
+    if sublist.len() == 0: return True
+
+    listHead = list.head
+    sublistHead = sublist.head
+
+    remaining = list.len()
+    while listHead is not None and remaining >= sublist.len():
+        cnt = 0
+        cur = listHead
+        subListCur = sublistHead
+        while cur is not None and subListCur is not None:
+            if list.compare(cur.value, subListCur.value) != 0:
+                break
+            cnt += 1
+            cur = cur.next
+            subListCur = subListCur.next
+
+        if cnt == sublist.len(): return True
+
+        listHead = listHead.next
+        remaining -= 1
+    return False
+
+
+# порядковый номер самого задания на курсе - 7
+#
+# номер задачи из задания - 11
+#
+# краткое название - Добавьте метод, который находит наиболее часто встречающееся значение в списке.
+#
+# сложность решения (O-большое)
+# временнАя - O(N)
+# пространственная - O(1) не используем доп.память
+
+# рефлексия по эталонному варианту решения:
+# Здесь в целом все просто, двигаемся и считаем количество на основе текущего и предыдущего элемента, лучше не придумаешь.
+
+def mostCommonValue(list: OrderedList):
+    if list.len() == 0: return None
+    if list.len() == 1: return list.head.value
+
+    bestVal = list.head.value
+    bestValCnt = 0
+    curVal = list.head.value
+    curValCnt = 0
+
+    cur = list.head
+    while cur is not None:
+        if list.compare(cur.value, curVal) == 0:
+            curValCnt += 1
+        else:
+            if curValCnt > bestValCnt:
+                bestVal = curVal
+                bestValCnt = curValCnt
+            curValCnt = 1
+            curVal = cur.value
+        cur = cur.next
+
+    if curValCnt > bestValCnt:
+        bestVal = curVal
+
+    return bestVal

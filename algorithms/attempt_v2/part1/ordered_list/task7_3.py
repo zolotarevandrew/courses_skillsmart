@@ -1,6 +1,6 @@
 import unittest
 from task7 import OrderedList, OrderedStringList
-from task7_2 import removeDuplicates, merge
+from task7_2 import removeDuplicates, merge, isSublistOf, mostCommonValue
 
 class Compare_OrderedStringListTests(unittest.TestCase):
     def test_asc_compare_allCases_shouldBeCorrect(self):
@@ -1262,6 +1262,283 @@ class Merge_OrderedListTests(unittest.TestCase):
         self.assertEqual(4, res.head.next.next.next.value)
         self.assertEqual(1, res.head.next.next.next.next.value)
         self.assertEqual(5, res.len())
+
+class IsSubListOf_OrderedListTests(unittest.TestCase):
+    def test_isSubListOf_empty_shouldBeTrue(self):
+        # Arrange
+        list = OrderedList(True)
+        sublist = OrderedList(True)
+
+        # Act
+        self.assertTrue(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listOneElementSubListEmpty_shouldBeTrue(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        sublist = OrderedList(True)
+
+        # Act
+        self.assertTrue(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listOneElementSubListNotEqual_shouldBeFalse(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        sublist = OrderedList(True)
+        sublist.add(2)
+
+        # Act
+        self.assertFalse(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listOneElementSubListEqual_shouldBeTrue(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        sublist = OrderedList(True)
+        sublist.add(1)
+
+        # Act
+        self.assertTrue(isSublistOf(list, sublist))
+
+    def test_isSubListOf_subListHasMoreElements_shouldBeFalse(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        sublist = OrderedList(True)
+        sublist.add(1)
+        sublist.add(2)
+
+        # Act
+        self.assertFalse(isSublistOf(list, sublist))
+
+    def test_isSubListOf_twoElementsEqualLists_shouldBeTrue(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+        sublist = OrderedList(True)
+        sublist.add(1)
+        sublist.add(2)
+
+        # Act
+        self.assertTrue(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listTwoElementsSublistOneElementNotExists_shouldBeFalse(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+        sublist = OrderedList(True)
+        sublist.add(5)
+
+        # Act
+        self.assertFalse(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listTwoElementsSublistOneElementExistsInEnd_shouldBeTrue(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+        sublist = OrderedList(True)
+        sublist.add(2)
+
+        # Act
+        self.assertTrue(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listTwoElementsSublistOneElementExistsInEnd_shouldBeTrue(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+        sublist = OrderedList(True)
+        sublist.add(1)
+
+        # Act
+        self.assertTrue(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listThreeElementsSublistOneElementExistsInEnd_shouldBeTrue(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+        list.add(3)
+        sublist = OrderedList(True)
+        sublist.add(1)
+
+        # Act
+        self.assertTrue(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listThreeElementsSublistOneElementExistsInMid_shouldBeTrue(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+        list.add(3)
+        sublist = OrderedList(True)
+        sublist.add(2)
+
+        # Act
+        self.assertTrue(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listThreeElementsSublistOneElementExistsInStart_shouldBeTrue(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+        list.add(3)
+        sublist = OrderedList(True)
+        sublist.add(1)
+
+        # Act
+        self.assertTrue(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listThreeElementsSublistTwoElementsNotExists_shouldBeFalse(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+        list.add(3)
+        sublist = OrderedList(True)
+        sublist.add(5)
+        sublist.add(6)
+
+        # Act
+        self.assertFalse(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listThreeElementsSublistTwoElementsPartiallyExists_shouldBeFalse(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+        list.add(3)
+        sublist = OrderedList(True)
+        sublist.add(3)
+        sublist.add(6)
+
+        # Act
+        self.assertFalse(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listThreeElementsSublistTwoElementsExists_shouldBeTrue(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+        list.add(3)
+        sublist = OrderedList(True)
+        sublist.add(2)
+        sublist.add(3)
+
+        # Act
+        self.assertTrue(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listThreeElementsSublistTwoElementsExistsInStart_shouldBeTrue(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+        list.add(3)
+        sublist = OrderedList(True)
+        sublist.add(1)
+        sublist.add(2)
+
+        # Act
+        self.assertTrue(isSublistOf(list, sublist))
+
+    def test_isSubListOf_listFourElementsSublistTwoElementsExistsInStart_shouldBeTrue(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(1)
+        list.add(2)
+        list.add(3)
+        sublist = OrderedList(True)
+        sublist.add(1)
+        sublist.add(2)
+
+        # Act
+        self.assertTrue(isSublistOf(list, sublist))
+
+class MostCommonVal_OrderedListTests(unittest.TestCase):
+    def test_mostCommonValue_empty_shouldBeNone(self):
+        # Arrange
+        list = OrderedList(True)
+
+        # Act
+        self.assertIsNone(mostCommonValue(list))
+
+    def test_mostCommonValue_oneElement_shouldBeCorrect(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+
+        # Act
+        self.assertEqual(1, mostCommonValue(list))
+
+    def test_mostCommonValue_twoElements_shouldBeCorrect(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+
+        # Act
+        self.assertEqual(1, mostCommonValue(list))
+
+    def test_mostCommonValue_threeElements_shouldBeCorrect(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+        list.add(3)
+
+        # Act
+        self.assertEqual(1, mostCommonValue(list))
+
+    def test_mostCommonValue_fourElementsWithDuplicatesAtBeginning_shouldBeCorrect(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(1)
+        list.add(2)
+        list.add(3)
+
+        # Act
+        self.assertEqual(1, mostCommonValue(list))
+
+    def test_mostCommonValue_fourElementsWithDuplicatesAtBeginning_shouldBeCorrect(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(1)
+        list.add(2)
+        list.add(3)
+
+        # Act
+        self.assertEqual(1, mostCommonValue(list))
+
+    def test_mostCommonValue_fourElementsWithDuplicatesAtMiddle_shouldBeCorrect(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(2)
+        list.add(2)
+        list.add(3)
+
+        # Act
+        self.assertEqual(2, mostCommonValue(list))
+
+    def test_mostCommonValue_fourElementsWithDuplicatesAtEnd_shouldBeCorrect(self):
+        # Arrange
+        list = OrderedList(True)
+        list.add(1)
+        list.add(1)
+        list.add(2)
+        list.add(2)
+        list.add(2)
+        list.add(3)
+
+        # Act
+        self.assertEqual(2, mostCommonValue(list))
 
 if __name__ == "__main__":
     unittest.main()
