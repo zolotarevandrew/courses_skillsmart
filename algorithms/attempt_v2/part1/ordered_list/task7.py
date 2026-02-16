@@ -51,9 +51,9 @@ class OrderedList:
         node: Node = self.head
         while node != None:
             nodeCompare = self.compare(val, node.value)
+            if nodeCompare == 0: return node
             shouldSkip = (nodeCompare < 0) if self.__ascending else (nodeCompare > 0)
             if shouldSkip: return None
-            if nodeCompare == 0: return node
             node = node.next
         return None
 

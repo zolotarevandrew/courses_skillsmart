@@ -146,3 +146,169 @@ def mostCommonValue(list: OrderedList):
         bestVal = curVal
 
     return bestVal
+
+
+# порядковый номер самого задания на курсе - 7
+#
+# номер задачи из задания - 12
+#
+# краткое название - Добавьте в упорядоченный список возможность найти индекс элемента (параметр) в списке, которая должна работать за o(log N)
+#
+# сложность решения (O-большое)
+# временнАя - O(log N) бинарный поиск по массиву, как раз дает O(log N)
+# увеличиваем сложность вставки и удаления всегда до O(N) - из-за вставок в дополнительный массив
+# пространственная - O(N) храним дополнительно отсортированный массив для бинарного поиска
+
+# рефлексия по эталонному варианту решения:
+# Здесь первой пришла мысль дополнительно хранить отсортированный массив, поскольку по нему удобно искать за логарифмическое время бинарным поиском.
+# Судя по всему, можно еще было использовать SkipList, но для этого нужно полностью переделывать саму структуру.
+
+class SearchOrderedList:
+    def __init__(self, asc):
+        self.clean(asc)
+
+    def compare(self, v1, v2):
+        # -1 если v1 < v2
+        # 0 если v1 == v2
+        # +1 если v1 > v2
+        if v1 < v2: return -1
+        if v1 > v2: return 1
+        return 0
+
+    def add(self, value):
+        _insertNode = Node(value)
+        # -
+        if self.head is None:
+            self._insert(None, _insertNode)
+            self.arr.insert(0, value)
+            return
+
+        # <- 1
+        headCompare = self.compare(_insertNode.value, self.head.value)
+        shouldAddInHead = (headCompare <= 0) if self.__ascending else (headCompare >= 0)
+        if shouldAddInHead:
+            self._insert(None, _insertNode)
+            self.arr.insert(0, value)
+            return
+
+        # 1 ->
+        tailCompare = self.compare(_insertNode.value, self.tail.value)
+        shouldAddInTail = (tailCompare >= 0) if self.__ascending else (tailCompare <= 0)
+        if shouldAddInTail:
+            self._insert(self.tail, _insertNode)
+            self.arr.append(value)
+            return
+
+        # 1 -> 2 -> 3
+        node: Node = self.head
+        idx = 0
+        while node != None:
+            nodeCompare = self.compare(_insertNode.value, node.value)
+            shouldAddBeforeNode = (nodeCompare <= 0) if self.__ascending else (nodeCompare >= 0)
+            if shouldAddBeforeNode:
+                self._insert(node.prev, _insertNode)
+                self.arr.insert(idx, value)
+                break
+            node = node.next
+            idx += 1
+
+    def find(self, val):
+        left = 0
+        right = len(self.arr) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            midVal = self.arr[mid]
+            compare = self.compare(val, midVal)
+            if compare == 0:
+                return mid
+            toLeft = compare < 0 if self.__ascending else compare > 0
+            if toLeft:
+                right = mid - 1
+            else:
+                left = mid + 1
+        return -1
+
+    def delete(self, val):
+        node: Node = self.head
+        idx = 0
+        while node != None:
+            if self.compare(val, node.value) == 0:
+                self._deleteNode(node)
+                self.arr.pop(idx)
+                self.count -= 1
+                break
+            node = node.next
+            idx += 1
+
+    def clean(self, asc):
+        self.head = None
+        self.tail = None
+        self.arr = []
+        self.__ascending = asc
+        self.count = 0
+
+    def len(self):
+        return self.count
+
+    def _deleteNode(self, selectedNode: Node):
+        # [1]
+        # [1] -> 2
+        # [1] -> 2 -> 3
+        if selectedNode == self.head:
+            self.head = self.head.next
+            if self.head is None:
+                self.tail = None
+            else:
+                self.head.prev = None
+            return
+        # 1 -> [2]
+        # 1 -> 2 -> [3]
+        if selectedNode == self.tail:
+            self.tail = self.tail.prev
+            self.tail.next = None
+            return
+
+        # 1 -> [2] -> 3
+        selectedNode.prev.next = selectedNode.next
+        selectedNode.next.prev = selectedNode.prev
+        selectedNode.next = None
+
+    def _insert(self, afterNode, newNode):
+        def _insertLocal():
+            if afterNode is None:
+                self._add_in_head(newNode)
+                return
+            if afterNode == self.tail:
+                self._add_in_tail(newNode)
+                return
+
+            # 1 -> [2] -> 3
+            oldNext = afterNode.next
+            afterNode.next = newNode
+            newNode.prev = afterNode
+            newNode.next = oldNext
+            oldNext.prev = newNode
+            self.count = self.count + 1
+
+        _insertLocal()
+
+    def _add_in_head(self, newNode):
+        oldHead = self.head
+        self.head = newNode
+        self.head.next = oldHead
+        self.head.prev = None
+        if oldHead is None: self.tail = self.head
+        else: oldHead.prev = newNode
+        self.count = self.count + 1
+
+    def _add_in_tail(self, item):
+        if self.head is None:
+            self.head = item
+            item.prev = None
+            item.next = None
+        else:
+            self.tail.next = item
+            item.prev = self.tail
+        self.tail = item
+        self.count = self.count + 1
+
