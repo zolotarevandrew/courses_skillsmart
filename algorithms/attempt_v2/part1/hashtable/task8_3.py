@@ -87,14 +87,6 @@ class HashTableTests(unittest.TestCase):
         hash_table.put('3')
         self.assertIsNone(hash_table.seek_slot('4'))
 
-    def test_seek_full_shouldNotFoundSlot(self):
-        # Arrange
-        hash_table = HashTable(3, 1)
-        hash_table.put('1')
-        hash_table.put('2')
-        hash_table.put('3')
-        self.assertIsNone(hash_table.seek_slot('4'))
-
     def test_find_empty_shouldNotFoundSlot(self):
         # Arrange
         hash_table = HashTable(3, 1)
