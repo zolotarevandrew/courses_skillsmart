@@ -218,3 +218,92 @@ class TwoHashTable:
             if self.slots[cur] == value: return cur
 
         return None
+
+
+# порядковый номер самого задания на курсе - 8
+#
+# номер задачи из задания - 5
+#
+# краткое название - Организуйте ddos-атаку на вашу исходную хэш-таблицу -- с помощью специально сгенерированных ключей, вызывающих большое число коллизий
+#
+# сложность решения (O-большое)
+# временнАя - как в основной реализации
+# пространственная - как в основной реализации
+
+# рефлексия по эталонному варианту решения:
+# Написал функцию ddosHashTable которая генерирует 10 миллионов рандомных строк размера 32 и пытается перебрать хэш.
+# Для OneHashTable смогло найти 1000-1200 возможных значений для одного хэша.
+# Далее запустил CollisionDetector для OneHashTable и получил следующий результат
+# DDOS collisions for one hash table : avg=572.000000, p50=572, p95=1087, p99=1133, max=1144, time=0.041s, n=8000, load=0.8
+# огромное количество коллизий, как и ожидалось за счет ранее подобранных значений.
+# Далее сделал новую реализацию SaltHashTable на основе OneHashTable, просто добавив соли к хэшу h ^= self.salt
+# Само значение соли взял как "The Golden Ratio constant for hashing"
+# DDOS collisions for SALT hash table : avg=0.923144, p50=1, p95=3, p99=4, max=7, time=0.001s, n=8000, load=0.8
+# Видно, что количество коллизий снизилось до абсолютного минимума, как и ожидалось.
+# В python и .net, стандартный хэш работает по разному при перезапуске процесса, поскольку в него уже вшит соль/seed.
+# Кажется, что перебрать будет достаточно тяжело, хоть и возможно.
+# Эксперимент был интересным.
+
+import random
+import string
+import time
+
+def _generate_random_strings(cnt, min_len=1, max_len=32):
+    alphabet = string.ascii_letters + string.digits
+
+    for _ in range(cnt):
+        n = random.randint(min_len, max_len)
+        yield ''.join(random.choice(alphabet) for _ in range(n))
+
+def ddosHashTable(hash_table):
+    buckets = {}
+
+    for item in _generate_random_strings(10_000_000, 32, 32):
+        h = hash_table.hash_fun(item)
+        buckets.setdefault(h, []).append(item)
+
+    mx = []
+    for key in buckets:
+        lst = buckets[key]
+        if len(lst) > len(mx):
+            mx = lst
+    return mx
+
+class SaltHashTable:
+    def __init__(self, sz, stp, collisionDetector: CollisionDetector, salt = 0x9E3779B97F4A7C15):
+        self.size = sz
+        self.step = stp
+        self.salt = salt
+        self.collisionDetector = collisionDetector
+        self.slots = [None] * self.size
+
+    def hash_fun(self, value):
+        h = hash(value)
+        h ^= self.salt
+        return h % self.size
+
+    def seek_slot(self, value):
+        slot = self.hash_fun(value)
+
+        for i in range(self.size):
+            cur = (slot + i * self.step) % self.size
+            if self.slots[cur] is None:
+                self.collisionDetector.add(i)
+                return cur
+
+        return None
+
+    def put(self, value):
+        slot = self.seek_slot(value)
+        if slot is None: return None
+        self.slots[slot] = value
+        return slot
+
+    def find(self, value):
+        slot = self.hash_fun(value)
+
+        for i in range(self.size):
+            cur = (slot + i * self.step) % self.size
+            if self.slots[cur] == value: return cur
+
+        return None

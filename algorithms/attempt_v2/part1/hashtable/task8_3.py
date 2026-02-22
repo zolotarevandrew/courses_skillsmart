@@ -1,6 +1,7 @@
 import unittest
 from task8 import HashTable
-from task8_2 import OneHashTable, CollisionDetector, TwoHashTable
+from task8_2 import OneHashTable, CollisionDetector, TwoHashTable, SaltHashTable, ddosHashTable
+from collections import defaultdict
 import random
 import string
 import time
@@ -16,44 +17,18 @@ def generate_random_strings(cnt, min_len=1, max_len=32):
         n = random.randint(min_len, max_len)
         yield ''.join(random.choice(alphabet) for _ in range(n))
 
-def fill_and_log_average_collisions(
+def _fill_and_log_average_collisions(
     make_iter,
     log_title,
-    load_factor: float = 0.65,
-    size: int = 10_007,
-    step: int = 7,
+    table,
+    detector,
+    load_factor: float = 0.65
 ):
-    detector = CollisionDetector()
-    hash_table = OneHashTable(size, step, detector)
 
     t0 = time.perf_counter()
-    n = int(hash_table.size * load_factor)
+    n = int(table.size * load_factor)
     for x in make_iter(n):
-        hash_table.put(x)
-
-    dt = time.perf_counter() - t0
-    avg = detector.average()
-    mx = detector.maximum()
-    p50 = detector.percentile(50)
-    p95 = detector.percentile(95)
-    p99 = detector.percentile(99)
-    print(f"h1 {log_title} : avg={avg:.6f}, p50={p50}, p95={p95}, p99={p99}, max={mx}, time={dt:.3f}s, n={n}, load={load_factor}")
-
-    h2_fill_and_log_average_collisions(make_iter, 'h2 ' + log_title, load_factor, size)
-
-def h2_fill_and_log_average_collisions(
-    make_iter,
-    log_title,
-    load_factor: float = 0.65,
-    size: int = 10_007,
-) -> float:
-    detector = CollisionDetector()
-    hash_table = TwoHashTable(size, detector)
-
-    t0 = time.perf_counter()
-    n = int(hash_table.size * load_factor)
-    for x in make_iter(n):
-        hash_table.put(x)
+        table.put(x)
 
     dt = time.perf_counter() - t0
     avg = detector.average()
@@ -62,7 +37,26 @@ def h2_fill_and_log_average_collisions(
     p95 = detector.percentile(95)
     p99 = detector.percentile(99)
     print(f"{log_title} : avg={avg:.6f}, p50={p50}, p95={p95}, p99={p99}, max={mx}, time={dt:.3f}s, n={n}, load={load_factor}")
-    return avg
+
+def fill_and_log_average_collisions(
+    make_iter,
+    log_title,
+    load_factor: float = 0.65,
+    size: int = 10_007,
+    step: int = 7,
+):
+    detector1 = CollisionDetector()
+    hash_table1 = OneHashTable(size, step, detector1)
+    _fill_and_log_average_collisions(make_iter, 'h1 ' + log_title, hash_table1, detector1, load_factor)
+
+    detector2 = CollisionDetector()
+    hash_table2 = TwoHashTable(size, detector2)
+    _fill_and_log_average_collisions(make_iter, 'h2 ' + log_title, hash_table2, detector2, load_factor)
+
+    detector3 = CollisionDetector()
+    hash_table3 = SaltHashTable(size, step, detector3)
+    _fill_and_log_average_collisions(make_iter, 'sh ' + log_title, hash_table3, detector3, load_factor)
+
 
 class HashTableTests(unittest.TestCase):
     def test_hashFun_shouldFoundSlot(self):
@@ -236,7 +230,15 @@ class HashTableTests(unittest.TestCase):
     def test_equalLengthRandomStringCollisionsInOneHashTable_bigLoadFactor_shouldBeCorrect(self):
         fill_and_log_average_collisions(lambda x : generate_random_strings(x, 32, 32), '0.8 Average collisions for one hash table equal length random strings', 0.8)
 
+    def test_ddos_oneHashTable(self):
+        detector1 = CollisionDetector()
+        hash_table1 = OneHashTable(10000, 3, detector1)
+        res = ddosHashTable(hash_table1)
+        _fill_and_log_average_collisions(lambda cnt: res, 'DDOS collisions for one hash table', hash_table1, detector1, 0.8)
 
+        detector2 = CollisionDetector()
+        hash_table2 = SaltHashTable(10000, 3, detector2)
+        _fill_and_log_average_collisions(lambda cnt: res, 'DDOS collisions for SALT hash table', hash_table2, detector2, 0.8)
 
 if __name__ == "__main__":
     unittest.main()
