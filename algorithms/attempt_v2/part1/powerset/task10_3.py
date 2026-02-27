@@ -1,5 +1,6 @@
 import unittest
 from task10 import PowerSet
+from task10_2 import cartesianProduct
 
 class Put_PowerSetTests(unittest.TestCase):
     def test_put_empty_shouldBeCorrect(self):
@@ -739,6 +740,57 @@ class Equals_PowerSetTests(unittest.TestCase):
         self.assertTrue(ps1.equals(ps2))
 
 
+class CartesianProduct_PowerSetTests(unittest.TestCase):
+    def test_cartesianProduct_empty_shouldBeEmpty(self):
+        # Arrange
+        ps1 = PowerSet()
+        ps2 = PowerSet()
+        res = list(cartesianProduct(ps1, ps2))
+
+        # Assert
+        self.assertEqual(0, len(res))
+
+    def test_cartesianProduct_secondEmpty_shouldBeEmpty(self):
+        # Arrange
+        ps1 = PowerSet()
+        ps1.put('1')
+        ps1.put('2')
+        ps2 = PowerSet()
+        res = list(cartesianProduct(ps1, ps2))
+
+        # Assert
+        self.assertEqual(0, len(res))
+
+    def test_cartesianProduct_secondOneElement_shouldBeCorrect(self):
+        # Arrange
+        ps1 = PowerSet()
+        ps1.put('1')
+        ps1.put('2')
+        ps2 = PowerSet()
+        ps2.put('3')
+        res = list(cartesianProduct(ps1, ps2))
+
+        # Assert
+        self.assertEqual(2, len(res))
+        self.assertEqual(('1', '3'), res[0])
+        self.assertEqual(('2', '3'), res[1])
+
+    def test_cartesianProduct_secondTwoElements_shouldBeCorrect(self):
+        # Arrange
+        ps1 = PowerSet()
+        ps1.put('1')
+        ps1.put('2')
+        ps2 = PowerSet()
+        ps2.put('3')
+        ps2.put('4')
+        res = list(cartesianProduct(ps1, ps2))
+
+        # Assert
+        self.assertEqual(4, len(res))
+        self.assertEqual(('1', '3'), res[0])
+        self.assertEqual(('1', '4'), res[1])
+        self.assertEqual(('2', '3'), res[2])
+        self.assertEqual(('2', '4'), res[3])
 
 if __name__ == "__main__":
     unittest.main()
