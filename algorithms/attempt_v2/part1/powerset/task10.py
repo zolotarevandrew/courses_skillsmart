@@ -1,5 +1,5 @@
-from typing import Any
 from __future__ import annotations
+from typing import Any
 
 class PowerSet:
 
@@ -37,8 +37,6 @@ class PowerSet:
         return res
 
     def difference(self, set2: PowerSet) -> PowerSet:
-        # 1 2 3 4 5
-        # 5 4 3
         res = PowerSet()
         for key in self.set:
             if not set2.get(key):
