@@ -1,6 +1,6 @@
 import unittest
 from task10 import PowerSet
-from task10_2 import cartesianProduct
+from task10_2 import cartesianProduct, multiIntersection
 
 class Put_PowerSetTests(unittest.TestCase):
     def test_put_empty_shouldBeCorrect(self):
@@ -791,6 +791,80 @@ class CartesianProduct_PowerSetTests(unittest.TestCase):
         self.assertEqual(('1', '4'), res[1])
         self.assertEqual(('2', '3'), res[2])
         self.assertEqual(('2', '4'), res[3])
+
+class MultiIntersection_PowerSetTests(unittest.TestCase):
+    def test_multiIntersection_empty_shouldBeEmpty(self):
+        # Arrange
+        ps1 = PowerSet()
+        ps2 = PowerSet()
+        ps3 = PowerSet()
+        res = multiIntersection([ps1, ps2, ps3])
+
+        # Assert
+        self.assertEqual(0, res.size())
+
+    def test_multiIntersection_oneElementInEachDistinct_shouldBeEmpty(self):
+        # Arrange
+        ps1 = PowerSet()
+        ps1.put('1')
+        ps2 = PowerSet()
+        ps2.put('2')
+        ps3 = PowerSet()
+        ps3.put('3')
+        res = multiIntersection([ps1, ps2, ps3])
+
+        # Assert
+        self.assertEqual(0, res.size())
+
+    def test_multiIntersection_oneElementInTwoOfThree_shouldBeEmpty(self):
+        # Arrange
+        ps1 = PowerSet()
+        ps1.put('1')
+        ps2 = PowerSet()
+        ps2.put('1')
+        ps3 = PowerSet()
+        res = multiIntersection([ps1, ps2, ps3])
+
+        # Assert
+        self.assertEqual(0, res.size())
+
+    def test_multiIntersection_oneElementInEachEqual_shouldBeOneElement(self):
+        # Arrange
+        ps1 = PowerSet()
+        ps1.put('1')
+        ps2 = PowerSet()
+        ps2.put('1')
+        ps3 = PowerSet()
+        ps3.put('1')
+        res = multiIntersection([ps1, ps2, ps3])
+
+        # Assert
+        self.assertEqual(1, res.size())
+        self.assertTrue(res.get('1'))
+
+    def test_multiIntersection_threeSets_shouldBeCorrect(self):
+        # Arrange
+        ps1 = PowerSet()
+        ps1.put('1')
+        ps1.put('2')
+        ps1.put('3')
+        ps1.put('4')
+        ps2 = PowerSet()
+        ps2.put('1')
+        ps2.put('6')
+        ps2.put('3')
+        ps2.put('8')
+        ps3 = PowerSet()
+        ps3.put('1')
+        ps3.put('3')
+        ps3.put('9')
+        res = multiIntersection([ps1, ps2, ps3])
+
+        # Assert
+        self.assertEqual(2, res.size())
+        self.assertTrue(res.get('1'))
+        self.assertTrue(res.get('3'))
+        self.assertFalse(res.get('9'))
 
 if __name__ == "__main__":
     unittest.main()

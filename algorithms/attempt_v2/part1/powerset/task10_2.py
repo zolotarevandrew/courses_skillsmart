@@ -16,3 +16,36 @@ def cartesianProduct(set1: PowerSet, set2: PowerSet):
     for x in set1.set:
         for y in set2.set:
             yield (x,y)
+
+
+# порядковый номер самого задания на курсе - 10
+#
+# номер задачи из задания - 5
+#
+# краткое название -  Напишите функцию, которая находит пересечение любых трёх и более множеств (принимает количество множеств >= 3 в качестве списка).
+#
+# сложность решения (O-большое)
+# n - количество множеств
+# O(n) - находим lowest
+# O(n) - находим, все кроме lowest
+# m - количество элементов в lowest, множестве с минимальным количеством элементов
+# проходимся O(m) и во вложенном цикле O(n-1) = O(m * (n-1))
+# временнАя - O(m * (n-1))
+
+# пространственная - O(m + n)
+# в результате будет максимум m элементов минимального множества + потратили память на список из n множеств
+
+# рефлексия по эталонному варианту решения:
+# Здесь базовых улучшений не вижу, итак берем минимальное множество, можно слегка улучшить поиск lowest и other_sets за одну итерацию цикла.
+
+def multiIntersection(sets: list[PowerSet]):
+    res = PowerSet()
+    if not sets:
+        return res
+    lowest = min(sets, key=lambda s: s.size())
+    other_sets = [s for s in sets if s is not lowest]
+    for key in lowest.set:
+        if all(other.get(key) for other in other_sets):
+            res.put(key)
+
+    return res
