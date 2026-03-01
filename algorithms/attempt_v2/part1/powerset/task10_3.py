@@ -1,6 +1,6 @@
 import unittest
 from task10 import PowerSet
-from task10_2 import cartesianProduct, multiIntersection
+from task10_2 import cartesianProduct, multiIntersection, Bag
 
 class Put_PowerSetTests(unittest.TestCase):
     def test_put_empty_shouldBeCorrect(self):
@@ -865,6 +865,52 @@ class MultiIntersection_PowerSetTests(unittest.TestCase):
         self.assertTrue(res.get('1'))
         self.assertTrue(res.get('3'))
         self.assertFalse(res.get('9'))
+
+class BagTests(unittest.TestCase):
+    def test_allCases_shouldBeCorrect(self):
+        # Arrange
+        bg = Bag()
+        self.assertFalse(bg.remove('1'))
+
+        bg.put('1')
+        bg.put('2')
+
+        self.assertTrue(bg.get('1'))
+        self.assertTrue(bg.get('2'))
+        self.assertFalse(bg.get('3'))
+
+        bg.remove('1')
+        bg.remove('2')
+        self.assertFalse(bg.get('1'))
+        self.assertFalse(bg.get('2'))
+
+        bg.put('1')
+        bg.put('1')
+        bg.put('2')
+
+        self.assertTrue(bg.get('1'))
+        self.assertTrue(bg.get('2'))
+
+        bg.remove('1')
+        bg.remove('2')
+
+        self.assertTrue(bg.get('1'))
+        self.assertFalse(bg.get('2'))
+
+        bg.remove('1')
+        self.assertFalse(bg.get('1'))
+
+        bg.put('1')
+        bg.put('1')
+        bg.put('2')
+        bg.put('3')
+        bg.put('3')
+        bg.put('3')
+
+        freq = bg.frequency()
+        self.assertEqual(2, freq['1'])
+        self.assertEqual(1, freq['2'])
+        self.assertEqual(3, freq['3'])
 
 if __name__ == "__main__":
     unittest.main()

@@ -49,3 +49,45 @@ def multiIntersection(sets: list[PowerSet]):
             res.put(key)
 
     return res
+
+# порядковый номер самого задания на курсе - 10
+#
+# номер задачи из задания - 6
+#
+# краткое название -  Реализуйте мульти-множество (Bag),
+# в котором каждый элемент может присутствовать несколько раз.
+# Добавьте методы добавления элементов, удаления одного экземпляра элемента и
+# получения списка всех элементов с их частотами (сколько раз встречаются).
+#
+# сложность решения (O-большое)
+# временнАя - O(1) на все операции
+# пространственная - O(n) храним n уникальных элементов в словаре
+
+# рефлексия по эталонному варианту решения:
+# Здесь лучше всего подходит словарь, поскольку просто хранится счетчик количества конкретного элемента.
+from typing import Any
+
+class Bag:
+
+    def __init__(self) -> None:
+        self.set = {}
+
+    def put(self, value: Any) -> None:
+        self.set[value] = self.set[value] + 1 if value in self.set else 1
+
+    def get(self, value: Any) -> bool:
+        return value in self.set
+
+    def remove(self, value: Any) -> bool:
+        if value in self.set:
+            old = self.set[value]
+            new = old - 1
+            if new == 0:
+                del self.set[value]
+            else:
+                self.set[value] = new
+            return True
+        return False
+
+    def frequency(self):
+        return self.set
