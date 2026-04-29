@@ -7,7 +7,7 @@ class Program
         BoardState bs = Game.InitializeGame();
         while(true) { 
             Game.Draw(bs.Board);
-            bs = Game.ReadMove(bs);
+            bs = Game.ProcessCascade( Game.ReadMove( bs ) );
         }
     }
 }
