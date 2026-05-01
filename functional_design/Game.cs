@@ -115,6 +115,22 @@ public static partial class Game
             .Pipe( ProcessCascade );
     }
     
+    public static BoardState ProcessCascadeV3( BoardState boardState )
+    {
+        (BoardState State, List<Match> Matches) foundMatches = FindMatches( boardState );
+        return foundMatches.Matches.Count == 0 
+            ? foundMatches.State 
+            : ApplyCascadeStep( foundMatches );
+    }
+    
+    private static BoardState ApplyCascadeStep( (BoardState State, List<Match> Matches) foundMatches )
+    {
+        return foundMatches
+            .Pipe( RemoveMatches )
+            .Pipe( FillEmptySpaces )
+            .Pipe( ProcessCascade );
+    }
+    
     
     public static BoardState FillEmptySpaces(BoardState currentState)
     {
