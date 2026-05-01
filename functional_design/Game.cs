@@ -1,4 +1,6 @@
-﻿namespace FunctionalGame;
+﻿
+
+namespace FunctionalGame;
 
 public static partial class Game
 {
@@ -50,32 +52,73 @@ public static partial class Game
         return bb;
     }
 
-    public static BoardState InitializeGame( )
+    public static BoardState InitializeGame( int boardSize = 8 )
     {
-        Board board = new Board( DefaultSize );
-        for ( int row = 0; row < board.size; row++ )
-        for ( int col = 0; col < board.size; col++ )
-            board.cells[row, col] = new Element( symbols[r.Next( 0, symbols.Length )] );
+        return ProcessCascade( FillEmptySpaces( new BoardState( new Board( boardSize ), 0 ) ) );
+    }
 
-        return new BoardState( board, 0 );
+    public struct Option<T>
+    {
+        private readonly T? source;
+        public bool HasValue { get; }
+        
+        private Option( T? source, bool hasValue )
+        {
+            this.source = source;
+            HasValue = hasValue;
+        }
+        
+        public static Option<T> Some( T source )
+        {
+            return new Option<T>( source, true );
+        }
+
+        public static Option<T> None( )
+        {
+            return new Option<T>( default, false );
+        }
+
+        public static Option<T> Create( T source, Func<T, bool> predicate )
+        {
+            return predicate( source ) ? Some( source ) : None( );
+        }
+
+        public Option<TOut> Map<TOut>( Func<T, TOut> func )
+        {
+            return HasValue ? Option<TOut>.Some( func( source! ) ) : Option<TOut>.None( );
+        }
+
+        public T GetOrElse( T fallback )
+        {
+            return HasValue ? source! : fallback;
+        }
     }
 
     public static BoardState ProcessCascade( BoardState boardState )
     {
-        List<Match> matches = FindMatches( boardState.Board );
-        if ( matches.Count == 0 )
-        {
-            return boardState;
-        }
-
-        BoardState removed = RemoveMatches( boardState, matches );
-        BoardState emptySpaces = FillEmptySpaces( removed );
-        return ProcessCascade( emptySpaces );
+        (BoardState State, List<Match> Matches) foundMatches = FindMatches( boardState );
+        return Option<(BoardState State, List<Match> Matches)>
+            .Create( foundMatches, matches => matches.Matches.Count > 0 )
+            .Map( RemoveMatches )
+            .Map( FillEmptySpaces )
+            .Map( ProcessCascade )
+            .GetOrElse( foundMatches.State );
     }
+    
+    public static BoardState ProcessCascadeV2( BoardState boardState )
+    {
+        (BoardState State, List<Match> Matches) foundMatches = FindMatches( boardState );
+        if ( foundMatches.Matches.Count == 0 ) return foundMatches.State;
+        return foundMatches
+            .Pipe( RemoveMatches )
+            .Pipe( FillEmptySpaces )
+            .Pipe( ProcessCascade );
+    }
+    
     
     public static BoardState FillEmptySpaces(BoardState currentState)
     {
-        if (currentState.Board.cells == null)
+        if ( currentState.Board.cells == null )
             return currentState;
 
         Element[,] newCells = (Element[,])currentState.Board.cells.Clone();
@@ -100,9 +143,10 @@ public static partial class Game
         );
     }
     
-    public static List<Match> FindMatches( Board board )
+    public static (BoardState State, List<Match> Matches) FindMatches( BoardState boardState )
     {
-        var matches = new List<Match>( );
+        List<Match> matches = [];
+        Board board = boardState.Board;
 
         // Горизонтальные комбинации
         for ( int row = 0; row < board.size; row++ )
@@ -174,12 +218,13 @@ public static partial class Game
             }
         }
 
-        return matches;
+        return ( boardState, matches );
     }
     
-    public static BoardState RemoveMatches(BoardState currentState, List<Match> matches)
+    public static BoardState RemoveMatches((BoardState State, List<Match> Matches) source)
     {
-        if (matches == null || matches.Count == 0)
+        ( BoardState currentState, List<Match> matches ) = source;
+        if ( matches == null || matches.Count == 0 )
             return currentState;
 
         // Шаг 1: Помечаем ячейки для удаления 
@@ -259,5 +304,13 @@ public static partial class Game
         {
             matches.Add( new Match( direction, row, col, length ) );
         }
+    }
+}
+
+public static class FuncExtensions
+{
+    public static TOut Pipe<TIn, TOut>( this TIn source, Func<TIn, TOut> func )
+    {
+        return func( source );
     }
 }
