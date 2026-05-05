@@ -57,42 +57,7 @@ public static partial class Game
         return ProcessCascade( FillEmptySpaces( new BoardState( new Board( boardSize ), 0 ) ) );
     }
 
-    public struct Option<T>
-    {
-        private readonly T? source;
-        public bool HasValue { get; }
-        
-        private Option( T? source, bool hasValue )
-        {
-            this.source = source;
-            HasValue = hasValue;
-        }
-        
-        public static Option<T> Some( T source )
-        {
-            return new Option<T>( source, true );
-        }
-
-        public static Option<T> None( )
-        {
-            return new Option<T>( default, false );
-        }
-
-        public static Option<T> Create( T source, Func<T, bool> predicate )
-        {
-            return predicate( source ) ? Some( source ) : None( );
-        }
-
-        public Option<TOut> Map<TOut>( Func<T, TOut> func )
-        {
-            return HasValue ? Option<TOut>.Some( func( source! ) ) : Option<TOut>.None( );
-        }
-
-        public T GetOrElse( T fallback )
-        {
-            return HasValue ? source! : fallback;
-        }
-    }
+    
 
     public static BoardState ProcessCascade( BoardState boardState )
     {
@@ -121,6 +86,18 @@ public static partial class Game
         return foundMatches.Matches.Count == 0 
             ? foundMatches.State 
             : ApplyCascadeStep( foundMatches );
+    }
+    
+    public static BoardState ProcessCascadeV4( BoardState boardState )
+    {
+        MatchRule rule = MatchRules.Horizontal.Value;
+        SimpleMatchEffectInterpreter interpreter = new SimpleMatchEffectInterpreter( [] );
+        MatchGroup matchGroup = MatchRules.FindMatches( boardState, rule );
+        return matchGroup.Count == 0
+            ? boardState
+            : rule.EffectPipe
+                .Interpret( boardState, matchGroup, interpreter )
+                .Pipe( ProcessCascadeV4 );
     }
     
     private static BoardState ApplyCascadeStep( (BoardState State, List<Match> Matches) foundMatches )
