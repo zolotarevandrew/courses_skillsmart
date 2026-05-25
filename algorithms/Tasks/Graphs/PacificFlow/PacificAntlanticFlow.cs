@@ -1,4 +1,4 @@
-﻿namespace Tasks.Graphs.FloodFill;
+﻿namespace Tasks.Graphs.PacificFlow;
 
 public static class PacificAntlanticFlow
 {
@@ -10,51 +10,68 @@ public static class PacificAntlanticFlow
     /// is less than or equal to the current cell's height
     /// Return the list of coordinates where water can flow to both the Pacific and Atlantic Ocean
     /// </summary>
-    public static List<List<int>> Run( int[,] heights )
+    public static List<Index> Run( int[,] heights )
     {
-        List<List<int>> res = [];
-        HashSet<Index> visited = new HashSet<Index>();
-        bool Dfs( Index idx, int prevValue, List<int> curPath )
+        HashSet<Index> pacific = [];
+        HashSet<Index> atlantic = [];
+        
+        int rows = heights.GetLength( 0 );
+        int cols = heights.GetLength( 1 );
+        
+        for ( int col = 0; col < cols; col++ )
         {
-            if ( !IsPathExists( heights, idx, prevValue ) ) return false;
-            //if ( !visited.Add( idx ) ) return false;
-            
-            int value = heights[idx.Row, idx.Col];
-            curPath.Add( value );
-            
-            Index left = new ( idx.Row , idx.Col - 1 );
-            Index right = new ( idx.Row, idx.Col + 1 );
-            Index bottom = new ( idx.Row + 1, idx.Col );
-            Index top = new (idx.Row - 1, idx.Col);
+            int topValue = heights[0, col];
+            Index topIdx = new Index( 0, col );
+            Dfs( heights, topIdx, topValue, pacific );
 
-            bool hasLeft = Dfs( left, value, [..curPath] );
-            bool hasRight = Dfs( right, value, [..curPath] );
-            bool hasBottom = Dfs( bottom, value, [..curPath] );
-            bool hasTop = Dfs( top, value, [..curPath] );
-            
-            bool hasAny = hasLeft || hasRight || hasBottom || hasTop;
+            int bottomValue = heights[rows - 1, col];
+            Index bottomIdx = new Index( rows - 1, col );
+            Dfs( heights, bottomIdx, bottomValue, atlantic );
+        }
+        
 
-            if ( !hasAny )
-            {
-                res.Add( curPath );
-            }
+        for ( int row = 0; row < rows; row++ )
+        {
+            int leftValue = heights[row, 0];
+            Index leftIdx = new Index( row, 0 );
+            Dfs( heights, leftIdx, leftValue, pacific );
 
-            return true;
+            int rightValue = heights[row, cols - 1];
+            Index rightIdx = new Index( row, cols - 1 );
+            Dfs( heights, rightIdx, rightValue, atlantic );
         }
 
-        Dfs( new ( 0, 0 ), heights[0, 0], [] );
-        return res;
+        return pacific.Intersect( atlantic ).ToList( );
+    }
+    
+    static void Dfs( int[,] heights, Index idx, int prevValue, HashSet<Index> visited )
+    {
+        if ( !IsPathExists( heights, idx, prevValue, visited ) ) return;
+        visited.Add( idx );
+            
+        int value = heights[idx.Row, idx.Col];
+            
+        Index left = new ( idx.Row , idx.Col - 1 );
+        Index right = new ( idx.Row, idx.Col + 1 );
+        Index bottom = new ( idx.Row + 1, idx.Col );
+        Index top = new (idx.Row - 1, idx.Col);
+
+        Dfs( heights, left, value, visited );
+        Dfs( heights, right, value, visited );
+        Dfs( heights, bottom, value, visited );
+        Dfs( heights, top, value, visited );
     }
 
-    static bool IsPathExists( int[,] grid, Index idx, int value )
+    static bool IsPathExists( int[,] grid, Index idx, int value, HashSet<Index> visited )
     {
         int rows = grid.GetLength( 0 );
         int cols = grid.GetLength( 1 );
 
         return idx.Row >= 0 && idx.Row < rows
-                               && idx.Col >= 0 && idx.Col < cols
-                               && grid[idx.Row, idx.Col] >= value;
+                            && idx.Col >= 0 && idx.Col < cols
+                            && grid[idx.Row, idx.Col] >= value
+                            && !visited.Contains( idx );
     }
 
-    record struct Index( int Row, int Col );
+    public readonly record struct Index( int Row, int Col );
 }
