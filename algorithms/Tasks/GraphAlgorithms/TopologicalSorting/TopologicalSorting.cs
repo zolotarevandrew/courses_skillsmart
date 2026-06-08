@@ -13,6 +13,50 @@ public class TopologicalSorting
     }
 
     public record Vertex( int Value );
+    
+    public static List<Vertex> KahnSort( Graph graph )
+    {
+        Dictionary<Vertex, int> indegrees = [];
+        foreach ( var vertex in graph.Value.Keys )
+        {
+            indegrees[vertex] = 0;
+        }
+
+        foreach ( var vertex in graph.Value.Keys )
+        {
+            foreach ( Vertex neighbour in graph.Value[vertex])
+            {
+                indegrees[neighbour]++;
+            }
+        }
+        
+        Queue<Vertex> queue = [];
+        foreach ( var vertex in graph.Value.Keys )
+        {
+            if ( indegrees[vertex] == 0 )
+            {
+                queue.Enqueue( vertex );
+            }
+        }
+
+        List<Vertex> result = [];
+        while ( queue.TryDequeue( out var currentVertex ) )
+        {
+            result.Add( currentVertex );
+            foreach ( Vertex neighbour in graph.Value[currentVertex])
+            {
+                indegrees[neighbour]--;
+                if ( indegrees[neighbour] == 0 )
+                {
+                    queue.Enqueue( neighbour );
+                }
+            }
+        }
+
+        return result.Count != graph.Value.Keys.Count 
+            ? throw new InvalidOperationException( "Graph contains cycle!" ) 
+            : result;
+    }
 
     public static List<Vertex> DfsSort( Graph graph )
     {
