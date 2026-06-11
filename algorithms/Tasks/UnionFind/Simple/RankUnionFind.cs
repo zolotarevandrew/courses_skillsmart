@@ -7,9 +7,11 @@ public class RankUnionFind
     public RankUnionFind( int n )
     {
         _parent = Enumerable
-            .Range( 0, n )
+            .Range( 0, n + 1 )
             .ToList( );
-        _ranks = new List<int>( n );
+        _ranks = Enumerable
+            .Repeat( 0, n +1 )
+            .ToList(  );
     }
 
     public int Find( int u )
@@ -19,22 +21,23 @@ public class RankUnionFind
         return _parent[u];
     }
 
-    public void Union( int u, int v )
+    public bool Union( int u, int v )
     {
         var rootU = Find( u );
         var rootV = Find( v );
-        if ( rootU == rootV ) return;
+        if ( rootU == rootV ) return false;
 
         if ( _ranks[rootU] > _ranks[rootV] )
         {
-            _parent[rootV] = _ranks[rootU];
-            return;
+            _parent[rootV] = _parent[rootU];
+            return true;
         }
-        
-        _parent[rootU] = _ranks[rootV];
+        _parent[rootU] = _parent[rootV];
         if ( _ranks[rootU] == _ranks[rootV] )
         {
             _ranks[rootV]++;
         }
+
+        return true;
     }
 }
