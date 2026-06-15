@@ -18,7 +18,7 @@ public class RedudantConnection
 
     private static int? RunUnionFind( (int from, int to)[] edges, int n )
     {
-        RankUnionFind find = new RankUnionFind( n );
+        RankUnionFind find = new RankUnionFind( n + 1 );
         int idx = 0;
         foreach ( (int from, int to) item in edges )
         {

@@ -7,11 +7,23 @@ public class RankUnionFind
     public RankUnionFind( int n )
     {
         _parent = Enumerable
-            .Range( 0, n + 1 )
+            .Range( 0, n )
             .ToList( );
         _ranks = Enumerable
-            .Repeat( 0, n +1 )
+            .Repeat( 0, n )
             .ToList(  );
+    }
+
+    public int SetsCount( )
+    {
+        HashSet<int> set = [];
+        for (int i = 0; i < _parent.Count; i++)
+        {
+            int root = Find( i );
+            set.Add( root );
+        }
+
+        return set.Count;
     }
 
     public int Find( int u )
@@ -25,7 +37,8 @@ public class RankUnionFind
     {
         var rootU = Find( u );
         var rootV = Find( v );
-        if ( rootU == rootV ) return false;
+        if ( rootU == rootV ) 
+            return false;
 
         if ( _ranks[rootU] > _ranks[rootV] )
         {
