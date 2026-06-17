@@ -4,20 +4,20 @@ public class RankUnionFind
 {
     private List<int> _parent;
     private List<int> _ranks;
-    public RankUnionFind( int n )
+    public RankUnionFind( int n, int start = 0 )
     {
         _parent = Enumerable
-            .Range( 0, n )
+            .Range( start, n )
             .ToList( );
         _ranks = Enumerable
-            .Repeat( 0, n )
+            .Repeat( start, n )
             .ToList(  );
     }
 
-    public int SetsCount( )
+    public int SetsCount( int start = 0 )
     {
         HashSet<int> set = [];
-        for (int i = 0; i < _parent.Count; i++)
+        for (int i = start; i < _parent.Count; i++)
         {
             int root = Find( i );
             set.Add( root );
