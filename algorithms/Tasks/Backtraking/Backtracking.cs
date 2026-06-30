@@ -1,4 +1,6 @@
-﻿namespace Tasks.Backtraking;
+﻿using System.Security.Cryptography;
+
+namespace Tasks.Backtraking;
 
 public class Backtracking
 {
@@ -22,6 +24,123 @@ public class Backtracking
         BacktrackPerm( [], visited, res, nums );
         
         return res;
+    }
+    
+    /// Given m x n grid of characters board and a string word
+    /// check if the word can be formed by a sequence of adjacent characters in the grid
+    /// Adjacent cells are horizontally or vertically neighboring, and the same cell can not be reused more than once
+    public static bool WordSearch( char[,] board, string word )
+    {
+        int rows =  board.GetLength(0);
+        int cols = board.GetLength( 1 );
+
+        for ( int row = 0; row < rows; row++ )
+        {
+            for ( int col = 0; col < cols; col++ )
+            {
+                if ( board[row, col] == word[0] )
+                {
+                    HashSet<(int row, int col)> visited = new HashSet<(int row, int col)>( );
+                    bool found = BacktrackWordSearch(
+                        board,
+                        row,
+                        col,
+                        word,
+                        visited,
+                        0
+                    );
+                    if ( found ) return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static bool BacktrackWordSearch( 
+        char[,] board, 
+        int row, 
+        int col, 
+        string word,
+        HashSet<(int row, int col)> visited,
+        int idx )
+    {
+        if ( idx == word.Length )
+        {
+            return true;
+        }
+
+        bool isAvailable = row < board.GetLength( 0 ) && row >= 0
+                           && col < board.GetLength( 1 ) && col >= 0
+                           && board[row, col] == word[idx]
+                           && !visited.Contains( ( row, col ) );
+        if ( !isAvailable ) return false;
+
+        visited.Add( ( row, col ) );
+
+        bool res = BacktrackWordSearch( board, row + 1, col, word, visited, idx + 1 )
+            || BacktrackWordSearch( board, row - 1, col, word, visited, idx + 1 )
+            || BacktrackWordSearch( board, row, col + 1, word, visited, idx + 1 )
+            || BacktrackWordSearch( board, row, col - 1, word, visited, idx + 1 );
+        
+        visited.Remove( ( row, col ) );
+
+        return res;
+    }
+
+    private static IEnumerable<(int curRow, int curCol)> Directions( char[,] board, int row, int col )
+    {
+        int rows = board.GetLength( 0 );
+        int cols = board.GetLength( 1 );
+
+        bool IsAvailable( int r, int c )
+        {
+            return r < rows & r >= 0 && c < cols && c >= 0;
+        }
+
+        if ( IsAvailable( row - 1, col ) )
+        {
+            yield return ( row - 1, col );
+        }
+        
+        if ( IsAvailable( row + 1, col ) )
+        {
+            yield return ( row + 1, col );
+        }
+
+        if ( IsAvailable( row, col + 1 ) )
+        {
+            yield return ( row, col + 1 );
+        }
+
+        if ( IsAvailable( row, col - 1 ) )
+        {
+            yield return ( row, col - 1 );
+        }
+    }
+
+    public static List<List<int>> Sets( int[] nums )
+    {
+        List<List<int>> res = [];
+        BacktrackSets( [], res, 0, nums );
+        
+        return res;
+    }
+    
+    static void BacktrackSets(
+        List<int> path,
+        List<List<int>> res,
+        int start,
+        int[] nums )
+    {
+        res.Add( path.ToList( ) );
+
+        for ( int idx = start; idx < nums.Length; idx++ )
+        {
+            path.Add( nums[idx] );
+            BacktrackSets( path, res, idx + 1, nums );
+            path.RemoveAt( path.Count - 1 );
+        }
     }
 
     static void BacktrackPerm(
