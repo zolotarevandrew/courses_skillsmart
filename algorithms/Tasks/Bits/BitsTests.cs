@@ -23,4 +23,12 @@ public class BitsTests
         Assert.Equal( res, Bits.ReverseBits( num ) );
         Assert.Equal( res, Bits.ReverseBitsV2( num ) );
     }
+    
+    [Theory]
+    [InlineData( new[] { 0, 1, 3}, 2 )]
+    [InlineData( new[] { 1, 2 }, 0 )]
+    public void MissingNumber( int[] nums, int res )
+    {
+        Assert.Equal( res, Bits.MissingNumber( nums ) );
+    }
 }

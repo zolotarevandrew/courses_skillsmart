@@ -52,4 +52,20 @@ public class Bits
 
         return res;
     }
+
+    /*
+     * Given an array of nums containing n distinct numbers from the range [0,n]
+     * One number is missing from the array. Find and return missing number
+     */
+    public static int MissingNumber( int[] arr )
+    {
+        // также можно через разницу сумм, взяв формулу n * (n + 1) / 2
+        
+        int res = arr.Length;
+        for ( int idx = 0; idx < arr.Length; idx++ )
+        {
+            res ^= idx ^ arr[idx];
+        }
+        return res;
+    }
 }
