@@ -68,4 +68,19 @@ public class Bits
         }
         return res;
     }
+    
+    /*
+     * You are given a non empty list of integers, where every element appears exactly twice
+     * Except for one unique number that appears only once
+     * 
+     */
+    public static int SingleNumber( int[] arr )
+    {
+        int res = 0;
+        for ( int idx = 0; idx < arr.Length; idx++ )
+        {
+            res ^= arr[idx];
+        }
+        return res;
+    }
 }

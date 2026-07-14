@@ -31,4 +31,12 @@ public class BitsTests
     {
         Assert.Equal( res, Bits.MissingNumber( nums ) );
     }
+    
+    [Theory]
+    [InlineData( new[] { 3, 2, 3}, 2 )]
+    [InlineData( new[] { 7, 6, 6, 7, 8 }, 8 )]
+    public void SingleNumber( int[] nums, int res )
+    {
+        Assert.Equal( res, Bits.SingleNumber( nums ) );
+    }
 }
