@@ -39,4 +39,12 @@ public class BitsTests
     {
         Assert.Equal( res, Bits.SingleNumber( nums ) );
     }
+    
+    [Theory]
+    [InlineData( 3, 5, 8 )]
+    [InlineData( 7, 6, 13 )]
+    public void Sum( int num1, int num2, int res )
+    {
+        Assert.Equal( res, Bits.Sum( num1, num2 ) );
+    }
 }
