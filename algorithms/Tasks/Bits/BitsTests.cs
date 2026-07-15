@@ -47,4 +47,12 @@ public class BitsTests
     {
         Assert.Equal( res, Bits.Sum( num1, num2 ) );
     }
+    
+    [Theory]
+    [InlineData( 5, new[] { 0, 1, 1, 2, 1, 2} )]
+    public void CountingBits( int n, int[] bits )
+    {
+        Assert.Equal( bits, Bits.CountingBits( n ) );
+        Assert.Equal( bits, Bits.CountingBitsV2( n ) );
+    }
 }

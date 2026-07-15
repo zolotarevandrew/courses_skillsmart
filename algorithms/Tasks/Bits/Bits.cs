@@ -95,4 +95,47 @@ public class Bits
 
         return num1;
     }
+
+    /*
+     * Given an integer n, compute the number of 1 bits in the binary representation
+     * of every number from 0 to num
+     * Return the list output such that output[i] represent the count of 1 bits in the binary form of i.
+     */
+    public static int[] CountingBits( int num )
+    {
+        List<int> res = [];
+        for ( int i = 0; i <= num; i++ )
+        {
+            res.Add( OneBitCount( i ));
+        }
+        return res.ToArray(  );
+    }
+    
+    public static int[] CountingBitsV2( int num )
+    {
+        int[] res = new int[num + 1];
+        int offset = 1;
+        for ( int idx = 1; idx <= num; idx++ )
+        {
+            if ( offset * 2 == idx )
+            {
+                offset = idx;
+            }
+            
+            res[idx] = 1 + res[idx - offset];
+        }
+        return res;
+    }
+
+    private static int OneBitCount( int nn )
+    {
+        int res = 0;
+        while ( nn != 0 )
+        {
+            res += nn & 1;
+            nn >>= 1;
+        }
+
+        return res;
+    }
 }
