@@ -25,7 +25,7 @@ public class WeightedPathFinding
 
         distances[start] = 0;
 
-        PriorityQueue<Vertex, int> queue = new PriorityQueue<Vertex, int>( );
+        PriorityQueue<Vertex, int> queue = new( );
         queue.Enqueue( start, 0 );
 
         // Dequeue = o Log V + o e all edges
@@ -50,7 +50,7 @@ public class WeightedPathFinding
         return distances;
 
     }
-    
+
     public static Dictionary<Vertex, int> BellmanFord( Graph graph, Vertex start )
     {
         Dictionary<Vertex, int> distances = [];
@@ -89,7 +89,7 @@ public class WeightedPathFinding
                 }
             }
         }
-        
+
 
         return distances;
 
@@ -114,10 +114,10 @@ public class WeightedPathFinding
                     row.Add( int.MaxValue );
                     continue;
                 }
-                
+
                 row.Add( weights[i, j] );
-            }    
-            
+            }
+
             dist.Add( row );
         }
 
@@ -129,22 +129,22 @@ public class WeightedPathFinding
                 {
                     int start = dist[i][k];
                     int end = dist[k][j];
-                    
+
                     // защита от переполнения
                     if (start == int.MaxValue || end == int.MaxValue)
                     {
                         continue;
                     }
-                    
+
                     int check = dist[i][j];
                     if ( start + end < check )
                     {
                         dist[i][j] = start + end;
                     }
-                }    
-            }    
+                }
+            }
         }
-        
+
 
         return dist;
 
