@@ -88,7 +88,7 @@ def test_verify_equivalence_relation():
 def find_representative(element: T, quotient_classes: Dict[T, List[T]]) -> T:
     for key, items in quotient_classes.items():
         if element in items: return key
-    raise ValueError('reprsentative was not found')
+    raise ValueError('representative was not found')
 
 def test_find_representative():
     st = create_quotient_set([1,2,3,4,5,6], lambda a,b: a % 2 == b % 2)
