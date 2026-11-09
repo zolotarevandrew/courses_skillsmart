@@ -66,7 +66,7 @@ def test() -> bool:
         s_p3 = sphere.merid(1)
 
         assert TopologyCalculator.sphere_are_homotopic(s_p1, s_p2), "Sphere paths should be homotopic"
-        assert not TopologyCalculator.sphere_are_homotopic(s_p1, s_p3), "Sphere paths should always be homotopic"
+        assert TopologyCalculator.sphere_are_homotopic(s_p1, s_p3), "Sphere paths should always be homotopic"
 
         # 4 - torus
         torus = CubicalTorus()
